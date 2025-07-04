@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException, Body
 from pydantic import BaseModel
 from typing import Optional
 import struct
+from Crypto.Cipher import ARC4
 
 class CommandID(IntEnum):
     """
@@ -45,7 +46,82 @@ class ProtocolAnalyzer:
         calculated_crc = ProtocolAnalyzer.calculate_crc16(data[:-3])
         
         return received_crc == calculated_crc
+#----wstawione dane
 
+
+    @staticmethod
+    def encode_data(data: bytes, iterations: int, key: str) -> tuple[bytes, bool]:
+        """
+    Koduje dane zgodnie z flagą w HEADER i weryfikuje CRC8.
+
+    Args:
+        data: Strumień bajtów do przetworzenia
+        iterations: Liczba iteracji dla kodowania
+        key: Klucz kodowania
+
+    Returns:
+        tuple[bytes, bool]: (Przetworzone dane, Czy weryfikacja CRC8 się powiodła)
+    """
+        try:
+               # Sprawdzenie minimalnej długości danych
+             if len(data) < 4:
+                  raise ValueError("Dane są zbyt krótkie - brak HEADER")
+
+             # Pobranie flagi z HEADER (4-ty bajt)
+             flags = data[3]
+
+             # Wyodrębnienie segmentu SZYFROWANA
+             encrypted_segment_start = 4 + 17  # HEADER(4B) + JAWNA(17B)
+             encrypted_segment = data[encrypted_segment_start:-3]  # Bez FOOTER
+
+             if len(encrypted_segment) < 2:  # Minimum to DATA_LEN(1B) + CRC8(1B)
+                 raise ValueError("Segment SZYFROWANA jest zbyt krótki")
+
+             # Pobranie długości danych i CRC8
+             data_len = encrypted_segment[0]
+             received_crc8 = encrypted_segment[-1]
+
+             # Wyodrębnienie właściwych danych
+             actual_data = encrypted_segment[1:-1]
+
+             if  (flags & 0x01) == 0:  #IntegratorProtocol.ProtocolFlags.PLAIN.value:
+                  # Dla danych niezaszyfrowanych tylko weryfikujemy CRC8
+                data_to_check = bytes([data_len]) + actual_data
+                calculated_crc8 = ProtocolAnalyzer.calculate_crc8(encrypted_segment[1:-1])
+                return data, received_crc8 == calculated_crc8
+
+             elif (flags & 0x01) == 1:  # IntegratorProtocol.ProtocolFlags.ENCRYPTED.value:
+                  # Dla danych zaszyfrowanych
+                  # 1. Inicjalizacja RC4
+                  cipher = ARC4.new(key.encode())
+
+
+
+                  # 2. Odszyfrowanie danych
+                  decrypted_data = cipher.decrypt(actual_data)
+
+                  # 3. Weryfikacja CRC8
+                  data_to_check = bytes([data_len]) + decrypted_data
+                  calculated_crc8 = ProtocolAnalyzer.calculate_crc8(encrypted_segment[1:-1])
+
+                  # 4. Złożenie ramki z powrotem
+                  result_data = (
+                      data[:encrypted_segment_start + 1] +  # Do DATA_LEN włącznie
+                      decrypted_data +                      # Odszyfrowane dane
+                      bytes([received_crc8]) +              # Oryginalny CRC8
+                      data[-3:]                            # FOOTER
+                  )
+
+                  return result_data, received_crc8 == calculated_crc8
+
+             else:
+                 raise ValueError(f"Nieznana flaga protokołu: {flags}")
+
+        except Exception as e:
+            raise ValueError(f"Błąd podczas przetwarzania danych: {str(e)}")
+
+
+#----wstawione dane koniec
     @staticmethod
     def extract_command_id(data: bytes) -> int:
         """
@@ -98,6 +174,25 @@ class ProtocolAnalyzer:
                     crc = (crc >> 1) ^ 0xA001
                 else:
                     crc >>= 1
+        return crc
+
+    @staticmethod
+    def calculate_crc8(data: bytes) -> int:
+        """
+        Oblicza sumę kontrolną CRC8 dla DATA_LEN i DATA
+        """
+        crc = 0x00  # wartość początkowa
+        polynomial = 0x07  # wielomian CRC-8
+
+        for byte in data:
+            crc ^= byte
+            for _ in range(8):
+                if crc & 0x80:
+                    crc = (crc << 1) ^ polynomial
+                else:
+                    crc <<= 1
+            crc &= 0xFF
+
         return crc
 
 router = APIRouter(
