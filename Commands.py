@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from typing import Optional
 import struct
 from Crypto.Cipher import ARC4
-
+import hashlib
 class CommandID(IntEnum):
     """
     Dostępne komendy protokołu
@@ -46,18 +46,47 @@ class ProtocolAnalyzer:
         calculated_crc = ProtocolAnalyzer.calculate_crc16(data[:-3])
         
         return received_crc == calculated_crc
+#---sha 256
+    @staticmethod
+    def _calculate_key(key1: str, key2: str, iterations: int) -> bytes:
+           """
+           Oblicza klucz na podstawie key1 i key2 wykonując iterations iteracji SHA256
+            key = SHA256(key . key1 . key2)
+
+           Args:
+               key1: Pierwszy klucz (string)
+               key2: Drugi klucz (string)
+               iterations: Liczba iteracji
+
+           Returns:
+                bytes: 32-bajtowy klucz końcowy
+            """
+           # Początkowa konkatenacja kluczy
+           key = key1 + key2
+
+           # Wykonanie określonej liczby iteracji
+           for _ in range(iterations):
+                # W każdej iteracji: key = SHA256(key . key1 . key2)
+            combined = (key + key1 + key2).encode()
+            key = hashlib.sha256(combined).hexdigest()
+
+           # Zwracamy ostateczny klucz jako bytes
+           return bytes.fromhex(key)
+#---sha 256 koniec
 #----wstawione dane
 
 
     @staticmethod
-    def encode_data(data: bytes, iterations: int, key: str) -> tuple[bytes, bool]:
+    def encode_data(data: bytes, iterations: int, key1: str, key2: str ) -> tuple[bytes, bool]:
         """
     Koduje dane zgodnie z flagą w HEADER i weryfikuje CRC8.
 
     Args:
         data: Strumień bajtów do przetworzenia
         iterations: Liczba iteracji dla kodowania
-        key: Klucz kodowania
+        key = SHA256 (key . key1 . key2)
+        key1: Klucz kodowania z argumentu
+        key2: Klucz kodowania z argumentu
 
     Returns:
         tuple[bytes, bool]: (Przetworzone dane, Czy weryfikacja CRC8 się powiodła)
@@ -93,9 +122,8 @@ class ProtocolAnalyzer:
              elif (flags & 0x01) == 1:  # IntegratorProtocol.ProtocolFlags.ENCRYPTED.value:
                   # Dla danych zaszyfrowanych
                   # 1. Inicjalizacja RC4
-                  cipher = ARC4.new(key.encode())
-
-
+                  key = ProtocolAnalyzer._calculate_key(key1, key2, iterations)
+                  cipher = ARC4.new(key)
 
                   # 2. Odszyfrowanie danych
                   decrypted_data = cipher.decrypt(actual_data)
