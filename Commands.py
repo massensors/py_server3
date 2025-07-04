@@ -119,7 +119,12 @@ async def analyze_data(data: bytes = Body(...)):
                 status_code=400,
                 detail="Nieprawidłowa ramka: błąd znacznika końca lub sumy kontrolnej"
             )
-        
+        # teraz nalezy sprawdzic czy dane sa zakodowane
+
+        # jesli tak to nalezy je odkodowac zanim przejdziemy do nastepnego kroku
+        # w odkodowanych danych nalezy sprawdzic sume kontrolna CRC8
+        # jesli suma sie zgadza mozna dane validowac
+
         # Pobranie COMMAND_ID
         command_id = ProtocolAnalyzer.extract_command_id(data)
         
