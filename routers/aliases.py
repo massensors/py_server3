@@ -4,12 +4,9 @@ from typing import List
 
 from starlette import status
 
-from database import get_db
-from models import MeasureData, Aliases
-from pydantic import BaseModel,fields
-
-
-
+from repositories.database import get_db
+from models.models import Aliases
+from pydantic import BaseModel
 
 router = APIRouter(
     prefix="/aliases",

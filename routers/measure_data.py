@@ -4,11 +4,9 @@ from typing import List
 
 from starlette import status
 
-from database import get_db
-from models import MeasureData
+from repositories.database import get_db
+from models.models import MeasureData
 from pydantic import BaseModel
-from typing_extensions import Annotated
-
 
 router = APIRouter(
     prefix="/measure-data",

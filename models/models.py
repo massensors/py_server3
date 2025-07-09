@@ -1,5 +1,5 @@
-from database import Base
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from repositories.database import Base
+from sqlalchemy import Column, Integer, String, Boolean
 
 
 class Todos(Base):

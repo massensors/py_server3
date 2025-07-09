@@ -4,12 +4,9 @@ from typing import List
 
 from starlette import status
 
-from database import get_db
-from models import  StaticParams
-from pydantic import BaseModel,fields
-
-
-
+from repositories.database import get_db
+from models.models import  StaticParams
+from pydantic import BaseModel
 
 router = APIRouter(
     prefix="/static",

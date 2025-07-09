@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-from database import get_db
-from models import Todos
+from repositories.database import get_db
+from models.models import Todos
 from pydantic import BaseModel, Field
 
 router = APIRouter(
