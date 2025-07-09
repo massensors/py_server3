@@ -5,6 +5,16 @@ from typing import Optional
 import struct
 from Crypto.Cipher import ARC4
 import hashlib
+
+
+router = APIRouter(
+    prefix="/commands",
+    tags=["commands"],
+    responses={404: {"description": "Not found"}}
+)
+
+
+
 class CommandID(IntEnum):
     """
     Dostępne komendy protokołu
@@ -102,6 +112,10 @@ class ProtocolAnalyzer:
              # Wyodrębnienie segmentu SZYFROWANA
              encrypted_segment_start = 4 + 17  # HEADER(4B) + JAWNA(17B)
              encrypted_segment = data[encrypted_segment_start:-3]  # Bez FOOTER
+             header = data[:3]
+             plain = data[3:21]
+             footer = data[-3:]
+
 
              if len(encrypted_segment) < 2:  # Minimum to DATA_LEN(1B) + CRC8(1B)
                  raise ValueError("Segment SZYFROWANA jest zbyt krótki")
@@ -116,7 +130,7 @@ class ProtocolAnalyzer:
              if  (flags & 0x01) == 0:  #IntegratorProtocol.ProtocolFlags.PLAIN.value:
                   # Dla danych niezaszyfrowanych tylko weryfikujemy CRC8
                 data_to_check = bytes([data_len]) + actual_data
-                calculated_crc8 = ProtocolAnalyzer.calculate_crc8(encrypted_segment[1:-1])
+                calculated_crc8 = ProtocolAnalyzer.calculate_crc8(encrypted_segment[0:-1])
                 return data, received_crc8 == calculated_crc8
 
              elif (flags & 0x01) == 1:  # IntegratorProtocol.ProtocolFlags.ENCRYPTED.value:
@@ -125,20 +139,23 @@ class ProtocolAnalyzer:
                   key = ProtocolAnalyzer._calculate_key(key1, key2, iterations)
                   cipher = ARC4.new(key)
 
-                  # 2. Odszyfrowanie danych
-                  decrypted_data = cipher.decrypt(actual_data)
+                  # 2. Odszyfrowanie zakodowanej czesci z danymi
+                  decrypted_segment = cipher.decrypt(encrypted_segment)
 
                   # 3. Weryfikacja CRC8
-                  data_to_check = bytes([data_len]) + decrypted_data
-                  calculated_crc8 = ProtocolAnalyzer.calculate_crc8(encrypted_segment[1:-1])
-
+                  #data_to_check = bytes([data_len]) + decrypted_data
+                  calculated_crc8 = ProtocolAnalyzer.calculate_crc8(decrypted_segment[0:-1])
+                  received_crc8 = decrypted_segment[-1]
                   # 4. Złożenie ramki z powrotem
                   result_data = (
-                      data[:encrypted_segment_start + 1] +  # Do DATA_LEN włącznie
-                      decrypted_data +                      # Odszyfrowane dane
-                      bytes([received_crc8]) +              # Oryginalny CRC8
-                      data[-3:]                            # FOOTER
+                          header +
+                          plain +
+                          decrypted_segment +
+                          data[-3:]  # FOOTER
                   )
+
+
+
 
                   return result_data, received_crc8 == calculated_crc8
 
@@ -223,11 +240,7 @@ class ProtocolAnalyzer:
 
         return crc
 
-router = APIRouter(
-    prefix="/integrator-prot",
-    tags=["integrator protocol"],
-    responses={404: {"description": "Not found"}}
-)
+
 
 @router.post("/analyze")
 async def analyze_data(data: bytes = Body(...)):
@@ -243,17 +256,20 @@ async def analyze_data(data: bytes = Body(...)):
                 detail="Nieprawidłowa ramka: błąd znacznika końca lub sumy kontrolnej"
             )
         # teraz nalezy sprawdzic czy dane sa zakodowane
+        decoded_data, crc_valid = ProtocolAnalyzer.encode_data(data,1000, "Massensors", "key2")
 
-        # jesli tak to nalezy je odkodowac zanim przejdziemy do nastepnego kroku
-        # w odkodowanych danych nalezy sprawdzic sume kontrolna CRC8
-        # jesli suma sie zgadza mozna dane validowac
-
+        # Sprawdzenie czy suma kontrolna jest poprawna
+        if not crc_valid:
+            raise HTTPException(
+                status_code=400,
+                detail="Nieprawidłowa suma kontrolna CRC8"
+            )
         # Pobranie COMMAND_ID
-        command_id = ProtocolAnalyzer.extract_command_id(data)
+        command_id = ProtocolAnalyzer.extract_command_id(decoded_data)
         
         # Obsługa różnych komend
         if command_id == CommandID.MEASURE_DATA:
-            measure_data = ProtocolAnalyzer.parse_measure_data(data)
+            measure_data = ProtocolAnalyzer.parse_measure_data(decoded_data)
             return {
                 "command": "MEASURE_DATA",
                 "data": measure_data
