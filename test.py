@@ -5,7 +5,7 @@ from routers.commands import ProtocolAnalyzer
 
 def mojaFunkcjaTestowa(key1: str, key2: str, iterations: int) -> bytes:
     # Przygotowanie danych
-    header = bytes([0xAA, 0x55, 0x01, 0x01])  # START_MARKER1, START_MARKER2, VERSION=1, FLAGS=0 (nieszyfrowane)
+    header = bytes([0xAA, 0x55, 0x01, 0x00])  # START_MARKER1, START_MARKER2, VERSION=1, FLAGS=0 (nieszyfrowane)
 
     # Sekcja JAWNA (17 bajtów
     device_id = "2341".encode('ascii').ljust(10, b'\x00')  # 10 bajtów
@@ -20,8 +20,8 @@ def mojaFunkcjaTestowa(key1: str, key2: str, iterations: int) -> bytes:
     request = bytes([0x00])  # 1 bajt
     speed = "0.85".ljust(6).encode('ascii')  # 6 bajtów
     rate = "256.6".ljust(7).encode('ascii')  # 7 bajtów
-    total = "12346".ljust(12).encode('ascii')  # 12 bajtów
-    current_time = "2010-06-15 10:56:00".ljust(19).encode('ascii')  # 19 bajtów
+    total = "92346".ljust(12).encode('ascii')  # 12 bajtów
+    current_time = "2025-06-15 10:56:03".ljust(19).encode('ascii')  # 19 bajtów
 
     data = status + request + speed + rate + total + current_time
     data_len = bytes([len(data)])  # 1 bajt

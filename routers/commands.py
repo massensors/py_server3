@@ -1,11 +1,15 @@
 from enum import IntEnum
-from fastapi import APIRouter, HTTPException, Body
+from fastapi import APIRouter, HTTPException, Body, Depends
 from pydantic import BaseModel
 from typing import Optional
 import struct
 from Crypto.Cipher import ARC4
 import hashlib
 
+from models.models import MeasureData
+
+from sqlalchemy.orm import Session
+from repositories.database import get_db
 
 router = APIRouter(
     prefix="/commands",
@@ -31,8 +35,10 @@ class MeasureDataPayload(BaseModel):
     """
     Model danych dla komendy MEASURE_DATA (0x0003)
     """
+
     status: int
     request: int
+    deviceId: str
     speed: str
     rate: str
     total: str
@@ -192,12 +198,14 @@ class ProtocolAnalyzer:
         request = data[data_content_start + 1]
         
         # Wydobycie pozostałych pól
+        device_id = data[4:14].decode('ascii').strip()  # Wydobycie DEVICE_ID z sekcji JAWNA
         speed = data[data_content_start+2:data_content_start+8].decode('ascii').strip()
         rate = data[data_content_start+8:data_content_start+15].decode('ascii').strip()
         total = data[data_content_start+15:data_content_start+27].decode('ascii').strip()
         current_time = data[data_content_start+27:data_content_start+46].decode('ascii').strip()
         
         return MeasureDataPayload(
+            deviceId=device_id,
             status=status,
             request=request,
             speed=speed,
@@ -243,9 +251,9 @@ class ProtocolAnalyzer:
 
 
 @router.post("/analyze")
-async def analyze_data(data: bytes = Body(...)):
+async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
     """
-    Endpoint do analizy przychodzącego strumienia danych
+    Endpoint do analizy przychodzącego strumienia danych i zapisu do bazy
     """
     try:
         
@@ -266,10 +274,25 @@ async def analyze_data(data: bytes = Body(...)):
             )
         # Pobranie COMMAND_ID
         command_id = ProtocolAnalyzer.extract_command_id(decoded_data)
-        
+
         # Obsługa różnych komend
         if command_id == CommandID.MEASURE_DATA:
             measure_data = ProtocolAnalyzer.parse_measure_data(decoded_data)
+
+            # Tworzenie nowego rekordu w bazie danych
+            #device_id = decoded_data[4:14].decode('ascii').strip()  # Wydobycie DEVICE_ID z sekcji JAWNA
+            db_measure = MeasureData(
+                deviceId=measure_data.deviceId,
+                speed=measure_data.speed,
+                rate=measure_data.rate,
+                total=measure_data.total,
+                currentTime=measure_data.currentTime
+            )
+
+            # Dodanie i zatwierdzenie w bazie danych
+            db.add(db_measure)
+            db.commit()
+
             return {
                 "command": "MEASURE_DATA",
                 "data": measure_data
