@@ -1,0 +1,8 @@
+2025-07-16 14:50:30,989 - main - DEBUG - [main.py:59] - Test loggera - DEBUG
+2025-07-16 14:50:30,990 - main - INFO - [main.py:60] - Test loggera - INFO
+2025-07-16 14:50:30,990 - main - WARNING - [main.py:61] - Test loggera - WARNING
+2025-07-16 14:50:30,991 - main - ERROR - [main.py:62] - Test loggera - ERROR
+2025-07-16 14:50:34,658 - main - DEBUG - [main.py:73] - ==================================================
+2025-07-16 14:50:34,659 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
+2025-07-16 14:50:34,659 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-07-16 14:50:34,660 - main - DEBUG - [main.py:77] - Request body: aa 55 01 07 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 90 dc 0e 94 74 f4 dd c7 ae 5d 10 c3 a1 dd f6 77 40 1c f3 52 2f 5f 72 c6 7b 40 f8 0b 39 ec ad cc d7 ca 52 d4 99 9f d5 44 df 93 de 1c d1 ba c1 d8 b0 5e 55

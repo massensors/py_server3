@@ -125,6 +125,8 @@ class ProtocolAnalyzer:
     # ---sha 256 koniec
     # ----wstawione dane
 
+    # --- nowa implementacja cipher
+    # --- koniec nowej implementacji cipher
     @staticmethod
     def encode_data(data: bytes, iterations: int, key1: str, key2: str) -> tuple[bytes, bool]:
         """
@@ -182,7 +184,7 @@ class ProtocolAnalyzer:
 
                 # 3. Weryfikacja CRC8
                 # data_to_check = bytes([data_len]) + decrypted_data
-                calculated_crc8 = ProtocolAnalyzer.calculate_crc8(decrypted_segment[0:-1])
+                calculated_crc8 = ProtocolAnalyzer.calculate_crc8(decrypted_segment[:-1])
                 received_crc8 = decrypted_segment[-1]
                 # 4. Złożenie ramki z powrotem
                 result_data = (
