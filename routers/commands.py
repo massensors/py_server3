@@ -31,8 +31,8 @@ async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
                 detail="Nieprawidłowa ramka: błąd znacznika końca lub sumy kontrolnej"
             )
         # teraz nalezy sprawdzic czy dane sa zakodowane
-        decoded_data, crc_valid = ProtocolAnalyzer.encode_data(data,999, "Massensors", "Massensors")
-
+        #decoded_data, crc_valid = ProtocolAnalyzer.encode_data(data,1000, bytes([1,2]), bytes([1,2]))
+        decoded_data, crc_valid = ProtocolAnalyzer.encode_data(data, 1000, "Massensors" ,"text" )
         # Sprawdzenie czy suma kontrolna jest poprawna
         if not crc_valid:
             raise HTTPException(

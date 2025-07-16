@@ -8,7 +8,7 @@ from repositories.database import get_db
 import hashlib
 from Crypto.Cipher import ARC4
 from crc import Calculator, Configuration
-
+from services.cipher import  RC4KeyGenerator
 
 CRC8_CONFIG = Configuration(
     width=8,
@@ -128,7 +128,8 @@ class ProtocolAnalyzer:
     # --- nowa implementacja cipher
     # --- koniec nowej implementacji cipher
     @staticmethod
-    def encode_data(data: bytes, iterations: int, key1: str, key2: str) -> tuple[bytes, bool]:
+   # def encode_data(data: bytes, iterations: int, Key1:bytes, Key2:bytes) -> tuple[bytes, bool]:
+    def encode_data(data: bytes, iterations: int, Key1: str, Key2: str) -> tuple[bytes, bool]:
         """
     Koduje dane zgodnie z flagą w HEADER i weryfikuje CRC8.
 
@@ -176,10 +177,13 @@ class ProtocolAnalyzer:
             elif (flags & 0x01) == 1:  # IntegratorProtocol.ProtocolFlags.ENCRYPTED.value:
                 # Dla danych zaszyfrowanych
                 # 1. Inicjalizacja RC4
-                key = ProtocolAnalyzer._calculate_key(key1, key2, iterations)
-                cipher = ARC4.new(key)
+                #key = ProtocolAnalyzer._calculate_key(key1, key2, iterations)
+                #cipher = ARC4.new(key)
 
                 # 2. Odszyfrowanie zakodowanej czesci z danymi
+                #decrypted_segment = cipher.decrypt(encrypted_segment)
+                cipher = RC4KeyGenerator.create_cipher(Key1, Key2, iterations)
+               # cipher = RC4KeyGenerator.create_cipher(Key1)
                 decrypted_segment = cipher.decrypt(encrypted_segment)
 
                 # 3. Weryfikacja CRC8
