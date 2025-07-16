@@ -7,6 +7,45 @@ from sqlalchemy.orm import Session
 from repositories.database import get_db
 import hashlib
 from Crypto.Cipher import ARC4
+from crc import Calculator, Configuration
+
+
+CRC8_CONFIG = Configuration(
+    width=8,
+    polynomial=0x07,
+    init_value=0x00,
+    final_xor_value=0x00,
+    reverse_input=False,
+    reverse_output=False
+)
+
+BYTE_CHECKSUM_CONFIG = Configuration(
+    width=8,          # 8 bitów
+    polynomial=0x00,  # brak wielomianu (nie jest używany w sumie bajtów)
+    init_value=0x00,  # wartość początkowa 0
+    final_xor_value=0x00,  # brak końcowego XORowania
+    reverse_input=False,
+    reverse_output=False,
+   # is_byte_sum=True  # To jest kluczowy parametr - włącza tryb sumy bajtów
+)
+
+
+# Utworzenie kalkulatora CRC8
+
+
+
+
+
+CRC16_CCITT_CONFIG = Configuration(
+    width=16,
+    polynomial=0x1021,
+    init_value=0xFFFF,
+    final_xor_value=0x0000,
+    reverse_input=False,
+    reverse_output=False
+)
+
+
 
 class CommandID(IntEnum):
     """
@@ -51,6 +90,8 @@ class ProtocolAnalyzer:
         # Obliczanie i weryfikacja CRC16
         received_crc = int.from_bytes(data[-3:-1], 'big')
         calculated_crc = ProtocolAnalyzer.calculate_crc16(data[:-3])
+
+        #calculated_crc = calculator.checksum(data[:-3])
 
         return received_crc == calculated_crc
 
@@ -127,7 +168,7 @@ class ProtocolAnalyzer:
             if (flags & 0x01) == 0:  # IntegratorProtocol.ProtocolFlags.PLAIN.value:
                 # Dla danych niezaszyfrowanych tylko weryfikujemy CRC8
                 #data_to_check = bytes([data_len]) + actual_data
-                calculated_crc8 = ProtocolAnalyzer.calculate_crc8(encrypted_segment[0:-1])
+                calculated_crc8 = ProtocolAnalyzer.calculate_crc8(encrypted_segment[:-1])
                 return data, received_crc8 == calculated_crc8
 
             elif (flags & 0x01) == 1:  # IntegratorProtocol.ProtocolFlags.ENCRYPTED.value:
@@ -206,32 +247,40 @@ class ProtocolAnalyzer:
         """
         Oblicza CRC16 dla danych
         """
-        crc = 0xFFFF
-        for byte in data:
-            crc ^= byte
-            for _ in range(8):
-                if crc & 0x0001:
-                    crc = (crc >> 1) ^ 0xA001
-                else:
-                    crc >>= 1
-        return crc
+        calculator = Calculator(CRC16_CCITT_CONFIG)
+        return calculator.checksum(data)
+
+        # crc = 0xFFFF
+        # for byte in data:
+        #     crc ^= byte
+        #     for _ in range(8):
+        #         if crc & 0x0001:
+        #             crc = (crc >> 1) ^ 0xA001
+        #         else:
+        #             crc >>= 1
+        # return crc
 
     @staticmethod
     def calculate_crc8(data: bytes) -> int:
 
-        crc = 0x00  # wartość początkowa
-        polynomial = 0x07  # wielomian CRC-8
+        return sum(data) & 0xFF
 
-        for byte in data:
-            crc ^= byte
-            for _ in range(8):
-                if crc & 0x80:
-                    crc = (crc << 1) ^ polynomial
-                else:
-                    crc <<= 1
-            crc &= 0xFF
+       # calculator = Calculator(BYTE_CHECKSUM_CONFIG)
+       # return calculator.checksum(data)
 
-        return crc
+        # crc = 0x00  # wartość początkowa
+        # polynomial = 0x07  # wielomian CRC-8
+        #
+        # for byte in data:
+        #     crc ^= byte
+        #     for _ in range(8):
+        #         if crc & 0x80:
+        #             crc = (crc << 1) ^ polynomial
+        #         else:
+        #             crc <<= 1
+        #     crc &= 0xFF
+        #
+        # return crc
 
 
 def command_support(command_id: int, decoded_data: bytes, db: Session = Depends(get_db)):
@@ -263,6 +312,13 @@ def command_support(command_id: int, decoded_data: bytes, db: Session = Depends(
         _command_id = decoded_data[14:16]  # 2 bajty
 
         # Przygotowanie odpowiedzi dla komendy 0003
+        # Konwersja z bytes na int
+        command_id_value = int.from_bytes(_command_id, 'big')
+        # Ustawienie najstarszego bitu
+        command_id_value |= 0x8000
+        # Konwersja z powrotem na bytes
+        _command_id = command_id_value.to_bytes(2, 'big')
+
         response_data = bytearray()
 
         # HEADER (4B)
@@ -278,8 +334,8 @@ def command_support(command_id: int, decoded_data: bytes, db: Session = Depends(
         response_data.append(0x00)  # SEQ_NUM (1B)
 
         # SZYFROWANA
-        status = 0x00  # przykładowy status
-        request = 0x01  # przykładowy request
+        status = 0x01  # przykładowy status
+        request = 0x00  # przykładowy request
 
         response_data.append(0x02)  # DATA_LEN (2 bajty danych)
         response_data.append(status)  # STATUS (1B)

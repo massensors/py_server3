@@ -1,12 +1,13 @@
-
+import logging
 from fastapi import APIRouter, HTTPException, Body, Depends
-
 from sqlalchemy.orm import Session
 from repositories.database import get_db
-
-
 from services.support import command_support, ProtocolAnalyzer
 from fastapi.responses import Response
+
+
+# Dodanie loggera
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/commands",
@@ -51,9 +52,12 @@ async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
 
         # Jeśli response jest już obiektem Response, zwróć go bezpośrednio
         if isinstance(response, Response):
+            logger.debug(f"Zawartość ramki zwrotnej: {response.body.hex(' ')}")
+
             return response
 
         # W przeciwnym razie zwróć jako JSON
+        logger.debug(f"Zawartość odpowiedzi JSON: {response}")
         return response
 
     except Exception as e:
