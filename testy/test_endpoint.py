@@ -1,5 +1,5 @@
 import requests
-from test import mojaFunkcjaTestowa
+from testy.test import mojaFunkcjaTestowa
 
 
 def test_analyze_endpoint():

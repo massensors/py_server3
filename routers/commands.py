@@ -2,6 +2,7 @@ import logging
 from fastapi import APIRouter, HTTPException, Body, Depends
 from sqlalchemy.orm import Session
 from repositories.database import get_db
+from services.command_handler import CommandHandler
 from services.support import command_support, ProtocolAnalyzer
 from fastapi.responses import Response
 
@@ -47,11 +48,23 @@ async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
 
         # Pobranie COMMAND_ID
         command_id = ProtocolAnalyzer.extract_command_id(decoded_data)
+
+
+        #---------------nowa implementacja
+
+        # Utworzenie handlera komend
+        command_handler = CommandHandler("Massensors", "text")
         # Obsługa różnych komend
-        response = command_support(command_id, decoded_data,
-                                   flag,
-                                   "Massensors",
-                                   "text",db)
+        response = command_handler.handle_command(command_id, decoded_data, flag, db)
+
+        #-----koniec nowej implementacji
+
+
+        # # Obsługa różnych komend
+        # response = command_support(command_id, decoded_data,
+        #                            flag,
+        #                            "Massensors",
+        #                            "text",db)
 
         # Jeśli response jest już obiektem Response, zwróć go bezpośrednio
         if isinstance(response, Response):
