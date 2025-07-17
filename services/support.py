@@ -10,6 +10,8 @@ from Crypto.Cipher import ARC4
 from crc import Calculator, Configuration
 from services.cipher import  RC4KeyGenerator
 
+
+
 CRC8_CONFIG = Configuration(
     width=8,
     polynomial=0x07,
@@ -44,6 +46,8 @@ CRC16_CCITT_CONFIG = Configuration(
     reverse_input=False,
     reverse_output=False
 )
+
+
 
 
 
@@ -129,6 +133,7 @@ class ProtocolAnalyzer:
     # --- koniec nowej implementacji cipher
     @staticmethod
    # def encode_data(data: bytes, iterations: int, Key1:bytes, Key2:bytes) -> tuple[bytes, bool]:
+
     def encode_data(data: bytes, iterations: int, Key1: str, Key2: str) -> tuple[bytes, bool]:
         """
     Koduje dane zgodnie z flagą w HEADER i weryfikuje CRC8.
@@ -289,7 +294,12 @@ class ProtocolAnalyzer:
         # return crc
 
 
-def command_support(command_id: int, decoded_data: bytes, db: Session = Depends(get_db)):
+def command_support(command_id: int,
+                    decoded_data: bytes,
+                    flag: int ,
+                    key1: str,
+                    key2: str,
+                    db: Session = Depends(get_db)):
 
 
 
@@ -350,6 +360,14 @@ def command_support(command_id: int, decoded_data: bytes, db: Session = Depends(
         # Obliczenie CRC8 dla sekcji SZYFROWANA
         crc8 = ProtocolAnalyzer.calculate_crc8(response_data[-4:])  # dla DATA_LEN + DATA
         response_data.append(crc8)
+        encrypted_segment = response_data[21:]
+        # jesli flaga encode = true koduje dane
+        if (flag & 0x01):
+            response_data[3]=1
+            cipher = RC4KeyGenerator.create_cipher(key1,key2)
+            encrypted = cipher.encrypt(encrypted_segment)
+            response_data[21:] = encrypted
+
 
         # Obliczenie CRC16 dla całości (bez znacznika końca)
         crc16 = ProtocolAnalyzer.calculate_crc16(response_data)

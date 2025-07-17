@@ -39,7 +39,7 @@ async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
                 status_code=400,
                 detail="Nieprawidłowa suma kontrolna CRC8"
             )
-
+        flag = decoded_data[3]
         #command_id = decoded_data[14:16]  # 2 bajty
         #device_id = decoded_data[4:14]  # 10 bajtów
 
@@ -48,7 +48,10 @@ async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
         # Pobranie COMMAND_ID
         command_id = ProtocolAnalyzer.extract_command_id(decoded_data)
         # Obsługa różnych komend
-        response = command_support(command_id, decoded_data, db)
+        response = command_support(command_id, decoded_data,
+                                   flag,
+                                   "Massensors",
+                                   "text",db)
 
         # Jeśli response jest już obiektem Response, zwróć go bezpośrednio
         if isinstance(response, Response):
