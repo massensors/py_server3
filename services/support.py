@@ -55,7 +55,7 @@ class CommandID(IntEnum):
     """
     Dostępne komendy protokołu
     """
-    CMD_0 = 0x0000
+    REGISTER_UNIT = 0x0000
     CMD_1 = 0x0001
     CMD_2 = 0x0002
     MEASURE_DATA = 0x0003  # Komenda do przesyłania danych pomiarowych

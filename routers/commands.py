@@ -60,7 +60,7 @@ async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
         #-----koniec nowej implementacji
 
 
-        # # Obsługa różnych komend
+        # # Obsługa różnych komend, stara implementacja, realizacja za pomoca funkcji
         # response = command_support(command_id, decoded_data,
         #                            flag,
         #                            "Massensors",
