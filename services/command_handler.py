@@ -3,9 +3,9 @@ from fastapi import  Depends
 from sqlalchemy.orm import Session
 from datetime import datetime
 
-from models.models import MeasureData
+from models.models import MeasureData, Aliases
 from repositories.database import get_db
-from services.support import ProtocolAnalyzer, CommandID
+from services.support import ProtocolAnalyzer, CommandID, AliasDataPayload
 from fastapi.responses import Response
 from services.cipher import  RC4KeyGenerator
 
@@ -81,7 +81,21 @@ class CommandHandler:
         """
         Obsługa komendy CMD_2 (0x0002)
         """
-        # TODO: Implementacja obsługi komendy
+        alias_data = ProtocolAnalyzer.parse_alias_data(decoded_data)
+
+        # Tworzenie nowego rekordu w bazie danych
+        db_aliases = Aliases(
+        deviceId = alias_data.deviceId,
+        company = alias_data.company,
+        location = alias_data.location,
+        productName =alias_data.productName,
+        scaleId = alias_data.scaleId
+        )
+
+        # Dodanie i zatwierdzenie w bazie danych
+        db.add(db_aliases)
+        db.commit()
+
         return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
 
     def _handle_cmd_4(self, decoded_data: bytes, flag: int, db: Session) -> Response:

@@ -1,6 +1,6 @@
 from enum import IntEnum
 from pydantic import BaseModel
-from models.models import MeasureData
+from models.models import MeasureData, Aliases
 from fastapi.responses import Response
 from fastapi import  Depends
 from sqlalchemy.orm import Session
@@ -76,6 +76,17 @@ class MeasureDataPayload(BaseModel):
     rate: str
     total: str
     currentTime: str
+
+
+class AliasDataPayload(BaseModel):
+    """
+    Model danych dla komendy ALIAS_DATA (0x0002)
+    """
+    deviceId: str
+    company: str
+    location: str
+    productName: str
+    scaleId: str
 
 
 class ProtocolAnalyzer:
@@ -252,7 +263,40 @@ class ProtocolAnalyzer:
             total=total,
             currentTime=current_time
         )
+#--------nowy
+    @staticmethod
+    def parse_alias_data(data: bytes) -> AliasDataPayload:
+        """
+        Parsuje dane dla komendy ALIAS_DATA (0x0002)
+        """
+        # Początek sekcji SZYFROWANA
+        data_start = 4 + 17  # HEADER(4B) + JAWNA(17B)
 
+        # Pomijamy DATA_LEN (1B)
+        data_content_start = data_start + 1
+
+        # Parsowanie pól
+        status = data[data_content_start]
+        request = data[data_content_start + 1]
+
+        # Wydobycie pozostałych pól
+
+        device_id = data[4:14].decode('ascii').strip()  # Wydobycie DEVICE_ID z sekcji JAWNA
+        company = data[data_content_start + 2:data_content_start + 12].decode('ascii').strip()
+        location = data[data_content_start + 12:data_content_start + 22].decode('ascii').strip()
+        productName = data[data_content_start + 22:data_content_start + 32].decode('ascii').strip()
+        scaleId = data[data_content_start + 32:data_content_start + 42].decode('ascii').strip()
+
+        return AliasDataPayload(
+
+           deviceId=device_id,
+           company=company,
+           location=location,
+           productName=productName,
+           scaleId=scaleId
+
+        )
+    #----------koniec nowy
     @staticmethod
     def calculate_crc16(data: bytes) -> int:
         """
