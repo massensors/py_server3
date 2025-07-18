@@ -3,7 +3,8 @@ from fastapi import  Depends
 from sqlalchemy.orm import Session
 from datetime import datetime
 
-from models.models import MeasureData, Aliases
+#from main import config
+from models.models import MeasureData, Aliases, StaticParams
 from repositories.database import get_db
 from services.support import ProtocolAnalyzer, CommandID, AliasDataPayload
 from fastapi.responses import Response
@@ -28,9 +29,9 @@ class CommandHandler:
             CommandID.MEASURE_DATA: self._handle_measure_data,
             CommandID.REGISTER_UNIT: self._handle_register_unit,
             CommandID.CMD_1: self._handle_cmd_1,
-            CommandID.CMD_2: self._handle_cmd_2,
+            CommandID.CAPTURE_ALIASES: self._handle_capture_aliases,
             CommandID.CMD_4: self._handle_cmd_4,
-            CommandID.CMD_5: self._handle_cmd_5,
+            CommandID.CAPTURE_STATIC: self._handle_capture_static,
             CommandID.CMD_6: self._handle_cmd_6,
         }
 
@@ -77,9 +78,9 @@ class CommandHandler:
         # TODO: Implementacja obsługi komendy
         return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
 
-    def _handle_cmd_2(self, decoded_data: bytes, flag: int, db: Session) -> Response:
+    def _handle_capture_aliases(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
-        Obsługa komendy CMD_2 (0x0002)
+        Obsługa komendy CAPTURE_ALIASES (0x0002)
         """
         alias_data = ProtocolAnalyzer.parse_alias_data(decoded_data)
 
@@ -105,10 +106,35 @@ class CommandHandler:
         # TODO: Implementacja obsługi komendy
         return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
 
-    def _handle_cmd_5(self, decoded_data: bytes, flag: int, db: Session) -> Response:
+    def _handle_capture_static(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
-        Obsługa komendy CMD_5 (0x0005)
+        Obsługa komendy CAPTURE_STATIC (0x0005)
         """
+        static_data = ProtocolAnalyzer.parse_static_data(decoded_data)
+
+        # Tworzenie nowego rekordu w bazie danych
+        db_static = StaticParams(
+            deviceId=static_data.deviceId,
+            filterRate=static_data.filterRate,
+            scaleCapacity=static_data.scaleCapacity,
+            autoZero=static_data.autoZero,
+            deadBand=static_data.deadBand,
+            scaleType=static_data.scaleType,
+            loadcellSet=static_data.loadcellSet,
+            loadcellCapacity=static_data.loadcellCapacity,
+            trimm = static_data.trimm,
+            idlerSpacing=static_data.idlerSpacing,
+            speedSource=static_data.speedSource,
+            wheelDiameter=static_data.wheelDiameter,
+            pulsesPerRev=static_data.pulsesPerRev,
+            beltLength=static_data.beltLength,
+            beltLengthPulses=static_data.beltLengthPulses,
+            currentTime=static_data.currentTime
+        )
+        # Dodanie i zatwierdzenie w bazie danych
+        db.add(db_static)
+        db.commit()
+
         # TODO: Implementacja obsługi komendy
         return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
 

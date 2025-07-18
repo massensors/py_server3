@@ -57,10 +57,10 @@ class CommandID(IntEnum):
     """
     REGISTER_UNIT = 0x0000
     CMD_1 = 0x0001
-    CMD_2 = 0x0002
+    CAPTURE_ALIASES = 0x0002
     MEASURE_DATA = 0x0003  # Komenda do przesyłania danych pomiarowych
     CMD_4 = 0x0004
-    CMD_5 = 0x0005
+    CAPTURE_STATIC = 0x0005
     CMD_6 = 0x0006
 
 
@@ -87,6 +87,27 @@ class AliasDataPayload(BaseModel):
     location: str
     productName: str
     scaleId: str
+
+class StaticDataPayload(BaseModel):
+    """
+    Model danych dla komendy ALIAS_DATA (0x0002)
+    """
+    deviceId: str
+    filterRate: str
+    scaleCapacity: str
+    autoZero: str
+    deadBand: str
+    scaleType: str
+    loadcellSet: str
+    loadcellCapacity: str
+    trimm : str
+    idlerSpacing: str
+    speedSource: str
+    wheelDiameter: str
+    pulsesPerRev: str
+    beltLength: str
+    beltLengthPulses: str
+    currentTime: str
 
 
 class ProtocolAnalyzer:
@@ -263,7 +284,7 @@ class ProtocolAnalyzer:
             total=total,
             currentTime=current_time
         )
-#--------nowy
+
     @staticmethod
     def parse_alias_data(data: bytes) -> AliasDataPayload:
         """
@@ -296,7 +317,64 @@ class ProtocolAnalyzer:
            scaleId=scaleId
 
         )
-    #----------koniec nowy
+    #---------NOWY
+    @staticmethod
+    def parse_static_data(data: bytes) -> StaticDataPayload:
+        """
+        Parsuje dane dla komendy ALIAS_DATA (0x0002)
+        """
+        # Początek sekcji SZYFROWANA
+        data_start = 4 + 17  # HEADER(4B) + JAWNA(17B)
+
+        # Pomijamy DATA_LEN (1B)
+        data_content_start = data_start + 1
+
+        # Parsowanie pól
+        status = data[data_content_start]
+        request = data[data_content_start + 1]
+
+        # Wydobycie pozostałych pól
+
+        device_id = data[4:14].decode('ascii').strip()  # Wydobycie DEVICE_ID z sekcji JAWNA
+        filterRate = data[data_content_start + 2:data_content_start + 3].decode('ascii').strip()
+        scalecapacity = data[data_content_start +3:data_content_start + 11].decode('ascii').strip()
+        autozero = data[data_content_start + 11:data_content_start + 19].decode('ascii').strip()
+        deadband = data[data_content_start + 19:data_content_start + 27].decode('ascii').strip()
+        scaletype = data[data_content_start + 27:data_content_start + 28].decode('ascii').strip()
+        loadcellset = data[data_content_start + 28:data_content_start + 29].decode('ascii').strip()
+        loadcellcapacity = data[data_content_start + 29:data_content_start + 37].decode('ascii').strip()
+        trimm = data[data_content_start + 37:data_content_start + 45].decode('ascii').strip()
+        idlerspacing = data[data_content_start + 45:data_content_start + 53].decode('ascii').strip()
+        speedsource = data[data_content_start + 53:data_content_start + 54].decode('ascii').strip()
+        wheeldiameter = data[data_content_start + 54:data_content_start + 62].decode('ascii').strip()
+        pulsesperrev = data[data_content_start + 62:data_content_start + 69].decode('ascii').strip()
+        beltlength = data[data_content_start + 69:data_content_start + 77].decode('ascii').strip()
+        beltlengthpulses = data[data_content_start + 77:data_content_start + 85].decode('ascii').strip()
+        currenttime = data[data_content_start + 85:data_content_start + 104].decode('ascii').strip()
+
+
+
+        return StaticDataPayload(
+
+            deviceId=device_id,
+            filterRate=filterRate,
+            scaleCapacity=scalecapacity,
+            autoZero=autozero,
+            deadBand=deadband,
+            scaleType=scaletype,
+            loadcellSet=loadcellset,
+            loadcellCapacity=loadcellcapacity,
+            trimm=trimm,
+            idlerSpacing=idlerspacing,
+            speedSource=speedsource,
+            wheelDiameter=wheeldiameter,
+            pulsesPerRev=pulsesperrev,
+            beltLength=beltlength,
+            beltLengthPulses=beltlengthpulses,
+            currentTime=currenttime
+
+        )
+    #---------KONIEC NOWY
     @staticmethod
     def calculate_crc16(data: bytes) -> int:
         """
