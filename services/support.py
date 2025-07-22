@@ -61,7 +61,7 @@ class CommandID(IntEnum):
     MEASURE_DATA = 0x0003  # Komenda do przesyłania danych pomiarowych
     CMD_4 = 0x0004
     CAPTURE_STATIC = 0x0005
-    CMD_6 = 0x0006
+    SERVICE_DATA = 0x0006
 
 
 class MeasureDataPayload(BaseModel):

@@ -1,58 +1,10 @@
-2025-07-18 15:31:16,537 - main - DEBUG - [main.py:59] - Test loggera - DEBUG
-2025-07-18 15:31:16,537 - main - INFO - [main.py:60] - Test loggera - INFO
-2025-07-18 15:31:16,537 - main - WARNING - [main.py:61] - Test loggera - WARNING
-2025-07-18 15:31:16,537 - main - ERROR - [main.py:62] - Test loggera - ERROR
-2025-07-18 15:31:33,436 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:31:33,436 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:31:33,436 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:31:33,437 - main - DEBUG - [main.py:77] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 69 09 01 03 20 20 20 20 20 20 38 30 20 20 20 20 20 31 2e 32 20 20 20 20 20 32 2e 35 01 02 20 20 20 20 20 31 35 30 20 20 20 31 30 30 30 30 20 20 20 31 2e 35 36 34 01 20 20 20 20 20 32 30 30 20 20 20 20 20 20 33 38 20 20 20 31 35 2e 34 35 20 20 20 20 32 33 32 31 32 30 32 34 2d 30 37 2d 31 38 20 31 34 3a 33 30 3a 31 31 9f fa 88 55
-2025-07-18 15:31:33,622 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 02 01 00 03 75 13 55
-2025-07-18 15:31:33,623 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
-2025-07-18 15:33:14,094 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:33:14,094 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:33:14,095 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:33:14,095 - main - DEBUG - [main.py:77] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 69 09 01 03 20 20 20 20 20 20 38 30 20 20 20 20 20 31 2e 32 20 20 20 20 20 32 2e 35 01 02 20 20 20 20 20 31 35 30 20 20 20 31 30 30 30 30 20 20 20 31 2e 35 36 34 01 20 20 20 20 20 32 30 30 20 20 20 20 20 20 33 38 20 20 20 31 35 2e 34 35 20 20 20 20 32 33 32 31 32 30 32 34 2d 30 37 2d 31 38 20 31 34 3a 33 31 3a 35 32 a5 4e 53 55
-2025-07-18 15:33:14,106 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 02 01 00 03 75 13 55
-2025-07-18 15:33:14,107 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
-2025-07-18 15:33:48,531 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:33:48,532 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:33:48,532 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:33:48,532 - main - DEBUG - [main.py:77] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 69 09 01 03 20 20 20 20 20 20 38 30 20 20 20 20 20 31 2e 32 20 20 20 20 20 32 2e 35 01 02 20 20 20 20 20 31 35 30 20 20 20 31 30 30 30 30 20 20 20 31 2e 35 36 34 01 20 20 20 20 20 32 30 30 20 20 20 20 20 20 33 38 20 20 20 31 35 2e 34 35 20 20 20 20 32 33 32 31 32 30 32 34 2d 30 37 2d 31 38 20 31 34 3a 33 32 3a 32 36 a7 c9 97 55
-2025-07-18 15:33:48,540 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 02 01 00 03 75 13 55
-2025-07-18 15:33:48,540 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
-2025-07-18 15:35:01,599 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:35:01,599 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:35:01,599 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:35:01,599 - main - DEBUG - [main.py:77] - Request body: aa 55 01 07 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 f3 7f 56 40 11 37 55 c9 d0 78 af ed 72 0d 5f 95 e3 16 44 34 6c bc 02 d1 a6 dd 2c 48 47 a4 59 95 ff 51 66 f5 d7 24 cd 3a 45 f5 a1 fc 84 09 ff c1 ec d0 f6 6a 1c ce bd b2 f2 3a cb d1 60 25 dc f6 65 94 17 c3 ee 76 ac 67 f6 ee 48 e6 fe a2 51 8e a7 de c9 6f 68 d3 9a 33 25 4e 66 45 c0 86 f3 29 3b 9b f5 a5 a1 da 92 b3 de 15 9f 6c 96 55
-2025-07-18 15:35:01,613 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 01 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 98 77 57 40 33 d8 55
-2025-07-18 15:35:01,614 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
-2025-07-18 15:36:15,981 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:36:15,981 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:36:15,981 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:36:15,981 - main - DEBUG - [main.py:77] - Request body: aa 55 01 07 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 f3 7f 56 40 11 37 55 c9 d0 78 af ed 72 0d 5f 95 e3 16 44 34 6c bc 02 d1 a6 dd 2c 48 47 a4 59 95 ff 51 66 f5 d7 24 cd 3a 45 f5 a1 fc 84 09 ff c1 ec d0 f6 6a 1c ce bd b2 f2 3a cb d1 60 25 dc f6 65 94 17 c3 ee 76 ac 67 f6 ee 48 e6 fe a2 51 8e a7 de c9 6f 68 d3 9a 33 25 4e 66 45 c0 86 f3 29 3b 9b f5 a5 a1 da 95 b3 d8 18 99 af 78 55
-2025-07-18 15:36:16,473 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 01 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 98 77 57 40 33 d8 55
-2025-07-18 15:36:16,476 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
-2025-07-18 15:36:26,659 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:36:26,659 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:36:26,659 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:36:26,659 - main - DEBUG - [main.py:77] - Request body: aa 55 01 07 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 f3 7f 56 40 11 37 55 c9 d0 78 af ed 72 0d 5f 95 e3 16 44 34 6c bc 02 d1 a6 dd 2c 48 47 a4 59 95 ff 51 66 f5 d7 24 cd 3a 45 f5 a1 fc 84 09 ff c1 ec d0 f6 6a 1c ce bd b2 f2 3a cb d1 60 25 dc f6 65 94 17 c3 ee 76 ac 67 f6 ee 48 e6 fe a2 51 8e a7 de c9 6f 68 d3 9a 33 25 4e 66 45 c0 86 f3 29 3b 9b f5 a5 a1 da 94 b3 dd 19 94 0c 45 55
-2025-07-18 15:36:26,673 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 01 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 98 77 57 40 33 d8 55
-2025-07-18 15:36:26,673 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
-2025-07-18 15:36:40,185 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:36:40,185 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:36:40,185 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:36:40,185 - main - DEBUG - [main.py:77] - Request body: aa 55 01 07 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 f3 7f 56 40 11 37 55 c9 d0 78 af ed 72 0d 5f 95 e3 16 44 34 6c bc 02 d1 a6 dd 2c 48 47 a4 59 95 ff 51 66 f5 d7 24 cd 3a 45 f5 a1 fc 84 09 ff c1 ec d0 f6 6a 1c ce bd b2 f2 3a cb d1 60 25 dc f6 65 94 17 c3 ee 76 ac 67 f6 ee 48 e6 fe a2 51 8e a7 de c9 6f 68 d3 9a 33 25 4e 66 45 c0 86 f3 29 3b 9b f5 a5 a1 da 94 b3 dc 14 98 8c a5 55
-2025-07-18 15:36:40,203 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 01 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 98 77 57 40 33 d8 55
-2025-07-18 15:36:40,204 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
-2025-07-18 15:36:48,545 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:36:48,545 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:36:48,545 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:36:48,545 - main - DEBUG - [main.py:77] - Request body: aa 55 01 07 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 f3 7f 56 40 11 37 55 c9 d0 78 af ed 72 0d 5f 95 e3 16 44 34 6c bc 02 d1 a6 dd 2c 48 47 a4 59 95 ff 51 66 f5 d7 24 cd 3a 45 f5 a1 fc 84 09 ff c1 ec d0 f6 6a 1c ce bd b2 f2 3a cb d1 60 25 dc f6 65 94 17 c3 ee 76 ac 67 f6 ee 48 e6 fe a2 51 8e a7 de c9 6f 68 d3 9a 33 25 4e 66 45 c0 86 f3 29 3b 9b f5 a5 a1 da 94 b3 df 1a 99 e6 db 55
-2025-07-18 15:36:48,558 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 01 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 98 77 57 40 33 d8 55
-2025-07-18 15:36:48,559 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
-2025-07-18 15:39:37,270 - main - DEBUG - [main.py:73] - ==================================================
-2025-07-18 15:39:37,271 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
-2025-07-18 15:39:37,271 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '131', 'connection': 'Close'}
-2025-07-18 15:39:37,271 - main - DEBUG - [main.py:77] - Request body: aa 55 01 07 31 31 32 36 33 32 36 35 39 33 00 05 00 20 31 33 00 f3 7f 56 40 11 37 55 c9 d0 78 af ed 72 0d 5f 95 e3 16 44 34 6c bc 02 d1 a6 dd 2c 48 47 a4 59 95 ff 51 66 f5 d7 24 cd 3a 45 f5 a1 fc 84 09 ff c1 ec d0 f6 6a 1c ce bd b2 f2 3a cb d1 60 25 dc f6 65 94 17 c3 ee 76 ac 67 f6 ee 48 e6 fe a2 51 8e a7 de c9 6f 68 d3 9a 33 25 4e 66 45 c0 86 f3 29 3b 9b f5 a5 a1 da 99 b3 dc 19 98 db 83 55
-2025-07-18 15:39:37,284 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 01 31 31 32 36 33 32 36 35 39 33 80 05 00 00 00 00 00 98 77 57 40 33 d8 55
-2025-07-18 15:39:37,285 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
+2025-07-22 15:56:00,815 - main - DEBUG - [main.py:59] - Test loggera - DEBUG
+2025-07-22 15:56:00,815 - main - INFO - [main.py:60] - Test loggera - INFO
+2025-07-22 15:56:00,816 - main - WARNING - [main.py:61] - Test loggera - WARNING
+2025-07-22 15:56:00,816 - main - ERROR - [main.py:62] - Test loggera - ERROR
+2025-07-22 15:56:07,997 - main - DEBUG - [main.py:73] - ==================================================
+2025-07-22 15:56:07,998 - main - DEBUG - [main.py:74] - [REQUEST] Method: POST Path: /commands/analyze
+2025-07-22 15:56:07,998 - main - DEBUG - [main.py:75] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '28', 'connection': 'Close'}
+2025-07-22 15:56:07,998 - main - DEBUG - [main.py:77] - Request body: aa 55 01 07 31 31 32 36 33 32 36 35 39 33 00 06 00 20 31 33 00 98 76 57 41 2b b5 55
+2025-07-22 15:56:08,010 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 01 31 31 32 36 33 32 36 35 39 33 80 06 00 00 00 00 00 8c 77 57 4c 03 27 47 dc dd 68 a0 f0 60 1f 5f 84 f6 1d 5f 30 76 ac 12 28 48 2d 55
+2025-07-22 15:56:08,011 - main - DEBUG - [main.py:79] - [RESPONSE] Status: 200
