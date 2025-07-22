@@ -1,9 +1,14 @@
 import logging
 import  sys
 from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles  # Dodajemy import
+from fastapi.responses import FileResponse  # Dodajemy import dla serwowania pliku HTML
 from repositories.database import init_db
-from routers import todos, measure_data, aliases, static_params, commands
+from routers import todos, measure_data, aliases, static_params, commands, app_interface
 import uvicorn
+
+
+
 
 
 config = uvicorn.Config(
@@ -95,6 +100,20 @@ app.include_router(aliases.router)
 app.include_router(static_params.router)
 
 app.include_router(commands.router)
+
+app.include_router(app_interface.router)  # Dodanie nowego routera dla aplikacji
+
+
+# Dodanie obsługi plików statycznych
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+# Endpoint zwracający główny plik HTML interfejsu
+@app.get("/ui")
+async def get_ui():
+    return FileResponse("static/index.html")
+
+
 
 @app.get("/")
 async def root():

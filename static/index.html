@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Pomiarowy - Panel Kontrolny</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>System Pomiarowy</h1>
+            <p>Panel kontrolny parametrów urządzenia</p>
+        </header>
+
+        <div class="device-section">
+            <div class="input-group">
+                <label for="deviceId">ID urządzenia:</label>
+                <input type="text" id="deviceId" placeholder="Wprowadź ID urządzenia">
+                <button id="loadDevice" class="primary-btn">Wczytaj dane</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="parameters">Parametry</button>
+            <button class="tab-btn" data-tab="monitor">Monitor</button>
+        </div>
+
+        <div id="parameters" class="tab-content active">
+            <div class="parameters-grid">
+                <!-- Parametry będą dynamicznie wypełniane przez JavaScript -->
+                <div class="parameter-item" data-address="1">
+                    <div class="param-header">
+                        <span class="param-name">Filter Rate</span>
+                        <span class="param-address">[1]</span>
+                    </div>
+                    <div class="param-input">
+                        <input type="text" class="param-value" data-format="1B">
+                        <button class="update-btn">Aktualizuj</button>
+                    </div>
+                </div>
+                <!-- Więcej parametrów zostanie dodanych przez JS -->
+            </div>
+        </div>
+
+        <div id="monitor" class="tab-content">
+            <h2>Monitor komunikacji</h2>
+            <div class="log-container">
+                <div id="logEntries" class="log-entries"></div>
+                <button id="clearLog" class="secondary-btn">Wyczyść</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>System Pomiarowy &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

@@ -164,7 +164,8 @@ class CommandHandler:
             param_data[i] = 0x20  # Kod ASCII spacji
         # Dane parametru - zamiana stringa na bytearray
         #-----poczatek
-        param_data_str = "2025-07-22 15:56:00"  # String o długości 19 znaków
+        #param_data_str = "2025-07-22 15:56:00"  # String o długości 19 znaków
+        param_data_str = "2"  # String o długości 19 znaków
         param_data = bytearray(param_data_str.encode('ascii'))  # Konwersja stringa na bytearray
 
         # Upewniamy się, że długość to dokładnie 19 bajtów
@@ -181,7 +182,7 @@ class CommandHandler:
             # Na przykład, jeśli żądamy filterRate (adres 1), możemy pobrać wartość z bazy danych
             # i przygotować odpowiedź
             pass
-        param_address = 15
+        param_address = 1
 
         # Przygotowanie odpowiedzi
         # Pobieramy DEVICE_ID i COMMAND_ID z sekcji JAWNA
