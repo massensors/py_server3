@@ -192,6 +192,39 @@ button {
     color: #c0392b;
 }
 
+/* Pomiary */
+.pomiary-controls {
+    margin-bottom: 15px;
+}
+
+.pomiary-container {
+    overflow-x: auto;
+    max-height: 400px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.pomiary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pomiary-table th,
+.pomiary-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.pomiary-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.pomiary-table tr:hover {
+    background-color: #f5f5f5;
+}
+
 /* Stopka */
 footer {
     margin-top: 30px;

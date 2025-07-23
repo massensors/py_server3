@@ -24,6 +24,7 @@
         <div class="tabs">
             <button class="tab-btn active" data-tab="parameters">Parametry</button>
             <button class="tab-btn" data-tab="monitor">Monitor</button>
+            <button class="tab-btn" data-tab="pomiary">Pomiary</button>
         </div>
 
         <div id="parameters" class="tab-content active">
@@ -48,6 +49,28 @@
             <div class="log-container">
                 <div id="logEntries" class="log-entries"></div>
                 <button id="clearLog" class="secondary-btn">Wyczyść</button>
+            </div>
+        </div>
+
+        <div id="pomiary" class="tab-content">
+            <h2>Dane pomiarowe</h2>
+            <div class="pomiary-controls">
+                <button id="refreshPomiary" class="primary-btn">Odśwież dane</button>
+            </div>
+            <div class="pomiary-container">
+                <table id="pomiaryTable" class="pomiary-table">
+                    <thead>
+                        <tr>
+                            <th>Data i czas</th>
+                            <th>Prędkość</th>
+                            <th>Natężenie</th>
+                            <th>Suma</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dane pomiarowe będą dynamicznie wypełniane przez JavaScript -->
+                    </tbody>
+                </table>
             </div>
         </div>
 

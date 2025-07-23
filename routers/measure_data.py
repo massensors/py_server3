@@ -56,6 +56,14 @@ async def read_device_measures(device_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Dane nie znalezione")
     return measures
 
+@router.get("/device/{device_id}", response_model=List[MeasureDataResponse])
+async def read_all_device_measures(device_id: str, db: Session = Depends(get_db)):
+    """Pobierz wszystkie zadania dla danego urządzenia"""
+    measures = db.query(MeasureData).filter(MeasureData.deviceId == device_id).all()
+    if not measures:
+        return []
+    return measures
+
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_data_record(data_request: MeasureDataRequest, db: Session = Depends(get_db)):
