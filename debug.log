@@ -1,89 +1,9 @@
-2025-07-23 10:28:05,294 - main - DEBUG - [main.py:64] - Test loggera - DEBUG
-2025-07-23 10:28:05,294 - main - INFO - [main.py:65] - Test loggera - INFO
-2025-07-23 10:28:05,294 - main - WARNING - [main.py:66] - Test loggera - WARNING
-2025-07-23 10:28:05,294 - main - ERROR - [main.py:67] - Test loggera - ERROR
-2025-07-23 10:28:06,535 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:28:06,536 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /ui
-2025-07-23 10:28:06,536 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'cache-control': 'max-age=0', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'sec-ch-ua-platform': '"Windows"', 'upgrade-insecure-requests': '1', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'sec-fetch-site': 'none', 'sec-fetch-mode': 'navigate', 'sec-fetch-user': '?1', 'sec-fetch-dest': 'document', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7', 'if-none-match': '"db131d41f8c2671efeeb49fc5095ccbf"', 'if-modified-since': 'Wed, 23 Jul 2025 06:31:43 GMT'}
-2025-07-23 10:28:06,536 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:28:06,984 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:28:12,641 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:28:12,642 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /app/devices/1126326593/parameters
-2025-07-23 10:28:12,642 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:28:12,642 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:28:12,658 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:28:18,101 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:28:18,102 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 10:28:18,102 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:28:18,102 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:28:18,113 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:29:51,254 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:29:51,254 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 10:29:51,254 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:29:51,254 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:29:51,263 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:34:16,115 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:34:16,115 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 10:34:16,116 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:34:16,116 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:34:16,131 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:48:07,499 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:48:07,499 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 10:48:07,499 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:48:07,500 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:48:07,510 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:48:26,684 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:48:26,685 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 10:48:26,685 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:48:26,685 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:48:26,692 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:48:30,525 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:48:30,525 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 10:48:30,525 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:48:30,525 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:48:30,532 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:48:43,260 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:48:43,260 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /app/devices/1126326593/parameters
-2025-07-23 10:48:43,260 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:48:43,260 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:48:43,263 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 10:48:52,500 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 10:48:52,500 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 10:48:52,500 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 10:48:52,500 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 10:48:52,507 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 11:10:02,082 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 11:10:02,082 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 11:10:02,082 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 11:10:02,082 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 11:10:02,090 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 11:10:16,523 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 11:10:16,523 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 11:10:16,523 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 11:10:16,523 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 11:10:16,532 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 11:10:25,926 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 11:10:25,926 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 11:10:25,926 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 11:10:25,926 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 11:10:25,933 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 11:11:18,408 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 11:11:18,408 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 11:11:18,408 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 11:11:18,408 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 11:11:18,415 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 11:12:22,398 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 11:12:22,399 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 11:12:22,399 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 11:12:22,399 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 11:12:22,406 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 11:21:38,261 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 11:21:38,261 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 11:21:38,261 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 11:21:38,262 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 11:21:38,269 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
-2025-07-23 11:26:03,429 - main - DEBUG - [main.py:78] - ==================================================
-2025-07-23 11:26:03,429 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
-2025-07-23 11:26:03,429 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-07-23 11:26:03,430 - main - DEBUG - [main.py:82] - Request body: 
-2025-07-23 11:26:03,438 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200
+2025-07-23 12:51:08,117 - main - DEBUG - [main.py:64] - Test loggera - DEBUG
+2025-07-23 12:51:08,118 - main - INFO - [main.py:65] - Test loggera - INFO
+2025-07-23 12:51:08,118 - main - WARNING - [main.py:66] - Test loggera - WARNING
+2025-07-23 12:51:08,118 - main - ERROR - [main.py:67] - Test loggera - ERROR
+2025-07-23 12:58:32,507 - main - DEBUG - [main.py:78] - ==================================================
+2025-07-23 12:58:32,508 - main - DEBUG - [main.py:79] - [REQUEST] Method: GET Path: /measure-data/device/1126326593
+2025-07-23 12:58:32,508 - main - DEBUG - [main.py:80] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-07-23 12:58:32,508 - main - DEBUG - [main.py:82] - Request body: 
+2025-07-23 12:58:32,529 - main - DEBUG - [main.py:84] - [RESPONSE] Status: 200

@@ -22,12 +22,21 @@ const PARAMETER_MAPPING = {
     15: { name: "currentTime", label: "Current Time", format: "19B" }
 };
 
+// Mapowanie pól aliasów
+const ALIAS_FIELDS = [
+    { name: "company", label: "Firma" },
+    { name: "location", label: "Lokalizacja" },
+    { name: "productName", label: "Nazwa produktu" },
+    { name: "scaleId", label: "ID wagi" }
+];
+
 // Inicjalizacja
 document.addEventListener('DOMContentLoaded', function() {
     // Elementy DOM - przenosimy tutaj, aby mieć pewność, że DOM jest już załadowany
     const deviceIdInput = document.getElementById('deviceId');
     const loadDeviceBtn = document.getElementById('loadDevice');
     const parametersGrid = document.querySelector('.parameters-grid');
+    const aliasyGrid = document.querySelector('.aliasy-grid');
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
     const logEntries = document.getElementById('logEntries');
@@ -80,6 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadDeviceData();
             } else if (activeTab === 'pomiary') {
                 loadPomiaryData();
+            } else if (activeTab === 'aliasy') {
+                loadAliasyData();
             } else {
                 // Dla zakładki monitor lub innych zakładek
                 loadDeviceData();
@@ -97,6 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Wypełniamy grid parametrami
     createParametersGrid();
+
+    // Wypełniamy grid aliasami
+    createAliasyGrid();
 
     // Funkcje pomocnicze
 
@@ -134,6 +148,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Tworzy siatkę aliasów
+    function createAliasyGrid() {
+        // Czyścimy istniejące aliasy
+        if (aliasyGrid) {
+            aliasyGrid.innerHTML = '';
+
+            // Tworzymy elementy dla każdego pola aliasu
+            for (const field of ALIAS_FIELDS) {
+                const aliasItem = document.createElement('div');
+                aliasItem.className = 'alias-item';
+                aliasItem.setAttribute('data-field', field.name);
+
+                aliasItem.innerHTML = `
+                    <div class="alias-header">
+                        <span class="alias-name">${field.label}</span>
+                    </div>
+                    <div class="alias-input">
+                        <input type="text" class="alias-value" placeholder="${field.label}">
+                        <button class="update-btn">Aktualizuj</button>
+                    </div>
+                `;
+
+                // Dodajemy obsługę przycisku aktualizacji
+                aliasItem.querySelector('.update-btn').addEventListener('click', () => {
+                    const value = aliasItem.querySelector('.alias-value').value;
+                    updateAlias(field.name, value);
+                });
+
+                aliasyGrid.appendChild(aliasItem);
+            }
+        }
+    }
+
     // Wczytuje dane urządzenia z serwera
     async function loadDeviceData() {
         const deviceId = deviceIdInput.value.trim();
@@ -166,6 +213,41 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } catch (error) {
             addLogEntry(`Błąd połączenia: ${error.message}`, 'error');
+        }
+    }
+
+    // Wczytuje dane aliasów z serwera
+    async function loadAliasyData() {
+        const deviceId = deviceIdInput.value.trim();
+
+        if (!deviceId) {
+            addLogEntry('Błąd: Wprowadź ID urządzenia', 'error');
+            return;
+        }
+
+        try {
+            addLogEntry(`Pobieranie aliasów dla urządzenia ${deviceId}...`, 'request');
+
+            const response = await fetch(`${API_URL}/aliases/${deviceId}`);
+
+            if (!response.ok) {
+                throw new Error(`Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            addLogEntry(`Pobrano aliasy dla urządzenia ${deviceId}`, 'response');
+
+            // Wypełniamy pola wartościami z serwera
+            for (const field of ALIAS_FIELDS) {
+                const aliasItem = document.querySelector(`.alias-item[data-field="${field.name}"]`);
+                if (aliasItem && data[field.name]) {
+                    const valueInput = aliasItem.querySelector('.alias-value');
+                    valueInput.value = data[field.name];
+                }
+            }
+        } catch (error) {
+            addLogEntry(`Błąd podczas pobierania aliasów: ${error.message}`, 'error');
         }
     }
 
@@ -257,6 +339,59 @@ document.addEventListener('DOMContentLoaded', function() {
             addLogEntry(`Parametr zaktualizowany: ${data.message}, nowa wartość: ${data.value}`, 'response');
         } catch (error) {
             addLogEntry(`Błąd połączenia: ${error.message}`, 'error');
+        }
+    }
+
+    // Aktualizuje alias na serwerze
+    async function updateAlias(fieldName, value) {
+        const deviceId = deviceIdInput.value.trim();
+
+        if (!deviceId) {
+            addLogEntry('Błąd: Wprowadź ID urządzenia', 'error');
+            return;
+        }
+
+        try {
+            // Najpierw pobieramy aktualne dane aliasów
+            const response = await fetch(`${API_URL}/aliases/${deviceId}`);
+            if (!response.ok) {
+                throw new Error(`Status: ${response.status}`);
+            }
+
+            const currentData = await response.json();
+
+            // Przygotowujemy nowe dane z zaktualizowanym polem
+            const updatedData = {
+                deviceId: deviceId,
+                company: currentData.company,
+                location: currentData.location,
+                productName: currentData.productName,
+                scaleId: currentData.scaleId
+            };
+
+            // Aktualizujemy tylko wybrane pole
+            updatedData[fieldName] = value;
+
+            addLogEntry(`Aktualizacja aliasu ${fieldName} na wartość: ${value}`, 'request');
+
+            // Wysyłamy zaktualizowane dane
+            const updateResponse = await fetch(`${API_URL}/aliases/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            const updateResult = await updateResponse.json();
+
+            if (updateResponse.ok) {
+                addLogEntry(`Alias zaktualizowany: ${fieldName} = ${value}`, 'response');
+            } else {
+                addLogEntry(`Błąd: ${updateResult.detail || 'Nieznany błąd'}`, 'error');
+            }
+        } catch (error) {
+            addLogEntry(`Błąd podczas aktualizacji aliasu: ${error.message}`, 'error');
         }
     }
 
