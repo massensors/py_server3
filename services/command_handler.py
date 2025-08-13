@@ -1,4 +1,3 @@
-
 from fastapi import  Depends
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -9,6 +8,7 @@ from repositories.database import get_db
 from services.support import ProtocolAnalyzer, CommandID, AliasDataPayload
 from fastapi.responses import Response
 from services.cipher import  RC4KeyGenerator
+from services.service_mode import ServiceMode
 
 
 class CommandHandler:
@@ -61,22 +61,25 @@ class CommandHandler:
         db.add(db_measure)
         db.commit()
 
-        # Przygotowanie odpowiedzi
-        return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
+        # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
+        request_value = ServiceMode.get_request_value()
+        return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
 
     def _handle_register_unit(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
         Obsługa komendy CMD_0 (0x0000)
         """
-
-        return self._prepare_response_register(decoded_data, flag, status=0x01, request=0x00)
+        # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
+        request_value = ServiceMode.get_request_value()
+        return self._prepare_response_register(decoded_data, flag, status=0x01, request=request_value)
 
     def _handle_cmd_1(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
         Obsługa komendy CMD_1 (0x0001)
         """
-        # TODO: Implementacja obsługi komendy
-        return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
+        # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
+        request_value = ServiceMode.get_request_value()
+        return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
 
     def _handle_capture_aliases(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
@@ -97,14 +100,17 @@ class CommandHandler:
         db.add(db_aliases)
         db.commit()
 
-        return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
+        # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
+        request_value = ServiceMode.get_request_value()
+        return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
 
     def _handle_cmd_4(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
         Obsługa komendy CMD_4 (0x0004)
         """
-        # TODO: Implementacja obsługi komendy
-        return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
+        # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
+        request_value = ServiceMode.get_request_value()
+        return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
 
     def _handle_capture_static(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
@@ -135,9 +141,10 @@ class CommandHandler:
         db.add(db_static)
         db.commit()
 
-        # TODO: Implementacja obsługi komendy
-        return self._prepare_response(decoded_data, flag, status=0x01, request=0x00)
-    #-------service data
+        # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
+        request_value = ServiceMode.get_request_value()
+        return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
+
     def _handle_service_data(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
         Obsługa komendy SERVICE_DATA (0x0006)
@@ -150,13 +157,12 @@ class CommandHandler:
         # Pobieramy parametry z pakietu danych
         data_start = 4 + 17 + 1  # HEADER(4B) + JAWNA(17B) + DATA_LEN(1B)
 
-        # Standardowo status i request
+        # Standardowo status i request z uwzględnieniem trybu serwisowego
         status = 0x01
-        request = 0x00
+        request = ServiceMode.get_request_value()
 
         # Ustawianie adresu parametru
         param_address = 0x00  # Domyślnie 0 (dummy)
-
 
         # Dane parametru - wypełniamy pustymi znakami (spacje)
         param_data = bytearray(19)
@@ -235,7 +241,7 @@ class CommandHandler:
         response_data.append(0x55)  # END_MARKER (1B)
 
         return Response(content=bytes(response_data), media_type="application/octet-stream")
-    # ------- koniec service data
+
     def _handle_unknown_command(self, command_id: int) -> dict:
         """
         Obsługa nieznanych komend
@@ -335,10 +341,6 @@ class CommandHandler:
         response_data.append(request)  # REQUEST (1B)
         # Dodajemy 19 bajtów z aktualną datą i czasem
         response_data.extend(current_time.encode('ascii'))  # Data i czas w formacie ASCII (19B)
-
-        # response_data.append(0x02)  # DATA_LEN (2 bajty danych)
-        # response_data.append(status)  # STATUS (1B)
-        # response_data.append(request)  # REQUEST (1B)
 
         # Obliczenie CRC8 dla sekcji SZYFROWANA
         crc8 = ProtocolAnalyzer.calculate_crc8(response_data[-22:])  # dla DATA_LEN + DATA

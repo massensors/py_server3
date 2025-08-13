@@ -2,6 +2,10 @@
 // Konfiguracja API
 const API_URL = '';  // Puste dla relatywnych URLi
 
+// Stan trybu serwisowego
+let serviceModeEnabled = false;
+
+
 // Mapowanie adresów parametrów (musi być zgodne z backend)
 const PARAMETER_MAPPING = {
     0: { name: "dummy", label: "Dummy", format: "1B" },
@@ -43,6 +47,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearLogBtn = document.getElementById('clearLog');
     const refreshPomiaryBtn = document.getElementById('refreshPomiary');
     const pomiaryTable = document.getElementById('pomiaryTable').querySelector('tbody');
+    const serviceModeToggle = document.getElementById('serviceModeToggle');
+
+
+       // Obsługa przełącznika trybu serwisowego
+    if (serviceModeToggle) {
+        // Inicjalizacja - pobierz aktualny stan z serwera
+        loadServiceModeStatus();
+
+        serviceModeToggle.addEventListener('change', async function() {
+            const enabled = this.checked;
+
+            try {
+                const response = await fetch(`${API_URL}/service-mode/toggle`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ enabled: enabled })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                serviceModeEnabled = data.enabled;
+
+                addLogEntry(
+                    `Tryb serwisowy ${serviceModeEnabled ? 'WŁĄCZONY' : 'WYŁĄCZONY'} (request=${data.request_value})`,
+                    serviceModeEnabled ? 'success' : 'info'
+                );
+
+            } catch (error) {
+                // W przypadku błędu, przywróć poprzedni stan przełącznika
+                this.checked = !enabled;
+                addLogEntry(`Błąd podczas przełączania trybu serwisowego: ${error.message}`, 'error');
+            }
+        });
+    }
+
 
     // Obsługa zakładek
     tabButtons.forEach(button => {
@@ -396,22 +440,62 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Dodaje wpis do logów
-    function addLogEntry(message, type = 'info') {
-        if (!logEntries) return;
-
-        const entry = document.createElement('div');
-        entry.className = `log-entry log-${type}`;
-
-        const timestamp = new Date().toLocaleTimeString();
-        entry.textContent = `[${timestamp}] ${message}`;
-
-        logEntries.appendChild(entry);
-        logEntries.scrollTop = logEntries.scrollHeight; // Przewijamy na dół
-    }
+    // function addLogEntry(message, type = 'info') {
+    //     if (!logEntries) return;
+    //
+    //     const entry = document.createElement('div');
+    //     entry.className = `log-entry log-${type}`;
+    //
+    //     const timestamp = new Date().toLocaleTimeString();
+    //     entry.textContent = `[${timestamp}] ${message}`;
+    //
+    //     logEntries.appendChild(entry);
+    //     logEntries.scrollTop = logEntries.scrollHeight; // Przewijamy na dół
+    // }
 
     // Formatuje datę i czas do czytelnego formatu
     function formatDateTime(dateTimeStr) {
         const date = new Date(dateTimeStr);
         return date.toLocaleString('pl-PL');
     }
+
+   // Funkcja dodająca wpis do logu z obsługą nowego typu 'success'
+    function addLogEntry(message, type = 'info') {
+        const entry = document.createElement('div');
+        entry.className = `log-entry log-${type}`;
+        entry.innerHTML = `
+            <span class="log-time">${new Date().toLocaleTimeString()}</span>
+            <span class="log-message">${message}</span>
+        `;
+        logEntries.appendChild(entry);
+        logEntries.scrollTop = logEntries.scrollHeight;
+    }
+    // Funkcja do pobierania stanu trybu serwisowego z serwera
+    async function loadServiceModeStatus() {
+        try {
+            const response = await fetch(`${API_URL}/service-mode/status`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            serviceModeEnabled = data.enabled;
+
+            if (serviceModeToggle) {
+                serviceModeToggle.checked = serviceModeEnabled;
+            }
+
+            addLogEntry(
+                `Stan trybu serwisowego: ${serviceModeEnabled ? 'WŁĄCZONY' : 'WYŁĄCZONY'} (request=${data.request_value})`,
+                'info'
+            );
+
+        } catch (error) {
+            addLogEntry(`Błąd podczas pobierania stanu trybu serwisowego: ${error.message}`, 'error');
+        }
+    }
+
+
+
 });

@@ -4,3 +4,4 @@ from . import aliases
 from . import static_params
 from . import commands
 from . import app_interface
+from . import service_mode_routers
