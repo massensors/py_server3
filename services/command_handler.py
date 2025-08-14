@@ -9,6 +9,7 @@ from services.support import ProtocolAnalyzer, CommandID, AliasDataPayload
 from fastapi.responses import Response
 from services.cipher import RC4KeyGenerator
 from services.service_mode import ServiceMode
+from services.service_parameter_store import service_parameter_store
 
 
 class CommandHandler:
@@ -159,7 +160,19 @@ class CommandHandler:
         request_value = ServiceMode.get_request_value()
         return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
 
-    def _handle_service_data(self, decoded_data: bytes, flag: int, db: Session) -> Response:
+
+
+    def _handle_unknown_command(self, command_id: int) -> dict:
+        """
+        Obsługa nieznanych komend
+        """
+        return {
+            "command": f"CMD_{command_id:04x}",
+            "status": "not_implemented"
+        }
+
+    def _handle_service_data(self, decoded_data: bytes, flag: int, db: Session, param_address: int = 0,
+                             param_data: str = "") -> Response:
         """
         Obsługa komendy SERVICE_DATA (0x0006)
         Odpowiedź zawiera:
@@ -167,7 +180,42 @@ class CommandHandler:
         DATA[1] – pole Request
         DATA[2] – pole Adres Parametru, 1B
         DATA[3-21] – pole Dane Parametru, 19B
+
+        Parametry param_address i param_data mogą pochodzić z:
+        1. Argumentów funkcji (dla wywołań testowych)
+        2. ServiceParameterStore (dla rzeczywistych wywołań z kontrolera)
+
+
+        Args:
+            decoded_data: Dekodowane dane pakietu
+            flag: Flaga szyfrowania
+            db: Sesja bazy danych
+            param_address: Adres parametru (domyślnie 0)
+            param_data: Dane parametru jako string (domyślnie pusty)
         """
+        import logging
+        logger = logging.getLogger(__name__)
+
+        # Pobierz parametry ze store jeśli nie zostały przekazane w argumentach
+        if param_address == 0 and param_data == "":
+            if service_parameter_store.has_parameters():
+                stored_device_id, stored_param_address, stored_param_data = service_parameter_store.get_parameters()
+
+                # Sprawdź czy device_id się zgadza
+                try:
+                     current_device_id = decoded_data[4:14].decode('ascii').rstrip('\x00')
+                     if stored_device_id == current_device_id:
+                         param_address = stored_param_address
+                         param_data = stored_param_data
+                         logger.info(f"Wykorzystano parametry ze store: address={param_address}, data='{param_data}'")
+
+                         # Wyczyść store po wykorzystaniu
+                         service_parameter_store.clear_parameters()
+                     else:
+                          logger.warning(f"Device ID się nie zgadza: store={stored_device_id}, pakiet={current_device_id}")
+                except Exception as e:
+                     logger.error(f"Błąd dekodowania device_id z pakietu: {e}")
+
         # Pobieramy parametry z pakietu danych
         data_start = 4 + 17 + 1  # HEADER(4B) + JAWNA(17B) + DATA_LEN(1B)
 
@@ -175,44 +223,42 @@ class CommandHandler:
         status = 0x01
         request = ServiceMode.get_request_value()
 
-        # Ustawianie adresu parametru
-        param_address = 0x00  # Domyślnie 0 (dummy)
+        # Ustawianie adresu parametru - używamy przekazanego parametru lub domyślnego
+        param_address_byte = param_address if param_address > 0 else 0x00
 
-        # Dane parametru - wypełniamy pustymi znakami (spacje)
-        param_data = bytearray(19)
-        for i in range(19):
-            param_data[i] = 0x20  # Kod ASCII spacji
-        # Dane parametru - zamiana stringa na bytearray
-        # -----poczatek
-        # param_data_str = "2025-07-22 15:56:00"  # String o długości 19 znaków
-        param_data_str = "2"  # String o długości 19 znaków
-        param_data = bytearray(param_data_str.encode('ascii'))  # Konwersja stringa na bytearray
+        # Przygotowanie danych parametru (19 bajtów)
+        param_data_bytes = bytearray(19)
 
-        # Upewniamy się, że długość to dokładnie 19 bajtów
-        if len(param_data) < 19:
-            # Uzupełniamy spacjami, jeśli jest za krótki
-            param_data.extend([0x20] * (19 - len(param_data)))
-        elif len(param_data) > 19:
-            # Obcinamy, jeśli jest za długi
-            param_data = param_data[:19]
-        # ----koniec
-        # W zależności od adresu parametru, możemy przygotować odpowiednie dane
-        if param_address > 0 and param_address <= 15:
-            # Tutaj można dodać logikę pobierania danych dla określonego parametru
-            # Na przykład, jeśli żądamy filterRate (adres 1), możemy pobrać wartość z bazy danych
-            # i przygotować odpowiedź
-            pass
-        param_address = 1
+        if param_data:
+            # Konwersja przekazanego stringa na bytearray
+            param_data_str = str(param_data)
+            param_data_encoded = bytearray(param_data_str.encode('ascii'))
 
-        # Przygotowanie odpowiedzi
+            # Upewniamy się, że długość to dokładnie 19 bajtów
+            if len(param_data_encoded) < 19:
+                # Uzupełniamy spacjami, jeśli jest za krótki
+                param_data_encoded.extend([0x20] * (19 - len(param_data_encoded)))
+            elif len(param_data_encoded) > 19:
+                # Obcinamy, jeśli jest za długi
+                param_data_encoded = param_data_encoded[:19]
 
-        # Pobieram  STATUS z odpowiedzi
-        _status = decoded_data[data_start:data_start + 1]
-        status = int.from_bytes(_status, 'big')
-        # tu nalezy okreslic na poddstawie 'status' czy tryb serwisowy jest aktywny
-        # 0 - tryb aktywny
-        # 1 - podajnik w ruchu
-        # 2 - inny blad
+            param_data_bytes = param_data_encoded
+        else:
+            # Domyślne dane - wypełniamy pustymi znakami (spacje)
+            for i in range(19):
+                param_data_bytes[i] = 0x20  # Kod ASCII spacji
+
+        # W zależności od adresu parametru, możemy dodać dodatkową logikę
+        if param_address_byte > 0 and param_address_byte <= 15:
+            # Logika dla konkretnych parametrów
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.info(f"Obsługa parametru serwisowego - adres: {param_address_byte}, dane: {param_data}")
+
+        # Pobieram STATUS z odpowiedzi (jeśli dane są dostępne)
+        if len(decoded_data) > data_start:
+            _status = decoded_data[data_start:data_start + 1]
+            status = int.from_bytes(_status, 'big')
 
         # Logowanie statusu i interpretacja
         import logging
@@ -221,24 +267,19 @@ class CommandHandler:
         if status == 0:
             logger.info("Tryb serwisowy jest aktywny")
             ServiceMode.set_active(True)
-
             ServiceMode.set_status_message("Tryb serwisowy aktywny")
         elif status == 1:
             logger.info("Przenośnik w ruchu")
             ServiceMode.set_active(False)
-
             ServiceMode.set_status_message("Przenośnik w ruchu")
         elif status == 2:
             logger.info("Inny błąd - tryb serwisowy nieaktywny")
             ServiceMode.set_active(False)
-
             ServiceMode.set_status_message("Błąd - tryb nieaktywny")
         else:
             logger.warning(f"Nieznany status: {status}")
             ServiceMode.set_active(False)
-
             ServiceMode.set_status_message(f"Nieznany status: {status}")
-
 
         # Pobieramy DEVICE_ID i COMMAND_ID z sekcji JAWNA
         _device_id = decoded_data[4:14]  # 10 bajtów
@@ -267,8 +308,8 @@ class CommandHandler:
         response_data.append(22)  # DATA_LEN (22 bajty danych: Status+Request+Adres+Dane)
         response_data.append(status)  # STATUS (1B)
         response_data.append(request)  # REQUEST (1B)
-        response_data.append(param_address)  # Adres parametru (1B)
-        response_data.extend(param_data)  # Dane parametru (19B)
+        response_data.append(param_address_byte)  # Adres parametru (1B)
+        response_data.extend(param_data_bytes)  # Dane parametru (19B)
 
         # Obliczenie CRC8 dla sekcji SZYFROWANA
         crc8 = ProtocolAnalyzer.calculate_crc8(response_data[-23:])  # dla DATA_LEN + DATA
@@ -290,15 +331,6 @@ class CommandHandler:
         response_data.append(0x55)  # END_MARKER (1B)
 
         return Response(content=bytes(response_data), media_type="application/octet-stream")
-
-    def _handle_unknown_command(self, command_id: int) -> dict:
-        """
-        Obsługa nieznanych komend
-        """
-        return {
-            "command": f"CMD_{command_id:04x}",
-            "status": "not_implemented"
-        }
 
     def _prepare_response(self, decoded_data: bytes, flag: int, status: int, request: int) -> Response:
         """

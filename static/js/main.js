@@ -5,6 +5,9 @@ const API_URL = '';  // Puste dla relatywnych URLi
 // Stan trybu serwisowego
 let serviceModeEnabled = false;
 
+// Interval dla automatycznego odświeżania
+let serviceModeAutoRefreshInterval = null;
+
 // Mapowanie adresów parametrów (musi być zgodne z backend)
 const PARAMETER_MAPPING = {
     0: { name: "dummy", label: "Dummy", format: "1B" },
@@ -52,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== FUNKCJE POMOCNICZE =====
 
     // Funkcja do wczytywania statusu trybu serwisowego
-    async function loadServiceModeStatus() {
+    async function loadServiceModeStatus(isManualRefresh = false) {
         try {
             const response = await fetch(`${API_URL}/service-mode/status`);
             if (response.ok) {
@@ -62,10 +65,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     serviceModeToggle.checked = data.enabled;
                 }
                 updateServiceModeStatusDisplay(data.status_message, data.active);
+
+                // Loguj tylko ręczne odświeżenia, nie automatyczne
+                if (isManualRefresh) {
+                    addLogEntry('Status trybu serwisowego odświeżony', 'success');
+                }
             }
         } catch (error) {
             console.error('Błąd podczas wczytywania statusu trybu serwisowego:', error);
             updateServiceModeStatusDisplay("Błąd komunikacji", false);
+
+            if (isManualRefresh) {
+                addLogEntry('Błąd podczas odświeżania statusu trybu serwisowego', 'error');
+            }
         }
     }
 
@@ -95,6 +107,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Funkcja startująca automatyczne odświeżanie
+    function startAutoRefresh() {
+        // Zatrzymaj poprzedni interval jeśli istnieje
+        if (serviceModeAutoRefreshInterval) {
+            clearInterval(serviceModeAutoRefreshInterval);
+        }
+
+        // Rozpocznij nowy interval (odświeżaj co 2 sekundy)
+        serviceModeAutoRefreshInterval = setInterval(() => {
+            loadServiceModeStatus(false); // false = automatyczne odświeżanie (bez logowania)
+        }, 2000);
+    }
+
+    // Funkcja zatrzymująca automatyczne odświeżanie
+    function stopAutoRefresh() {
+        if (serviceModeAutoRefreshInterval) {
+            clearInterval(serviceModeAutoRefreshInterval);
+            serviceModeAutoRefreshInterval = null;
+        }
+    }
+
+    // Sprawdza czy zakładka Parametry jest aktywna
+    function isParametersTabActive() {
+        const activeTab = document.querySelector('.tab-btn.active');
+        return activeTab && activeTab.getAttribute('data-tab') === 'parameters';
+    }
+
     // Funkcja dodająca wpis do logu
     function addLogEntry(message, type = 'info') {
         if (!logEntries) return;
@@ -120,7 +159,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Obsługa przełącznika trybu serwisowego
     if (serviceModeToggle) {
         // Inicjalizacja - pobierz aktualny stan z serwera
-        loadServiceModeStatus();
+        loadServiceModeStatus(true);
+
+        // Rozpocznij automatyczne odświeżanie (zakładka Parametry jest aktywna domyślnie)
+       // startAutoRefresh();
 
         // JEDYNY event listener dla serviceModeToggle
         serviceModeToggle.addEventListener('change', async function() {
@@ -162,9 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Obsługa przycisku odświeżania trybu serwisowego
     if (refreshServiceModeBtn) {
         refreshServiceModeBtn.addEventListener('click', async function() {
-            addLogEntry('Odświeżanie statusu trybu serwisowego...', 'info');
-            await loadServiceModeStatus();
-            addLogEntry('Status trybu serwisowego odświeżony', 'success');
+            addLogEntry('Ręczne odświeżanie statusu trybu serwisowego...', 'info');
+            await loadServiceModeStatus(true); // true = ręczne odświeżanie (z logowaniem)
         });
     }
 
@@ -182,6 +223,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const tabId = button.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
 
+            // Zarządzanie automatycznym odświeżaniem w zależności od zakładki
+            if (tabId === 'parameters') {
+                // Włącz automatyczne odświeżanie dla zakładki Parametry
+                startAutoRefresh();
+                addLogEntry('Automatyczne odświeżanie trybu serwisowego włączone', 'info');
+            } else {
+                // Wyłącz automatyczne odświeżanie dla innych zakładek
+                stopAutoRefresh();
+                addLogEntry('Automatyczne odświeżanie trybu serwisowego wyłączone', 'info');
+            }
+
             // Jeśli przełączamy na zakładkę pomiary, wczytujemy dane pomiarowe
             if (tabId === 'pomiary') {
                 const deviceId = deviceIdInput ? deviceIdInput.value.trim() : '';
@@ -190,6 +242,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+    });
+
+    // Zatrzymaj automatyczne odświeżanie gdy strona jest ukrywana
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            stopAutoRefresh();
+        } else if (isParametersTabActive()) {
+            // Wznów automatyczne odświeżanie tylko jeśli zakładka Parametry jest aktywna
+            startAutoRefresh();
+        }
+    });
+
+    // Zatrzymaj automatyczne odświeżanie przed zamknięciem strony
+    window.addEventListener('beforeunload', function() {
+        stopAutoRefresh();
     });
 
     // ===== POZOSTAŁE EVENT LISTENERY =====
@@ -280,9 +347,6 @@ document.addEventListener('DOMContentLoaded', function() {
             parametersGrid.appendChild(paramItem);
         }
     }
-
-    // Reszta funkcji pozostaje bez zmian...
-    // [Tu pozostałe funkcje z oryginalnego kodu]
 
     // Tworzy siatkę aliasów
     function createAliasyGrid() {
@@ -469,6 +533,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const paramInfo = PARAMETER_MAPPING[address];
             addLogEntry(`Aktualizacja parametru ${paramInfo.label} (${address}) na wartość: ${value}`, 'request');
 
+            // 1. Aktualizacja w bazie danych (standardowy sposób)
             const response = await fetch(`${API_URL}/app/devices/${deviceId}/parameters/${address}`, {
                 method: 'PUT',
                 headers: {
@@ -484,7 +549,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            addLogEntry(`Parametr zaktualizowany: ${data.message}, nowa wartość: ${data.value}`, 'response');
+            addLogEntry(`Parametr zaktualizowany w bazie: ${data.message}, nowa wartość: ${data.value}`, 'response');
+
+            // 2. Wywołanie funkcji _handle_service_data z param_address i param_data
+
+
         } catch (error) {
             addLogEntry(`Błąd połączenia: ${error.message}`, 'error');
         }

@@ -108,6 +108,9 @@ app.include_router(app_interface.router)  # Dodanie nowego routera dla aplikacji
 app.include_router(service_mode_router)
 
 
+
+
+
 # Dodanie obsługi plików statycznych
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
