@@ -30,7 +30,8 @@
         </div>
 
         <div id="parameters" class="tab-content active">
-             <!-- przycik dwustanowy 'tryb serwisowy' -->
+             <!-- przycik dwustanowy 'tryb serwisowy wraz z komentarzem  obok' -->
+
              <div class="parameters-controls">
                 <div class="service-mode-control">
                     <label class="switch">
@@ -38,9 +39,14 @@
                         <span class="slider"></span>
                     </label>
                     <span class="service-mode-label">Tryb serwisowy</span>
-                </div>
-            </div>
+                    <button id="refreshServiceMode" class="refresh-btn">Odśwież</button>
 
+                    <div class="service-mode-status" id="serviceModeStatus">
+                        <span class="status-text">Status nieznany</span>
+
+                    </div>
+                </div>
+             </div>
              <!-- koniec przycisku dwustanowego przycisku 'tryb serwisowy'  -->
             <div class="parameters-grid">
                 <!-- Parametry będą dynamicznie wypełniane przez JavaScript -->

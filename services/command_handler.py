@@ -1,13 +1,13 @@
-from fastapi import  Depends
+from fastapi import Depends
 from sqlalchemy.orm import Session
 from datetime import datetime
 
-#from main import config
+# from main import config
 from models.models import MeasureData, Aliases, StaticParams
 from repositories.database import get_db
 from services.support import ProtocolAnalyzer, CommandID, AliasDataPayload
 from fastapi.responses import Response
-from services.cipher import  RC4KeyGenerator
+from services.cipher import RC4KeyGenerator
 from services.service_mode import ServiceMode
 
 
@@ -61,6 +61,20 @@ class CommandHandler:
         db.add(db_measure)
         db.commit()
 
+        import logging
+        logger = logging.getLogger(__name__)
+
+
+
+
+        # Sprawdzanie stanu trybu serwisowego
+        if not ServiceMode.is_enabled():
+            ServiceMode.set_active(False)
+            ServiceMode.set_status_message("Nieaktywny")
+            logger.info("Tryb serwisowy nieaktywny")
+
+
+
         # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
         request_value = ServiceMode.get_request_value()
         return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
@@ -89,11 +103,11 @@ class CommandHandler:
 
         # Tworzenie nowego rekordu w bazie danych
         db_aliases = Aliases(
-        deviceId = alias_data.deviceId,
-        company = alias_data.company,
-        location = alias_data.location,
-        productName =alias_data.productName,
-        scaleId = alias_data.scaleId
+            deviceId=alias_data.deviceId,
+            company=alias_data.company,
+            location=alias_data.location,
+            productName=alias_data.productName,
+            scaleId=alias_data.scaleId
         )
 
         # Dodanie i zatwierdzenie w bazie danych
@@ -128,7 +142,7 @@ class CommandHandler:
             scaleType=static_data.scaleType,
             loadcellSet=static_data.loadcellSet,
             loadcellCapacity=static_data.loadcellCapacity,
-            trimm = static_data.trimm,
+            trimm=static_data.trimm,
             idlerSpacing=static_data.idlerSpacing,
             speedSource=static_data.speedSource,
             wheelDiameter=static_data.wheelDiameter,
@@ -169,8 +183,8 @@ class CommandHandler:
         for i in range(19):
             param_data[i] = 0x20  # Kod ASCII spacji
         # Dane parametru - zamiana stringa na bytearray
-        #-----poczatek
-        #param_data_str = "2025-07-22 15:56:00"  # String o długości 19 znaków
+        # -----poczatek
+        # param_data_str = "2025-07-22 15:56:00"  # String o długości 19 znaków
         param_data_str = "2"  # String o długości 19 znaków
         param_data = bytearray(param_data_str.encode('ascii'))  # Konwersja stringa na bytearray
 
@@ -181,7 +195,7 @@ class CommandHandler:
         elif len(param_data) > 19:
             # Obcinamy, jeśli jest za długi
             param_data = param_data[:19]
-        #----koniec
+        # ----koniec
         # W zależności od adresu parametru, możemy przygotować odpowiednie dane
         if param_address > 0 and param_address <= 15:
             # Tutaj można dodać logikę pobierania danych dla określonego parametru
@@ -191,6 +205,41 @@ class CommandHandler:
         param_address = 1
 
         # Przygotowanie odpowiedzi
+
+        # Pobieram  STATUS z odpowiedzi
+        _status = decoded_data[data_start:data_start + 1]
+        status = int.from_bytes(_status, 'big')
+        # tu nalezy okreslic na poddstawie 'status' czy tryb serwisowy jest aktywny
+        # 0 - tryb aktywny
+        # 1 - podajnik w ruchu
+        # 2 - inny blad
+
+        # Logowanie statusu i interpretacja
+        import logging
+        logger = logging.getLogger(__name__)
+
+        if status == 0:
+            logger.info("Tryb serwisowy jest aktywny")
+            ServiceMode.set_active(True)
+
+            ServiceMode.set_status_message("Tryb serwisowy aktywny")
+        elif status == 1:
+            logger.info("Przenośnik w ruchu")
+            ServiceMode.set_active(False)
+
+            ServiceMode.set_status_message("Przenośnik w ruchu")
+        elif status == 2:
+            logger.info("Inny błąd - tryb serwisowy nieaktywny")
+            ServiceMode.set_active(False)
+
+            ServiceMode.set_status_message("Błąd - tryb nieaktywny")
+        else:
+            logger.warning(f"Nieznany status: {status}")
+            ServiceMode.set_active(False)
+
+            ServiceMode.set_status_message(f"Nieznany status: {status}")
+
+
         # Pobieramy DEVICE_ID i COMMAND_ID z sekcji JAWNA
         _device_id = decoded_data[4:14]  # 10 bajtów
         _command_id = decoded_data[14:16]  # 2 bajty
@@ -362,6 +411,7 @@ class CommandHandler:
         response_data.append(0x55)  # END_MARKER (1B)
 
         return Response(content=bytes(response_data), media_type="application/octet-stream")
+
 
 # Funkcja opakowująca dla zachowania wstecznej kompatybilności
 def command_support(command_id: int, decoded_data: bytes, flag: int, key1: str, key2: str,
