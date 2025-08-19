@@ -109,7 +109,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Funkcja startująca automatyczne odświeżanie
     function startAutoRefresh() {
+
+         return;
         // Zatrzymaj poprzedni interval jeśli istnieje
+
         if (serviceModeAutoRefreshInterval) {
             clearInterval(serviceModeAutoRefreshInterval);
         }
