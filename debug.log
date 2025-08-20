@@ -1,535 +1,59 @@
-2025-08-20 08:08:02,354 - main - DEBUG - [main.py:66] - Test loggera - DEBUG
-2025-08-20 08:08:02,355 - main - INFO - [main.py:67] - Test loggera - INFO
-2025-08-20 08:08:02,355 - main - WARNING - [main.py:68] - Test loggera - WARNING
-2025-08-20 08:08:02,355 - main - ERROR - [main.py:69] - Test loggera - ERROR
-2025-08-20 08:08:16,127 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:16,127 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:08:16,127 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '27', 'connection': 'Close'}
-2025-08-20 08:08:16,127 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 00 00 20 31 33 00 01 21 22 85 b5 55
-2025-08-20 08:08:16,229 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 00 00 00 00 00 00 15 01 00 32 30 32 35 2d 30 38 2d 32 30 20 30 38 3a 30 38 3a 31 36 ce 56 26 55
-2025-08-20 08:08:16,231 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:08:16,329 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:16,329 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:08:16,329 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:08:16,329 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 36 2e 36 38 20 20 20 20 20 20 20 20 20 31 30 31 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 37 3a 30 37 ea a7 8d 55
-2025-08-20 08:08:16,347 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:08:16,348 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:08:16,349 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:08:16,757 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:16,757 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
-2025-08-20 08:08:16,757 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:08:16,758 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:08:16,758 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:08:26,711 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:26,711 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:08:26,712 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:08:26,712 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 36 20 20 36 36 2e 34 39 20 20 20 20 20 20 20 20 20 31 30 32 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 37 3a 31 38 f0 72 87 55
-2025-08-20 08:08:26,718 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:08:26,719 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:08:26,720 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:08:37,084 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:37,084 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:08:37,084 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:08:37,084 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 35 20 20 36 34 2e 32 38 20 20 20 20 20 20 20 20 20 31 30 33 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 37 3a 32 38 ec a9 b2 55
-2025-08-20 08:08:37,091 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:08:37,091 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:08:37,092 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:08:47,488 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:47,489 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:08:47,489 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:08:47,489 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 36 20 20 36 36 2e 38 34 20 20 20 20 20 20 20 20 20 31 30 34 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 37 3a 33 39 f4 f6 d4 55
-2025-08-20 08:08:47,714 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:08:47,715 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:08:47,716 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:08:52,733 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:52,733 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /aliases/1126326593
-2025-08-20 08:08:52,734 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:08:52,734 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:08:52,741 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:08:52,747 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:52,747 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /aliases/
-2025-08-20 08:08:52,747 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '106', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:08:52,748 - main - DEBUG - [main.py:84] - Request body: 7b 22 64 65 76 69 63 65 49 64 22 3a 22 31 31 32 36 33 32 36 35 39 33 22 2c 22 63 6f 6d 70 61 6e 79 22 3a 22 6b 6f 6d 70 22 2c 22 6c 6f 63 61 74 69 6f 6e 22 3a 22 4c 6f 63 61 74 69 6f 6e 58 22 2c 22 70 72 6f 64 75 63 74 4e 61 6d 65 22 3a 22 50 72 6f 64 75 63 74 58 22 2c 22 73 63 61 6c 65 49 64 22 3a 22 49 44 58 22 7d
-2025-08-20 08:08:52,757 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 201
-2025-08-20 08:08:57,685 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:57,686 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:08:57,686 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:08:57,686 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 34 2e 39 36 20 20 20 20 20 20 20 20 20 31 30 35 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 37 3a 34 39 f3 99 98 55
-2025-08-20 08:08:57,693 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:08:57,693 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:08:57,694 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:08:59,078 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:08:59,078 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /aliases/1126326593
-2025-08-20 08:08:59,078 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:08:59,078 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:08:59,082 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:00,452 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:00,453 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /aliases/1126326593
-2025-08-20 08:09:00,453 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:09:00,453 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:09:00,456 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:08,058 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:08,058 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:09:08,058 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:09:08,058 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 39 20 20 36 36 2e 30 36 20 20 20 20 20 20 20 20 20 31 30 36 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 37 3a 35 39 f5 e9 54 55
-2025-08-20 08:09:08,065 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:09:08,065 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:09:08,066 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:18,430 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:18,430 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:09:18,430 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:09:18,430 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 34 2e 34 37 20 20 20 20 20 20 20 20 20 31 30 37 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 38 3a 30 39 ef 46 f6 55
-2025-08-20 08:09:18,685 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:09:18,686 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:09:18,688 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:25,840 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:25,840 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /aliases/1126326593
-2025-08-20 08:09:25,840 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:09:25,840 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:09:25,843 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:25,848 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:25,848 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /aliases/
-2025-08-20 08:09:25,848 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '109', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:09:25,849 - main - DEBUG - [main.py:84] - Request body: 7b 22 64 65 76 69 63 65 49 64 22 3a 22 31 31 32 36 33 32 36 35 39 33 22 2c 22 63 6f 6d 70 61 6e 79 22 3a 22 43 6f 6d 70 61 6e 79 58 22 2c 22 6c 6f 63 61 74 69 6f 6e 22 3a 22 4c 6f 63 61 74 69 6f 6e 58 22 2c 22 70 72 6f 64 75 63 74 4e 61 6d 65 22 3a 22 70 72 6f 64 75 63 74 22 2c 22 73 63 61 6c 65 49 64 22 3a 22 49 44 58 22 7d
-2025-08-20 08:09:25,968 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 201
-2025-08-20 08:09:28,650 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:28,650 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:09:28,650 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:09:28,651 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 31 20 20 36 36 2e 37 39 20 20 20 20 20 20 20 20 20 31 30 38 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 38 3a 32 30 ee 5d b3 55
-2025-08-20 08:09:28,776 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:09:28,777 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:09:28,778 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:38,873 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:38,874 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:09:38,874 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:09:38,874 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 34 2e 30 38 20 20 20 20 20 20 20 20 20 31 30 39 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 38 3a 33 30 e8 29 1c 55
-2025-08-20 08:09:38,885 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:09:38,886 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:09:38,887 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:45,997 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:45,997 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /aliases/1126326593
-2025-08-20 08:09:45,997 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:09:45,998 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:09:46,001 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:46,005 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:46,005 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /aliases/
-2025-08-20 08:09:46,005 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '110', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:09:46,006 - main - DEBUG - [main.py:84] - Request body: 7b 22 64 65 76 69 63 65 49 64 22 3a 22 31 31 32 36 33 32 36 35 39 33 22 2c 22 63 6f 6d 70 61 6e 79 22 3a 22 43 6f 6d 70 61 6e 79 58 22 2c 22 6c 6f 63 61 74 69 6f 6e 22 3a 22 4c 6f 63 61 74 69 6f 6e 58 22 2c 22 70 72 6f 64 75 63 74 4e 61 6d 65 22 3a 22 50 72 6f 64 75 63 74 58 22 2c 22 73 63 61 6c 65 49 64 22 3a 22 49 44 58 22 7d
-2025-08-20 08:09:46,013 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 201
-2025-08-20 08:09:49,250 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:49,250 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:09:49,250 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:09:49,250 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 35 20 20 36 35 2e 38 36 20 20 20 20 20 20 20 20 20 31 31 30 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 38 3a 34 30 ea 06 2e 55
-2025-08-20 08:09:49,258 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:09:49,269 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:09:49,270 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:09:59,633 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:09:59,633 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:09:59,633 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:09:59,633 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 38 20 20 36 34 2e 35 38 20 20 20 20 20 20 20 20 20 31 31 31 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 38 3a 35 31 ee 80 1c 55
-2025-08-20 08:09:59,640 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:09:59,640 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:09:59,641 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:10:10,049 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:10:10,050 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:10:10,050 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:10:10,050 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 35 20 20 36 32 2e 35 36 20 20 20 20 20 20 20 20 20 31 31 32 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 39 3a 30 31 e4 aa 15 55
-2025-08-20 08:10:11,965 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:10:11,966 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:10:12,435 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:10:20,224 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:10:20,225 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:10:20,225 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:10:20,225 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 39 20 20 36 33 2e 39 37 20 20 20 20 20 20 20 20 20 31 31 33 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 39 3a 31 31 f0 c0 b5 55
-2025-08-20 08:10:20,244 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:10:20,246 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:10:20,246 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:10:30,610 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:10:30,610 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:10:30,610 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:10:30,611 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 34 20 20 36 32 2e 33 35 20 20 20 20 20 20 20 20 20 31 31 34 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 39 3a 32 32 e5 4d 2d 55
-2025-08-20 08:10:30,621 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:10:30,632 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:10:30,634 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:10:41,005 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:10:41,005 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:10:41,006 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:10:41,006 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 30 20 20 36 34 2e 34 38 20 20 20 20 20 20 20 20 20 31 31 35 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 39 3a 33 32 e9 43 00 55
-2025-08-20 08:10:41,023 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:10:41,023 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:10:41,024 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:10:51,391 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:10:51,392 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:10:51,392 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:10:51,392 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 34 20 20 36 32 2e 32 36 20 20 20 20 20 20 20 20 20 31 31 36 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 39 3a 34 32 e9 9f ac 55
-2025-08-20 08:10:51,418 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:10:51,419 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:10:51,420 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:11:01,795 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:11:01,795 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:11:01,797 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:11:01,797 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 34 20 20 36 35 2e 31 35 20 20 20 20 20 20 20 20 20 31 31 37 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 30 39 3a 35 33 ed e2 13 55
-2025-08-20 08:11:01,806 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:11:01,806 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:11:01,807 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:11:12,170 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:11:12,170 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:11:12,170 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:11:12,170 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 30 20 20 36 32 2e 36 38 20 20 20 20 20 20 20 20 20 31 31 38 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 30 3a 30 33 e2 d7 00 55
-2025-08-20 08:11:12,177 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:11:12,177 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:11:12,178 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:11:22,543 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:11:22,543 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:11:22,543 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:11:22,544 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 32 2e 36 37 20 20 20 20 20 20 20 20 20 31 31 39 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 30 3a 31 34 e7 60 2a 55
-2025-08-20 08:11:22,559 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:11:22,560 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:11:22,561 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:11:32,933 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:11:32,934 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:11:32,934 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:11:32,934 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 32 2e 34 32 20 20 20 20 20 20 20 20 20 31 32 30 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 30 3a 32 34 d8 0e 0f 55
-2025-08-20 08:11:32,958 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:11:32,959 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:11:32,963 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:11:43,330 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:11:43,330 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:11:43,330 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:11:43,331 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 34 2e 36 30 20 20 20 20 20 20 20 20 20 31 32 31 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 30 3a 33 34 dc 78 39 55
-2025-08-20 08:11:43,338 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:11:43,343 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:11:43,344 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:11:53,716 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:11:53,716 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:11:53,717 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:11:53,717 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 34 20 20 36 35 2e 37 36 20 20 20 20 20 20 20 20 20 31 32 32 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 30 3a 34 35 e9 28 00 55
-2025-08-20 08:11:53,734 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:11:53,735 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:11:53,736 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:04,116 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:04,116 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:12:04,116 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:12:04,116 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 37 20 20 36 33 2e 32 39 20 20 20 20 20 20 20 20 20 31 32 33 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 30 3a 35 35 ea 5d 0e 55
-2025-08-20 08:12:04,712 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:12:04,713 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:12:04,717 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:07,926 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:07,927 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /ui
-2025-08-20 08:12:07,927 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'pragma': 'no-cache', 'cache-control': 'no-cache', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'sec-ch-ua-platform': '"Windows"', 'upgrade-insecure-requests': '1', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7', 'sec-fetch-site': 'none', 'sec-fetch-mode': 'navigate', 'sec-fetch-user': '?1', 'sec-fetch-dest': 'document', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:07,927 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:12:08,071 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:08,140 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:08,140 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /static/css/styles.css
-2025-08-20 08:12:08,140 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'pragma': 'no-cache', 'cache-control': 'no-cache', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': 'text/css,*/*;q=0.1', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'no-cors', 'sec-fetch-dest': 'style', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:08,140 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:12:08,142 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:08,146 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:08,146 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /static/js/main.js
-2025-08-20 08:12:08,147 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'pragma': 'no-cache', 'cache-control': 'no-cache', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'no-cors', 'sec-fetch-dest': 'script', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:08,147 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:12:08,159 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:08,945 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:08,946 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
-2025-08-20 08:12:08,946 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'pragma': 'no-cache', 'cache-control': 'no-cache', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:08,946 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:12:08,946 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:09,179 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:09,180 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /favicon.ico
-2025-08-20 08:12:09,180 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'pragma': 'no-cache', 'cache-control': 'no-cache', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'no-cors', 'sec-fetch-dest': 'image', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:09,180 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:12:09,180 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 404
-2025-08-20 08:12:14,321 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:14,322 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:12:14,322 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:12:14,322 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 36 2e 35 33 20 20 20 20 20 20 20 20 20 31 32 34 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 31 3a 30 35 e2 bd 50 55
-2025-08-20 08:12:14,329 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:12:14,330 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:12:14,331 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:20,399 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:20,399 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /aliases/1126326593
-2025-08-20 08:12:20,400 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:20,400 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:12:20,403 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:24,694 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:24,694 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:12:24,694 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:12:24,694 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 38 20 20 36 34 2e 39 35 20 20 20 20 20 20 20 20 20 31 32 35 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 31 3a 31 36 ef ac 95 55
-2025-08-20 08:12:24,703 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:12:24,704 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:12:24,705 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:28,608 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:28,608 - main - DEBUG - [main.py:81] - [REQUEST] Method: PUT Path: /aliases/1126326593/field/18
-2025-08-20 08:12:28,608 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '44', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:28,608 - main - DEBUG - [main.py:84] - Request body: 7b 22 66 69 65 6c 64 5f 61 64 64 72 65 73 73 22 3a 31 38 2c 22 66 69 65 6c 64 5f 76 61 6c 75 65 22 3a 22 70 72 6f 64 75 6b 74 22 7d
-2025-08-20 08:12:28,621 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:32,576 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:32,577 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /aliases/1126326593
-2025-08-20 08:12:32,577 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:32,577 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:12:32,580 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:35,068 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:35,068 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:12:35,068 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:12:35,068 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 34 2e 36 33 20 20 20 20 20 20 20 20 20 31 32 36 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 31 3a 32 36 e7 65 63 55
-2025-08-20 08:12:35,075 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:12:35,076 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:12:35,076 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:38,539 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:38,539 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /aliases/1126326593
-2025-08-20 08:12:38,540 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:38,540 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:12:38,543 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:45,459 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:45,459 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:12:45,459 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:12:45,459 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 32 2e 30 33 20 20 20 20 20 20 20 20 20 31 32 37 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 31 3a 33 36 e1 68 58 55
-2025-08-20 08:12:46,033 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:12:46,034 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:12:46,062 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:54,354 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:54,354 - main - DEBUG - [main.py:81] - [REQUEST] Method: PUT Path: /aliases/1126326593/field/16
-2025-08-20 08:12:54,354 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '44', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:12:54,354 - main - DEBUG - [main.py:84] - Request body: 7b 22 66 69 65 6c 64 5f 61 64 64 72 65 73 73 22 3a 31 36 2c 22 66 69 65 6c 64 5f 76 61 6c 75 65 22 3a 22 6b 6f 6d 70 61 6e 74 22 7d
-2025-08-20 08:12:54,364 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:12:55,661 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:12:55,662 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:12:55,662 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:12:55,662 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 39 20 20 36 34 2e 34 30 20 20 20 20 20 20 20 20 20 31 32 38 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 31 3a 34 37 ed 30 38 55
-2025-08-20 08:12:55,668 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:12:55,669 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:12:55,670 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:06,034 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:06,034 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:13:06,034 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:13:06,034 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 35 20 20 36 35 2e 38 37 20 20 20 20 20 20 20 20 20 31 32 39 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 31 3a 35 37 f7 a7 fd 55
-2025-08-20 08:13:06,041 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:13:06,042 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:13:06,043 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:16,405 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:16,411 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:13:16,411 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:13:16,412 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 32 2e 34 36 20 20 20 20 20 20 20 20 20 31 33 30 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 32 3a 30 37 e0 bc 0e 55
-2025-08-20 08:13:16,434 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:13:16,434 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:13:16,435 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:26,796 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:26,796 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:13:26,797 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:13:26,797 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 36 20 20 36 34 2e 39 30 20 20 20 20 20 20 20 20 20 31 33 31 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 32 3a 31 38 e8 c3 7f 55
-2025-08-20 08:13:26,803 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:13:26,804 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:13:26,805 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:37,169 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:37,169 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:13:37,169 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:13:37,169 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 38 20 20 36 35 2e 35 36 20 20 20 20 20 20 20 20 20 31 33 32 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 32 3a 32 38 ef 02 3e 55
-2025-08-20 08:13:37,176 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:13:37,177 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:13:37,178 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:45,740 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:45,740 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /app/devices/1126326593/parameters
-2025-08-20 08:13:45,740 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:13:45,741 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:13:45,747 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:47,540 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:47,540 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:13:47,540 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:13:47,540 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 36 20 20 36 32 2e 35 32 20 20 20 20 20 20 20 20 20 31 33 33 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 32 3a 33 39 e9 38 a7 55
-2025-08-20 08:13:47,554 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:13:47,554 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:13:47,556 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:49,061 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:49,061 - main - DEBUG - [main.py:81] - [REQUEST] Method: PUT Path: /app/devices/1126326593/parameters/4
-2025-08-20 08:13:49,062 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '25', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:13:49,062 - main - DEBUG - [main.py:84] - Request body: 7b 22 70 61 72 61 6d 5f 64 61 74 61 22 3a 22 32 30 2e 35 20 20 20 20 22 7d
-2025-08-20 08:13:49,065 - services.app_handler - INFO - [app_handler.py:187] - Zaktualizowano parametr deadBand dla urz¹dzenia 1126326593
-2025-08-20 08:13:49,065 - services.service_parameter_store - INFO - [service_parameter_store.py:37] - Zapisano parametry serwisowe: device_id=1126326593, param_address=4, param_data='20.5    '
-2025-08-20 08:13:49,065 - routers.app_interface - INFO - [app_interface.py:92] - Parametry zapisane w store dla kontrolera: 1126326593, 4, 20.5    
-2025-08-20 08:13:49,066 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:57,917 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:57,918 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:13:57,918 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:13:57,918 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 35 20 20 36 34 2e 30 37 20 20 20 20 20 20 20 20 20 31 33 34 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 32 3a 34 39 ec 66 44 55
-2025-08-20 08:13:57,927 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:13:57,928 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:13:57,929 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:13:58,014 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:13:58,014 - main - DEBUG - [main.py:81] - [REQUEST] Method: PUT Path: /app/devices/1126326593/parameters/4
-2025-08-20 08:13:58,014 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '24', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:13:58,014 - main - DEBUG - [main.py:84] - Request body: 7b 22 70 61 72 61 6d 5f 64 61 74 61 22 3a 22 32 30 2e 39 20 20 20 22 7d
-2025-08-20 08:13:58,024 - services.app_handler - INFO - [app_handler.py:187] - Zaktualizowano parametr deadBand dla urz¹dzenia 1126326593
-2025-08-20 08:13:58,024 - services.service_parameter_store - INFO - [service_parameter_store.py:37] - Zapisano parametry serwisowe: device_id=1126326593, param_address=4, param_data='20.9   '
-2025-08-20 08:13:58,024 - routers.app_interface - INFO - [app_interface.py:92] - Parametry zapisane w store dla kontrolera: 1126326593, 4, 20.9   
-2025-08-20 08:13:58,025 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:14:04,636 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:14:04,636 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /app/devices/1126326593/parameters
-2025-08-20 08:14:04,636 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:14:04,636 - main - DEBUG - [main.py:84] - Request body: 
-2025-08-20 08:14:04,640 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:14:08,291 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:14:08,292 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:14:08,292 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:14:08,292 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 37 20 20 36 35 2e 37 34 20 20 20 20 20 20 20 20 20 31 33 35 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 32 3a 35 39 f5 81 6f 55
-2025-08-20 08:14:08,300 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:14:08,300 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:14:08,301 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:14:18,663 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:14:18,663 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:14:18,663 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:14:18,663 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 38 20 20 36 35 2e 37 32 20 20 20 20 20 20 20 20 20 31 33 36 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 33 3a 31 30 e9 40 b2 55
-2025-08-20 08:14:18,670 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:14:18,671 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:14:18,672 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:14:19,626 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:14:19,626 - main - DEBUG - [main.py:81] - [REQUEST] Method: PUT Path: /aliases/1126326593/field/17
-2025-08-20 08:14:19,627 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '44', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
-2025-08-20 08:14:19,627 - main - DEBUG - [main.py:84] - Request body: 7b 22 66 69 65 6c 64 5f 61 64 64 72 65 73 73 22 3a 31 37 2c 22 66 69 65 6c 64 5f 76 61 6c 75 65 22 3a 22 6c 6f 6b 61 6c 69 7a 22 7d
-2025-08-20 08:14:19,635 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:14:29,034 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:14:29,034 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:14:29,034 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:14:29,034 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 36 20 20 36 33 2e 37 32 20 20 20 20 20 20 20 20 20 31 33 37 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 33 3a 32 30 e7 98 01 55
-2025-08-20 08:14:29,041 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:14:29,042 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:14:29,042 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:14:39,406 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:14:39,406 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:14:39,406 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:14:39,407 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 38 20 20 36 35 2e 38 32 20 20 20 20 20 20 20 20 20 31 33 38 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 33 3a 33 30 ee 08 01 55
-2025-08-20 08:14:39,413 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:14:39,414 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:14:39,414 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:14:49,778 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:14:49,779 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:14:49,779 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:14:49,779 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 38 20 20 36 32 2e 34 36 20 20 20 20 20 20 20 20 20 31 33 39 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 33 3a 34 31 ee 53 d9 55
-2025-08-20 08:14:49,786 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:14:49,786 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:14:49,787 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:15:00,150 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:15:00,150 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:15:00,150 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:15:00,150 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 33 2e 37 35 20 20 20 20 20 20 20 20 20 31 34 30 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 33 3a 35 31 e5 e3 6b 55
-2025-08-20 08:15:00,157 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:15:00,157 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:15:00,158 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:15:10,522 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:15:10,522 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:15:10,522 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:15:10,522 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 34 2e 39 34 20 20 20 20 20 20 20 20 20 31 34 31 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 34 3a 30 32 e4 9b 65 55
-2025-08-20 08:15:10,529 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:15:10,530 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:15:10,530 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:15:20,894 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:15:20,895 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:15:20,895 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:15:20,895 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 32 2e 32 32 20 20 20 20 20 20 20 20 20 31 34 32 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 34 3a 31 32 db fb 1d 55
-2025-08-20 08:15:20,904 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:15:20,905 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:15:20,906 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:15:31,268 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:15:31,268 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:15:31,268 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:15:31,268 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 31 20 20 36 33 2e 36 34 20 20 20 20 20 20 20 20 20 31 34 33 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 34 3a 32 32 e3 86 11 55
-2025-08-20 08:15:31,275 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:15:31,276 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:15:31,277 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:15:41,640 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:15:41,640 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:15:41,640 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:15:41,641 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 39 20 20 36 34 2e 39 34 20 20 20 20 20 20 20 20 20 31 34 34 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 34 3a 33 33 f2 17 b4 55
-2025-08-20 08:15:41,650 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:15:41,651 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:15:41,652 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:15:52,016 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:15:52,016 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:15:52,016 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:15:52,017 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 34 20 20 36 34 2e 36 30 20 20 20 20 20 20 20 20 20 31 34 35 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 34 3a 34 33 e8 c7 3f 55
-2025-08-20 08:15:52,023 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:15:52,024 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:15:52,024 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:16:02,387 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:16:02,388 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:16:02,388 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:16:02,388 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 38 20 20 36 36 2e 34 39 20 20 20 20 20 20 20 20 20 31 34 36 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 34 3a 35 33 f7 2b 8f 55
-2025-08-20 08:16:02,394 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:16:02,395 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:16:02,396 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:16:12,759 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:16:12,759 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:16:12,759 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:16:12,759 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 36 20 20 36 35 2e 38 37 20 20 20 20 20 20 20 20 20 31 34 37 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 35 3a 30 34 f4 ec 07 55
-2025-08-20 08:16:12,766 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:16:12,767 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:16:12,768 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:16:23,131 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:16:23,132 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:16:23,132 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:16:23,132 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 32 2e 33 31 20 20 20 20 20 20 20 20 20 31 34 38 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 35 3a 31 34 e4 52 8d 55
-2025-08-20 08:16:23,142 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:16:23,142 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:16:23,143 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:16:33,505 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:16:33,505 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:16:33,506 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:16:33,506 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 35 2e 30 39 20 20 20 20 20 20 20 20 20 31 34 39 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 35 3a 32 35 f0 15 e6 55
-2025-08-20 08:16:33,513 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:16:33,514 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:16:33,516 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:16:43,879 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:16:43,879 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:16:43,879 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:16:43,879 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 35 2e 36 30 20 20 20 20 20 20 20 20 20 31 35 30 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 35 3a 33 35 e5 22 bb 55
-2025-08-20 08:16:43,888 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:16:43,889 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:16:43,890 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:16:54,253 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:16:54,253 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:16:54,253 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:16:54,253 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 36 2e 38 32 20 20 20 20 20 20 20 20 20 31 35 31 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 35 3a 34 35 ed b4 3a 55
-2025-08-20 08:16:54,261 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:16:54,262 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:16:54,263 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:17:04,627 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:17:04,627 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:17:04,627 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:17:04,627 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 34 20 20 36 33 2e 34 34 20 20 20 20 20 20 20 20 20 31 35 32 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 35 3a 35 36 ec 60 e9 55
-2025-08-20 08:17:04,635 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:17:04,636 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:17:04,636 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:17:14,998 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:17:14,998 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:17:14,999 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:17:14,999 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 35 20 20 36 34 2e 37 36 20 20 20 20 20 20 20 20 20 31 35 33 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 36 3a 30 36 f0 ec 34 55
-2025-08-20 08:17:15,005 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:17:15,006 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:17:15,007 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:17:25,371 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:17:25,371 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:17:25,371 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:17:25,371 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 31 20 20 36 34 2e 39 33 20 20 20 20 20 20 20 20 20 31 35 34 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 36 3a 31 36 ed d8 14 55
-2025-08-20 08:17:25,382 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:17:25,383 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:17:25,384 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:17:35,747 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:17:35,747 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:17:35,747 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:17:35,747 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 30 20 20 36 34 2e 33 33 20 20 20 20 20 20 20 20 20 31 35 35 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 36 3a 32 37 e9 40 64 55
-2025-08-20 08:17:35,758 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:17:35,758 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:17:35,759 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:17:46,126 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:17:46,127 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:17:46,127 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:17:46,127 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 30 20 20 36 36 2e 33 32 20 20 20 20 20 20 20 20 20 31 35 36 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 36 3a 33 37 ec 96 94 55
-2025-08-20 08:17:46,155 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:17:46,156 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:17:46,156 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
-2025-08-20 08:17:56,521 - main - DEBUG - [main.py:80] - ==================================================
-2025-08-20 08:17:56,521 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
-2025-08-20 08:17:56,521 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
-2025-08-20 08:17:56,521 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 30 20 20 36 36 2e 31 35 20 20 20 20 20 20 20 20 20 31 35 37 32 30 32 34 2d 30 38 2d 32 30 20 30 37 3a 31 36 3a 34 38 f0 bc 6d 55
-2025-08-20 08:17:56,528 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
-2025-08-20 08:17:56,529 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
-2025-08-20 08:17:56,529 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:10,276 - main - DEBUG - [main.py:66] - Test loggera - DEBUG
+2025-08-20 09:03:10,277 - main - INFO - [main.py:67] - Test loggera - INFO
+2025-08-20 09:03:10,277 - main - WARNING - [main.py:68] - Test loggera - WARNING
+2025-08-20 09:03:10,277 - main - ERROR - [main.py:69] - Test loggera - ERROR
+2025-08-20 09:03:20,725 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:20,726 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-20 09:03:20,726 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '27', 'connection': 'Close'}
+2025-08-20 09:03:20,726 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 00 00 20 31 33 00 01 21 22 85 b5 55
+2025-08-20 09:03:20,750 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 00 00 00 00 00 00 15 01 00 32 30 32 35 2d 30 38 2d 32 30 20 30 39 3a 30 33 3a 32 30 c5 bf 97 55
+2025-08-20 09:03:20,751 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:21,113 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:21,113 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-20 09:03:21,113 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-20 09:03:21,113 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 39 20 20 36 32 2e 37 35 20 20 20 20 20 20 20 20 20 31 30 31 32 30 32 34 2d 30 38 2d 32 30 20 30 38 3a 30 32 3a 31 32 e3 af 55 55
+2025-08-20 09:03:21,129 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
+2025-08-20 09:03:21,129 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
+2025-08-20 09:03:21,130 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:22,511 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:22,511 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
+2025-08-20 09:03:22,511 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-20 09:03:22,511 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-20 09:03:22,512 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:26,038 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:26,039 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /service-mode/toggle
+2025-08-20 09:03:26,039 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '16', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-20 09:03:26,039 - main - DEBUG - [main.py:84] - Request body: 7b 22 65 6e 61 62 6c 65 64 22 3a 74 72 75 65 7d
+2025-08-20 09:03:26,040 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:31,492 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:31,492 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-20 09:03:31,492 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-20 09:03:31,493 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 31 20 20 36 33 2e 36 30 20 20 20 20 20 20 20 20 20 31 30 32 32 30 32 34 2d 30 38 2d 32 30 20 30 38 3a 30 32 3a 32 33 d9 16 5b 55
+2025-08-20 09:03:31,500 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 03 06 03 5a 55
+2025-08-20 09:03:31,501 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:34,626 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:34,627 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
+2025-08-20 09:03:34,627 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-20 09:03:34,627 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-20 09:03:34,628 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:37,854 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:37,854 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-20 09:03:37,854 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '28', 'connection': 'Close'}
+2025-08-20 09:03:37,854 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 06 00 20 31 33 00 02 00 00 02 6d 7e 55
+2025-08-20 09:03:37,856 - services.command_handler - INFO - [command_handler.py:268] - Tryb serwisowy jest aktywny
+2025-08-20 09:03:37,858 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 06 00 00 00 00 00 16 00 03 00 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 79 a5 23 55
+2025-08-20 09:03:37,858 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:44,219 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:44,220 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-20 09:03:44,220 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '28', 'connection': 'Close'}
+2025-08-20 09:03:44,220 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 06 00 20 31 33 00 02 00 00 02 6d 7e 55
+2025-08-20 09:03:44,222 - services.command_handler - INFO - [command_handler.py:268] - Tryb serwisowy jest aktywny
+2025-08-20 09:03:44,223 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 06 00 00 00 00 00 16 00 03 00 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 79 a5 23 55
+2025-08-20 09:03:44,224 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-20 09:03:50,585 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-20 09:03:50,585 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-20 09:03:50,585 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '28', 'connection': 'Close'}
+2025-08-20 09:03:50,585 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 06 00 20 31 33 00 02 00 00 02 6d 7e 55
+2025-08-20 09:03:50,588 - services.command_handler - INFO - [command_handler.py:268] - Tryb serwisowy jest aktywny
+2025-08-20 09:03:50,589 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 06 00 00 00 00 00 16 00 03 00 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 79 a5 23 55
+2025-08-20 09:03:50,590 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200

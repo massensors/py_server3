@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
@@ -7,7 +8,11 @@ from starlette import status
 from repositories.database import get_db
 from models.models import Aliases
 from pydantic import BaseModel
+from services.service_parameter_store import service_parameter_store
 
+
+# Konfiguracja loggera
+logger = logging.getLogger(__name__)
 router = APIRouter(
     prefix="/aliases",
     tags=["aliases"],
@@ -118,6 +123,12 @@ async def update_alias_field(device_id: str, field_address: int, field_update: A
     # Znajdź alias dla danego urządzenia
     alias = db.query(Aliases).filter(Aliases.deviceId == device_id).first()
 
+    # ---------------------
+    # NOWE: Zapisz parametry w store dla kontrolera
+    service_parameter_store.store_parameters(device_id, field_address, field_update.field_value)
+    logger.info(f"Parametry zapisane w store dla kontrolera: {device_id}, {field_address}, {field_update.field_value}")
+    # ---------------------
+
     if not alias:
         # Jeśli alias nie istnieje, utwórz nowy z domyślnymi wartościami
         alias_data = {
@@ -134,6 +145,7 @@ async def update_alias_field(device_id: str, field_address: int, field_update: A
         db.add(alias)
         db.commit()
         db.refresh(alias)
+
 
         return {
             "status": "success",
