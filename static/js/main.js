@@ -36,6 +36,16 @@ const ALIAS_FIELDS = [
     { name: "scaleId", label: "ID wagi" }
 ];
 
+
+// Mapowanie pól aliasów na adresy
+const ALIAS_ADDRESS_MAPPING = {
+    'company': 16,
+    'location': 17,
+    'productName': 18,
+    'scaleId': 19
+};
+
+
 // Inicjalizacja
 document.addEventListener('DOMContentLoaded', function() {
     // Elementy DOM
@@ -561,8 +571,8 @@ document.addEventListener('DOMContentLoaded', function() {
             addLogEntry(`Błąd połączenia: ${error.message}`, 'error');
         }
     }
-
-    // Aktualizuje alias na serwerze
+//--------------------------------------------------------------
+    // Aktualizuje alias na serwerze - nowa wersja z adresami
     async function updateAlias(fieldName, value) {
         const deviceId = deviceIdInput ? deviceIdInput.value.trim() : '';
 
@@ -571,47 +581,54 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        if (!value.trim()) {
+            addLogEntry('Błąd: Wprowadź wartość pola', 'error');
+            return;
+        }
+
+        // Pobierz adres pola
+        const fieldAddress = ALIAS_ADDRESS_MAPPING[fieldName];
+        if (!fieldAddress) {
+            addLogEntry(`Błąd: Nieznane pole '${fieldName}'`, 'error');
+            return;
+        }
+
         try {
-            // Najpierw pobieramy aktualne dane aliasów
-            const response = await fetch(`${API_URL}/aliases/${deviceId}`);
-            if (!response.ok) {
-                throw new Error(`Status: ${response.status}`);
-            }
+            addLogEntry(`Aktualizacja pola '${fieldName}' (adres ${fieldAddress}) na wartość: ${value}`, 'request');
 
-            const currentData = await response.json();
-
-            // Przygotowujemy nowe dane z zaktualizowanym polem
-            const updatedData = {
-                deviceId: deviceId,
-                company: currentData.company || '',
-                location: currentData.location || '',
-                productName: currentData.productName || '',
-                scaleId: currentData.scaleId || ''
-            };
-
-            // Aktualizujemy tylko wybrane pole
-            updatedData[fieldName] = value;
-
-            addLogEntry(`Aktualizacja aliasu ${fieldName} na wartość: ${value}`, 'request');
-
-            // Wysyłamy zaktualizowane dane
-            const updateResponse = await fetch(`${API_URL}/aliases/`, {
-                method: 'POST',
+            // Wysyłamy żądanie aktualizacji pojedynczego pola z adresem
+            const updateResponse = await fetch(`${API_URL}/aliases/${deviceId}/field/${fieldAddress}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(updatedData)
+                body: JSON.stringify({
+                    field_address: fieldAddress,
+                    field_value: value
+                })
             });
 
-            const updateResult = await updateResponse.json();
-
-            if (updateResponse.ok) {
-                addLogEntry(`Alias zaktualizowany: ${fieldName} = ${value}`, 'response');
-            } else {
-                addLogEntry(`Błąd: ${updateResult.detail || 'Nieznany błąd'}`, 'error');
+            if (!updateResponse.ok) {
+                const errorData = await updateResponse.json();
+                throw new Error(errorData.detail || `Status: ${updateResponse.status}`);
             }
+
+            const result = await updateResponse.json();
+
+            if (result.status === 'success') {
+                addLogEntry(`✓ ${result.message}`, 'success');
+                if (result.old_value !== result.new_value) {
+                    addLogEntry(`Zmiana [${result.field_address}]: '${result.old_value}' → '${result.new_value}'`, 'info');
+                }
+            } else {
+                addLogEntry(`Nieoczekiwana odpowiedź: ${result.message}`, 'warning');
+            }
+
         } catch (error) {
-            addLogEntry(`Błąd podczas aktualizacji aliasu: ${error.message}`, 'error');
+            addLogEntry(`Błąd podczas aktualizacji pola '${fieldName}' (adres ${fieldAddress}): ${error.message}`, 'error');
         }
     }
+
+
+    //--------------------------------------------------------------
 });
