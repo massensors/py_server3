@@ -10,7 +10,9 @@ from fastapi.responses import Response
 from services.cipher import RC4KeyGenerator
 from services.service_mode import ServiceMode
 from services.service_parameter_store import service_parameter_store
+import logging
 
+logger = logging.getLogger(__name__)
 
 class CommandHandler:
     """
@@ -62,8 +64,6 @@ class CommandHandler:
         db.add(db_measure)
         db.commit()
 
-        import logging
-        logger = logging.getLogger(__name__)
 
 
 
@@ -77,16 +77,29 @@ class CommandHandler:
 
 
         # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
-        request_value = ServiceMode.get_request_value()
-        return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
+        try:
+            request = ServiceMode.get_request_value()
+        except Exception as e:
+            logger.error(f"Błąd pobierania request_value z ServiceMode: {e}")
+            # Fallback - domyślna wartość
+            request = 0x03 if ServiceMode.is_enabled() else 0x00
+
+
+        return self._prepare_response(decoded_data, flag, status=0x01, request=request)
 
     def _handle_register_unit(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
         Obsługa komendy CMD_0 (0x0000)
         """
         # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
-        request_value = ServiceMode.get_request_value()
-        return self._prepare_response_register(decoded_data, flag, status=0x01, request=request_value)
+        try:
+           request = ServiceMode.get_request_value()
+        except Exception as e:
+            logger.error(f"Błąd pobierania request_value z ServiceMode: {e}")
+            # Fallback - domyślna wartość
+            request = 0x03 if ServiceMode.is_enabled() else 0x00
+
+        return self._prepare_response_register(decoded_data, flag, status=0x01, request=request)
 
     def _handle_cmd_1(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
@@ -124,7 +137,13 @@ class CommandHandler:
         Obsługa komendy CMD_4 (0x0004)
         """
         # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
-        request_value = ServiceMode.get_request_value()
+        try:
+            request = ServiceMode.get_request_value()
+        except Exception as e:
+            logger.error(f"Błąd pobierania request_value z ServiceMode: {e}")
+            # Fallback - domyślna wartość
+            request = 0x03 if ServiceMode.is_enabled() else 0x00
+
         return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
 
     def _handle_capture_static(self, decoded_data: bytes, flag: int, db: Session) -> Response:
@@ -193,8 +212,7 @@ class CommandHandler:
             param_address: Adres parametru (domyślnie 0)
             param_data: Dane parametru jako string (domyślnie pusty)
         """
-        import logging
-        logger = logging.getLogger(__name__)
+
 
         # Pobierz parametry ze store jeśli nie zostały przekazane w argumentach
         if param_address == 0 and param_data == "":
@@ -221,7 +239,12 @@ class CommandHandler:
 
         # Standardowo status i request z uwzględnieniem trybu serwisowego
         status = 0x01
-        request = ServiceMode.get_request_value()
+        try:
+            request = ServiceMode.get_request_value()
+        except Exception as e:
+            logger.error(f"Błąd pobierania request_value z ServiceMode: {e}")
+            # Fallback - domyślna wartość
+            request = 0x03 if ServiceMode.is_enabled() else 0x00
 
         # Ustawianie adresu parametru - używamy przekazanego parametru lub domyślnego
         param_address_byte = param_address if param_address > 0 else 0x00
@@ -251,8 +274,7 @@ class CommandHandler:
         # W zależności od adresu parametru, możemy dodać dodatkową logikę
         if param_address_byte > 0 and param_address_byte <= 15:
             # Logika dla konkretnych parametrów
-            import logging
-            logger = logging.getLogger(__name__)
+
             logger.info(f"Obsługa parametru serwisowego - adres: {param_address_byte}, dane: {param_data}")
 
         # Pobieram STATUS z odpowiedzi (jeśli dane są dostępne)
@@ -261,8 +283,7 @@ class CommandHandler:
             status = int.from_bytes(_status, 'big')
 
         # Logowanie statusu i interpretacja
-        import logging
-        logger = logging.getLogger(__name__)
+
 
         if status == 0:
             logger.info("Tryb serwisowy jest aktywny")

@@ -64,7 +64,7 @@ class CommandID(IntEnum):
     CMD_1 = 0x0001
     CAPTURE_ALIASES = 0x0002
     MEASURE_DATA = 0x0003  # Komenda do przesyłania danych pomiarowych
-    CMD_4 = 0x0004
+    CAPTURE_DYNAMIC = 0x0004
     CAPTURE_STATIC = 0x0005
     SERVICE_DATA = 0x0006
 
