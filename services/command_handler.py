@@ -31,7 +31,7 @@ class CommandHandler:
             CommandID.REGISTER_UNIT: self._handle_register_unit,
             CommandID.CMD_1: self._handle_cmd_1,
             CommandID.CAPTURE_ALIASES: self._handle_capture_aliases,
-            CommandID.CMD_4: self._handle_cmd_4,
+            CommandID.CAPTURE_DYNAMIC: self._handle_capture_dynamic,
             CommandID.CAPTURE_STATIC: self._handle_capture_static,
             CommandID.SERVICE_DATA: self._handle_service_data,
         }
@@ -119,7 +119,7 @@ class CommandHandler:
         request_value = ServiceMode.get_request_value()
         return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
 
-    def _handle_cmd_4(self, decoded_data: bytes, flag: int, db: Session) -> Response:
+    def _handle_capture_dynamic(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
         Obsługa komendy CMD_4 (0x0004)
         """
@@ -280,6 +280,17 @@ class CommandHandler:
             logger.warning(f"Nieznany status: {status}")
             ServiceMode.set_active(False)
             ServiceMode.set_status_message(f"Nieznany status: {status}")
+
+            # Logowanie wartości request dla debugowania
+        request_mode = ServiceMode.get_request_mode()
+        logger.info(f"Tryb żądania: {request_mode}, wartość request: 0x{request:02X}")
+
+        if request == 0x02:
+            logger.info("Zewnętrzny kontroler zostanie przełączony na dynamiczne przesyłanie danych (0x0004)")
+        elif request == 0x03:
+            logger.info("Tryb serwisowy będzie podtrzymany")
+        elif request == 0x00:
+            logger.info("Zewnętrzny kontroler wyjdzie z trybu serwisowego")
 
         # Pobieramy DEVICE_ID i COMMAND_ID z sekcji JAWNA
         _device_id = decoded_data[4:14]  # 10 bajtów

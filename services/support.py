@@ -9,7 +9,12 @@ import hashlib
 from Crypto.Cipher import ARC4
 from crc import Calculator, Configuration
 from services.cipher import  RC4KeyGenerator
+import logging
 
+from services.dynamic_mode import dynamic_readings_store
+
+# Logger dla modułu
+logger = logging.getLogger(__name__)
 
 
 CRC8_CONFIG = Configuration(
@@ -317,6 +322,48 @@ class ProtocolAnalyzer:
            scaleId=scaleId
 
         )
+
+    @staticmethod
+    def parse_dynamic_data(data: bytes) -> None:
+        """
+                Parsuje dane dla komendy DYNAMIC_DATA (0x0004)  i zapisuje w globalnym kontenerze
+
+                """
+        # Początek sekcji SZYFROWANA
+        data_start = 4 + 17  # HEADER(4B) + JAWNA(17B)
+
+        # Pomijamy DATA_LEN (1B)
+        data_content_start = data_start + 1
+
+        # Parsowanie pól
+        status = data[data_content_start]
+        request = data[data_content_start + 1]
+
+        # Wydobycie DEVICE_ID z sekcji JAWNA
+        device_id = data[4:14].decode('ascii').strip()
+
+        # Wydobycie pozostałych pól
+        mv_reading = data[data_content_start + 2:data_content_start + 10].decode('ascii').strip()
+        conv_digits = data[data_content_start + 10:data_content_start + 18].decode('ascii').strip()
+        scale_weight = data[data_content_start + 18:data_content_start + 26].decode('ascii').strip()
+        belt_weight = data[data_content_start + 26:data_content_start + 34].decode('ascii').strip()
+        current_time = data[data_content_start + 34:data_content_start + 53].decode('ascii').strip()
+
+        # Zapisz odczyty w globalnym kontenerze
+        dynamic_readings_store.update_readings(
+            device_id=device_id,
+            mv_reading=mv_reading,
+            conv_digits=conv_digits,
+            scale_weight=scale_weight,
+            belt_weight=belt_weight,
+            current_time=current_time
+        )
+
+        logger.info(f"Przechwycono odczyty dynamiczne - Reading:{mv_reading}, Digits:{conv_digits}, "
+                    f"Scale:{scale_weight}, Belt:{belt_weight}, Time:{current_time}")
+
+
+
     #---------NOWY
     @staticmethod
     def parse_static_data(data: bytes) -> StaticDataPayload:

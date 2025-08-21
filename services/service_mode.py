@@ -6,6 +6,7 @@ class ServiceMode:
     _enabled = False
     _active = False
     _status_message = "Nieznany status"
+    _request_mode = "service"  # Nowe pole: "service", "readings", "normal"
 
     def __new__(cls):
         if cls._instance is None:
@@ -21,11 +22,59 @@ class ServiceMode:
     def set_enabled(cls, enabled: bool) -> None:
         """Ustawia stan trybu serwisowego"""
         cls._enabled = enabled
+        # Gdy wyłączamy tryb serwisowy, resetujemy tryb na normalny
+        if not enabled:
+            cls._request_mode = "normal"
 
     @classmethod
     def get_request_value(cls) -> int:
-        """Zwraca wartość request na podstawie stanu trybu serwisowego"""
-        return 0x03 if cls._enabled else 0x00
+        """Zwraca wartość request na podstawie stanu trybu serwisowego i typu żądania"""
+        if not cls._enabled:
+            return 0x00  # Tryb normalny/pomiarowy
+
+        # Gdy tryb serwisowy jest włączony, sprawdzamy typ żądania
+        if cls._request_mode == "readings":
+            return 0x02  # Tryb odczytów dynamicznych
+        elif cls._request_mode == "service":
+            return 0x03  # Standardowy tryb serwisowy
+        else:
+            return 0x00  # Fallback - tryb normalny
+
+    @classmethod
+    def set_request_mode(cls, mode: str) -> None:
+        """
+        Ustawia tryb żądania
+        Dozwolone wartości: "normal", "service", "readings"
+        """
+        valid_modes = ["normal", "service", "readings"]
+        if mode in valid_modes:
+            cls._request_mode = mode
+            # Gdy przełączamy na tryb odczytów, automatycznie włączamy tryb serwisowy
+            if mode == "readings":
+                cls._enabled = True
+        else:
+            raise ValueError(f"Nieprawidłowy tryb: {mode}. Dozwolone: {valid_modes}")
+
+    @classmethod
+    def get_request_mode(cls) -> str:
+        """Zwraca aktualny tryb żądania"""
+        return cls._request_mode
+
+    @classmethod
+    def activate_readings_mode(cls) -> None:
+        """Aktywuje tryb odczytów dynamicznych"""
+        cls.set_request_mode("readings")
+        cls._status_message = "Tryb odczytów dynamicznych aktywny"
+
+    @classmethod
+    def deactivate_readings_mode(cls) -> None:
+        """Deaktywuje tryb odczytów i wraca do standardowego trybu serwisowego"""
+        if cls._enabled:
+            cls.set_request_mode("service")
+            cls._status_message = "Tryb serwisowy aktywny"
+        else:
+            cls.set_request_mode("normal")
+            cls._status_message = "Tryb normalny"
 
     @classmethod
     def toggle(cls, enabled: bool):
@@ -45,7 +94,8 @@ class ServiceMode:
         return {
             "enabled": cls._enabled,
             "status_message": cls._status_message,
-            "request_value": cls.get_request_value()
+            "request_value": cls.get_request_value(),
+            "request_mode": cls._request_mode
         }
 
     @classmethod

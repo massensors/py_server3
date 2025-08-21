@@ -399,3 +399,121 @@ input:checked + .slider:before {
     gap: 10px;
     margin-bottom: 20px;
 }
+
+/* Style dla zakładki Odczyty */
+.odczyty-controls {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-indicator {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.status-indicator.active {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-indicator.inactive {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-indicator.waiting {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+/* Monitor odczytów - podobny do monitora komunikacji */
+.odczyty-log-container {
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+.odczyty-log-entries {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.odczyty-log-entry {
+    margin-bottom: 8px;
+    padding: 8px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: white;
+    border-radius: 3px;
+}
+
+.odczyty-log-entry:last-child {
+    border-bottom: none;
+}
+
+.odczyty-log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.odczyty-log-time {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.odczyty-log-device {
+    color: #007bff;
+    font-size: 0.9rem;
+}
+
+.odczyty-log-data {
+    margin-left: 10px;
+    color: #333;
+}
+
+.odczyty-log-field {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 3px;
+}
+
+.odczyty-log-field-name {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.odczyty-log-field-value {
+    color: #dc3545;
+    margin-left: 5px;
+}
+
+/* Różne kolory dla różnych typów odczytów */
+.odczyty-log-entry.reading-new {
+    border-left: 4px solid #28a745;
+}
+
+.odczyty-log-entry.reading-update {
+    border-left: 4px solid #ffc107;
+}
+
+.odczyty-log-entry.reading-error {
+    border-left: 4px solid #dc3545;
+    background-color: #f8d7da;
+}
