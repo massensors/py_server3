@@ -187,3 +187,225 @@
 2025-08-26 16:00:38,453 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
 2025-08-26 16:00:38,454 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
 2025-08-26 16:00:38,455 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:00:48,818 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:00:48,818 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:00:48,818 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-26 16:00:48,818 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 38 20 20 36 33 2e 31 38 20 20 20 20 20 20 20 20 20 31 30 39 32 30 32 34 2d 30 38 2d 32 36 20 31 34 3a 35 39 3a 34 32 fa a7 87 55
+2025-08-26 16:00:48,825 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
+2025-08-26 16:00:48,826 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
+2025-08-26 16:00:48,826 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:00:59,189 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:00:59,189 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:00:59,189 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-26 16:00:59,189 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 33 2e 31 36 20 20 20 20 20 20 20 20 20 31 31 30 32 30 32 34 2d 30 38 2d 32 36 20 31 34 3a 35 39 3a 35 33 ec 5c 48 55
+2025-08-26 16:00:59,200 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
+2025-08-26 16:00:59,200 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
+2025-08-26 16:00:59,201 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:09,565 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:09,565 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:01:09,565 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-26 16:01:09,565 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 32 20 20 36 34 2e 34 37 20 20 20 20 20 20 20 20 20 31 31 31 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 30 33 e0 90 84 55
+2025-08-26 16:01:09,573 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
+2025-08-26 16:01:09,573 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
+2025-08-26 16:01:09,574 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:13,492 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:13,492 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
+2025-08-26 16:01:13,492 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:01:13,492 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:01:13,493 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:15,028 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:15,028 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /dynamic-readings/activate
+2025-08-26 16:01:15,028 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '0', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:01:15,029 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:01:15,029 - services.dynamic_mode - INFO - [dynamic_mode.py:92] - DynamicModeResponse: request_value ustawione na 0x2
+2025-08-26 16:01:15,029 - routers.dynamic_readings - INFO - [dynamic_readings.py:64] - Aktywowano tryb odczytów dynamicznych
+2025-08-26 16:01:15,029 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:17,272 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:17,272 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /dynamic-readings/readings
+2025-08-26 16:01:17,272 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:01:17,272 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:01:17,273 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:19,937 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:19,937 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:01:19,938 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-26 16:01:19,938 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 39 20 20 36 35 2e 32 34 20 20 20 20 20 20 20 20 20 31 31 32 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 31 33 e5 68 99 55
+2025-08-26 16:01:19,945 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 02 05 00 08 55
+2025-08-26 16:01:19,946 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:20,641 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:20,641 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /dynamic-readings/readings
+2025-08-26 16:01:20,641 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:01:20,641 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:01:20,642 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:22,872 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:22,872 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /dynamic-readings/readings
+2025-08-26 16:01:22,873 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:01:22,873 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:01:22,873 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:26,307 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:26,307 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:01:26,307 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '87', 'connection': 'Close'}
+2025-08-26 16:01:26,307 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 04 00 20 31 33 00 3d 09 01 20 20 20 20 31 2e 36 38 20 20 31 32 37 36 33 39 20 20 20 32 34 2e 32 36 20 20 20 31 31 2e 37 35 20 20 20 20 31 2e 38 31 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 32 30 be ce 54 55
+2025-08-26 16:01:26,309 - services.dynamic_mode - INFO - [dynamic_mode.py:44] - Zaktualizowano odczyty dynamiczne dla urz¹dzenia 1126326593
+2025-08-26 16:01:26,310 - services.support - INFO - [support.py:364] - Przechwycono odczyty dynamiczne - Reading:1.68, Digits:127639, Scale:24.26, Belt:11.75,ZeroFactor:1.81 Time:2024-08-26 15:00:20
+2025-08-26 16:01:26,310 - services.command_handler - INFO - [command_handler.py:148] - request is set to: 2
+2025-08-26 16:01:26,310 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 04 00 00 00 00 00 02 01 02 05 1c f2 55
+2025-08-26 16:01:26,311 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:30,556 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:30,556 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /dynamic-readings/readings
+2025-08-26 16:01:30,557 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:01:30,557 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:01:30,558 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:32,673 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:32,674 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:01:32,674 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '87', 'connection': 'Close'}
+2025-08-26 16:01:32,674 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 04 00 20 31 33 00 3d 09 01 20 20 20 20 31 2e 37 39 20 20 31 33 31 35 35 32 20 20 20 32 35 2e 31 31 20 20 20 31 30 2e 35 37 20 20 20 20 32 2e 31 39 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 32 36 b7 0d ce 55
+2025-08-26 16:01:32,676 - services.dynamic_mode - INFO - [dynamic_mode.py:44] - Zaktualizowano odczyty dynamiczne dla urz¹dzenia 1126326593
+2025-08-26 16:01:32,676 - services.support - INFO - [support.py:364] - Przechwycono odczyty dynamiczne - Reading:1.79, Digits:131552, Scale:25.11, Belt:10.57,ZeroFactor:2.19 Time:2024-08-26 15:00:26
+2025-08-26 16:01:32,676 - services.command_handler - INFO - [command_handler.py:148] - request is set to: 2
+2025-08-26 16:01:32,677 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 04 00 00 00 00 00 02 01 02 05 1c f2 55
+2025-08-26 16:01:32,677 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:39,011 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:39,011 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /dynamic-readings/readings
+2025-08-26 16:01:39,012 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:01:39,012 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:01:39,012 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:39,045 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:39,045 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:01:39,045 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '87', 'connection': 'Close'}
+2025-08-26 16:01:39,045 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 04 00 20 31 33 00 3d 09 01 20 20 20 20 31 2e 37 39 20 20 31 33 31 33 39 38 20 20 20 32 32 2e 31 35 20 20 20 31 31 2e 32 31 20 20 20 20 32 2e 31 32 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 33 32 ae 99 6f 55
+2025-08-26 16:01:39,048 - services.dynamic_mode - INFO - [dynamic_mode.py:44] - Zaktualizowano odczyty dynamiczne dla urz¹dzenia 1126326593
+2025-08-26 16:01:39,048 - services.support - INFO - [support.py:364] - Przechwycono odczyty dynamiczne - Reading:1.79, Digits:131398, Scale:22.15, Belt:11.21,ZeroFactor:2.12 Time:2024-08-26 15:00:32
+2025-08-26 16:01:39,048 - services.command_handler - INFO - [command_handler.py:148] - request is set to: 2
+2025-08-26 16:01:39,049 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 04 00 00 00 00 00 02 01 02 05 1c f2 55
+2025-08-26 16:01:39,050 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:45,412 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:45,413 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:01:45,413 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '87', 'connection': 'Close'}
+2025-08-26 16:01:45,413 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 04 00 20 31 33 00 3d 09 01 20 20 20 20 31 2e 38 32 20 20 31 33 35 35 36 31 20 20 20 32 33 2e 38 30 20 20 20 31 30 2e 37 32 20 20 20 20 32 2e 33 38 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 33 39 bb 10 7e 55
+2025-08-26 16:01:45,415 - services.dynamic_mode - INFO - [dynamic_mode.py:44] - Zaktualizowano odczyty dynamiczne dla urz¹dzenia 1126326593
+2025-08-26 16:01:45,415 - services.support - INFO - [support.py:364] - Przechwycono odczyty dynamiczne - Reading:1.82, Digits:135561, Scale:23.80, Belt:10.72,ZeroFactor:2.38 Time:2024-08-26 15:00:39
+2025-08-26 16:01:45,416 - services.command_handler - INFO - [command_handler.py:148] - request is set to: 2
+2025-08-26 16:01:45,416 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 04 00 00 00 00 00 02 01 02 05 1c f2 55
+2025-08-26 16:01:45,417 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:50,738 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:50,738 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /dynamic-readings/readings
+2025-08-26 16:01:50,738 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:01:50,738 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:01:50,739 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:51,780 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:51,780 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:01:51,781 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '87', 'connection': 'Close'}
+2025-08-26 16:01:51,781 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 04 00 20 31 33 00 3d 09 01 20 20 20 20 31 2e 37 39 20 20 31 33 33 33 34 39 20 20 20 32 32 2e 34 36 20 20 20 31 30 2e 38 31 20 20 20 20 32 2e 30 32 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 34 35 b8 fe 5d 55
+2025-08-26 16:01:51,783 - services.dynamic_mode - INFO - [dynamic_mode.py:44] - Zaktualizowano odczyty dynamiczne dla urz¹dzenia 1126326593
+2025-08-26 16:01:51,784 - services.support - INFO - [support.py:364] - Przechwycono odczyty dynamiczne - Reading:1.79, Digits:133349, Scale:22.46, Belt:10.81,ZeroFactor:2.02 Time:2024-08-26 15:00:45
+2025-08-26 16:01:51,784 - services.command_handler - INFO - [command_handler.py:148] - request is set to: 2
+2025-08-26 16:01:51,784 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 04 00 00 00 00 00 02 01 02 05 1c f2 55
+2025-08-26 16:01:51,785 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:01:58,148 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:01:58,148 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:01:58,148 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '87', 'connection': 'Close'}
+2025-08-26 16:01:58,148 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 04 00 20 31 33 00 3d 09 01 20 20 20 20 31 2e 37 34 20 20 31 32 39 35 35 37 20 20 20 32 35 2e 34 38 20 20 20 31 31 2e 34 34 20 20 20 20 32 2e 30 39 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 35 32 c3 a7 0e 55
+2025-08-26 16:01:58,151 - services.dynamic_mode - INFO - [dynamic_mode.py:44] - Zaktualizowano odczyty dynamiczne dla urz¹dzenia 1126326593
+2025-08-26 16:01:58,151 - services.support - INFO - [support.py:364] - Przechwycono odczyty dynamiczne - Reading:1.74, Digits:129557, Scale:25.48, Belt:11.44,ZeroFactor:2.09 Time:2024-08-26 15:00:52
+2025-08-26 16:01:58,151 - services.command_handler - INFO - [command_handler.py:148] - request is set to: 2
+2025-08-26 16:01:58,151 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 04 00 00 00 00 00 02 01 02 05 1c f2 55
+2025-08-26 16:01:58,152 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:03,403 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:03,403 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /dynamic-readings/deactivate
+2025-08-26 16:02:03,403 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '0', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:02:03,403 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:02:03,404 - services.dynamic_mode - INFO - [dynamic_mode.py:92] - DynamicModeResponse: request_value ustawione na 0x3
+2025-08-26 16:02:03,404 - routers.dynamic_readings - INFO - [dynamic_readings.py:89] - Deaktywowano tryb odczytów dynamicznych
+2025-08-26 16:02:03,404 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:03,404 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /dynamic-readings/deactivate
+2025-08-26 16:02:03,404 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '0', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:02:03,405 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:02:03,405 - services.dynamic_mode - INFO - [dynamic_mode.py:92] - DynamicModeResponse: request_value ustawione na 0x3
+2025-08-26 16:02:03,405 - routers.dynamic_readings - INFO - [dynamic_readings.py:89] - Deaktywowano tryb odczytów dynamicznych
+2025-08-26 16:02:03,405 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:03,406 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:04,516 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:04,516 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:02:04,516 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '87', 'connection': 'Close'}
+2025-08-26 16:02:04,516 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 04 00 20 31 33 00 3d 09 01 20 20 20 20 31 2e 37 30 20 20 31 33 30 37 36 30 20 20 20 32 33 2e 31 34 20 20 20 31 30 2e 36 32 20 20 20 20 31 2e 37 34 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 30 3a 35 38 b0 49 0a 55
+2025-08-26 16:02:04,519 - services.dynamic_mode - INFO - [dynamic_mode.py:44] - Zaktualizowano odczyty dynamiczne dla urz¹dzenia 1126326593
+2025-08-26 16:02:04,519 - services.support - INFO - [support.py:364] - Przechwycono odczyty dynamiczne - Reading:1.70, Digits:130760, Scale:23.14, Belt:10.62,ZeroFactor:1.74 Time:2024-08-26 15:00:58
+2025-08-26 16:02:04,519 - services.command_handler - INFO - [command_handler.py:148] - request is set to: 3
+2025-08-26 16:02:04,520 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 04 00 00 00 00 00 02 01 03 06 1f a0 55
+2025-08-26 16:02:04,520 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:05,652 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:05,652 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
+2025-08-26 16:02:05,652 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:02:05,652 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:02:05,653 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:10,875 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:10,875 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:02:10,875 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '28', 'connection': 'Close'}
+2025-08-26 16:02:10,875 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 06 00 20 31 33 00 02 00 00 02 6d 7e 55
+2025-08-26 16:02:10,877 - services.command_handler - INFO - [command_handler.py:291] - Tryb serwisowy jest aktywny
+2025-08-26 16:02:10,877 - services.command_handler - INFO - [command_handler.py:309] - Tryb ¿¹dania: service, wartoœæ request: 0x03
+2025-08-26 16:02:10,877 - services.command_handler - INFO - [command_handler.py:314] - Tryb serwisowy bêdzie podtrzymany
+2025-08-26 16:02:10,878 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 06 00 00 00 00 00 16 00 03 00 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 79 a5 23 55
+2025-08-26 16:02:10,878 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:13,824 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:13,824 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /service-mode/toggle
+2025-08-26 16:02:13,824 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'content-length': '17', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'content-type': 'application/json', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'origin': 'http://localhost:8080', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:02:13,825 - main - DEBUG - [main.py:84] - Request body: 7b 22 65 6e 61 62 6c 65 64 22 3a 66 61 6c 73 65 7d
+2025-08-26 16:02:13,827 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:17,238 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:17,238 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:02:17,238 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '28', 'connection': 'Close'}
+2025-08-26 16:02:17,238 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 06 00 20 31 33 00 02 00 00 02 6d 7e 55
+2025-08-26 16:02:17,240 - services.command_handler - INFO - [command_handler.py:291] - Tryb serwisowy jest aktywny
+2025-08-26 16:02:17,240 - services.command_handler - INFO - [command_handler.py:309] - Tryb ¿¹dania: normal, wartoœæ request: 0x00
+2025-08-26 16:02:17,240 - services.command_handler - INFO - [command_handler.py:316] - Zewnêtrzny kontroler wyjdzie z trybu serwisowego
+2025-08-26 16:02:17,241 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 06 00 00 00 00 00 16 00 00 00 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 76 e2 a4 55
+2025-08-26 16:02:17,242 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:20,981 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:20,981 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
+2025-08-26 16:02:20,982 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:02:20,982 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:02:20,982 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:22,292 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:22,293 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
+2025-08-26 16:02:22,293 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:02:22,293 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:02:22,293 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:22,606 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:22,606 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:02:22,606 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-26 16:02:22,606 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 34 20 20 36 36 2e 31 36 20 20 20 20 20 20 20 20 20 31 31 33 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 31 3a 31 36 e7 6d 0d 55
+2025-08-26 16:02:22,613 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
+2025-08-26 16:02:22,614 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
+2025-08-26 16:02:22,615 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:24,764 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:24,764 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
+2025-08-26 16:02:24,764 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:02:24,764 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:02:24,765 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:30,457 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:30,457 - main - DEBUG - [main.py:81] - [REQUEST] Method: GET Path: /service-mode/status
+2025-08-26 16:02:30,457 - main - DEBUG - [main.py:82] - Headers: {'host': 'localhost:8080', 'connection': 'keep-alive', 'sec-ch-ua-platform': '"Windows"', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'sec-ch-ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'sec-ch-ua-mobile': '?0', 'accept': '*/*', 'sec-fetch-site': 'same-origin', 'sec-fetch-mode': 'cors', 'sec-fetch-dest': 'empty', 'referer': 'http://localhost:8080/ui', 'accept-encoding': 'gzip, deflate, br, zstd', 'accept-language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7'}
+2025-08-26 16:02:30,457 - main - DEBUG - [main.py:84] - Request body: 
+2025-08-26 16:02:30,458 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:32,978 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:32,978 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:02:32,978 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-26 16:02:32,978 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 30 20 20 36 34 2e 39 35 20 20 20 20 20 20 20 20 20 31 31 34 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 31 3a 32 36 ea 13 e8 55
+2025-08-26 16:02:32,985 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
+2025-08-26 16:02:32,986 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
+2025-08-26 16:02:32,986 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:43,349 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:43,350 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:02:43,350 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-26 16:02:43,350 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 33 20 20 36 32 2e 35 33 20 20 20 20 20 20 20 20 20 31 31 35 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 31 3a 33 37 e8 db c7 55
+2025-08-26 16:02:43,356 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
+2025-08-26 16:02:43,357 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
+2025-08-26 16:02:43,357 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
+2025-08-26 16:02:53,722 - main - DEBUG - [main.py:80] - ==================================================
+2025-08-26 16:02:53,722 - main - DEBUG - [main.py:81] - [REQUEST] Method: POST Path: /commands/analyze
+2025-08-26 16:02:53,722 - main - DEBUG - [main.py:82] - Headers: {'host': '192.168.1.100:8080', 'content-type': 'application/octet-stream', 'content-length': '72', 'connection': 'Close'}
+2025-08-26 16:02:53,722 - main - DEBUG - [main.py:84] - Request body: aa 55 01 06 31 31 32 36 33 32 36 35 39 33 00 03 00 20 31 33 00 2e 09 01 20 20 31 2e 32 35 20 20 36 35 2e 34 35 20 20 20 20 20 20 20 20 20 31 31 36 32 30 32 34 2d 30 38 2d 32 36 20 31 35 3a 30 31 3a 34 37 f0 ba 86 55
+2025-08-26 16:02:53,740 - services.command_handler - INFO - [command_handler.py:75] - Tryb serwisowy nieaktywny
+2025-08-26 16:02:53,741 - routers.commands - DEBUG - [commands.py:71] - Zawartoœæ ramki zwrotnej: aa 55 01 00 31 31 32 36 33 32 36 35 39 33 80 03 00 00 00 00 00 02 01 00 03 06 ac 55
+2025-08-26 16:02:53,741 - main - DEBUG - [main.py:86] - [RESPONSE] Status: 200
