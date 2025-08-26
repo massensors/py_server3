@@ -28,7 +28,7 @@ class DynamicReadingsStore:
             self._initialized = True
 
     def update_readings(self, device_id: str, mv_reading: str, conv_digits: str,
-                       scale_weight: str, belt_weight: str, current_time: str):
+                       scale_weight: str, belt_weight: str, zero_factor: str,  current_time: str):
         """Aktualizuje odczyty dynamiczne"""
         with self._lock:
             self.readings = {
@@ -37,6 +37,7 @@ class DynamicReadingsStore:
                 'conv_digits': conv_digits,
                 'scale_weight': scale_weight,
                 'belt_weight': belt_weight,
+                'zero_factor': zero_factor,
                 'current_time': current_time
             }
             self.last_update = datetime.now()

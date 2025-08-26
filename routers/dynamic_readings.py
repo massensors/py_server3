@@ -81,6 +81,8 @@ async def deactivate_readings_mode():
     # Również deaktywacja w DynamicModeResponse jeśli istnieje
     try:
         dynamic_mode_response.deactivate_reading_mode()
+
+
     except Exception as e:
         logger.warning(f"Błąd deaktywacji w dynamic_mode_response: {e}")
 

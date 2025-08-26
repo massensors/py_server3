@@ -144,7 +144,9 @@ class CommandHandler:
             # Fallback - domyślna wartość
             request = 0x03 if ServiceMode.is_enabled() else 0x00
 
-        return self._prepare_response(decoded_data, flag, status=0x01, request=request_value)
+        dynamic_data = ProtocolAnalyzer.parse_dynamic_data(decoded_data)
+        logger.info(f"request is set to: {request}")
+        return self._prepare_response(decoded_data, flag, status=0x01, request=request)
 
     def _handle_capture_static(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """

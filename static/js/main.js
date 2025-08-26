@@ -14,30 +14,30 @@ let dynamicReadingsActive = false;
 
 // Mapowanie adresów parametrów (musi być zgodne z backend)
 const PARAMETER_MAPPING = {
-    0: { name: "dummy", label: "Dummy", format: "1B" },
-    1: { name: "filterRate", label: "Filter Rate", format: "1B" },
-    2: { name: "scaleCapacity", label: "Scale Capacity", format: "8B" },
-    3: { name: "autoZero", label: "Auto Zero", format: "8B" },
-    4: { name: "deadBand", label: "Dead Band", format: "8B" },
-    5: { name: "scaleType", label: "Scale Type", format: "1B" },
-    6: { name: "loadcellSet", label: "Load Cell Set", format: "1B" },
-    7: { name: "loadcellCapacity", label: "Load Cell Capacity", format: "8B" },
-    8: { name: "trimm", label: "Trimm", format: "8B" },
-    9: { name: "idlerSpacing", label: "Idler Spacing", format: "8B" },
-    10: { name: "speedSource", label: "Speed Source", format: "1B" },
-    11: { name: "wheelDiameter", label: "Wheel Diameter", format: "8B" },
-    12: { name: "pulsesPerRev", label: "Pulses Per Rev", format: "8B" },
-    13: { name: "beltLength", label: "Belt Length", format: "8B" },
-    14: { name: "beltLengthPulses", label: "Belt Length Pulses", format: "8B" },
-    15: { name: "currentTime", label: "Current Time", format: "19B" }
+    0: {name: "dummy", label: "Dummy", format: "1B"},
+    1: {name: "filterRate", label: "Filter Rate", format: "1B"},
+    2: {name: "scaleCapacity", label: "Scale Capacity", format: "8B"},
+    3: {name: "autoZero", label: "Auto Zero", format: "8B"},
+    4: {name: "deadBand", label: "Dead Band", format: "8B"},
+    5: {name: "scaleType", label: "Scale Type", format: "1B"},
+    6: {name: "loadcellSet", label: "Load Cell Set", format: "1B"},
+    7: {name: "loadcellCapacity", label: "Load Cell Capacity", format: "8B"},
+    8: {name: "trimm", label: "Trimm", format: "8B"},
+    9: {name: "idlerSpacing", label: "Idler Spacing", format: "8B"},
+    10: {name: "speedSource", label: "Speed Source", format: "1B"},
+    11: {name: "wheelDiameter", label: "Wheel Diameter", format: "8B"},
+    12: {name: "pulsesPerRev", label: "Pulses Per Rev", format: "8B"},
+    13: {name: "beltLength", label: "Belt Length", format: "8B"},
+    14: {name: "beltLengthPulses", label: "Belt Length Pulses", format: "8B"},
+    15: {name: "currentTime", label: "Current Time", format: "19B"}
 };
 
 // Mapowanie pól aliasów
 const ALIAS_FIELDS = [
-    { name: "company", label: "Firma" },
-    { name: "location", label: "Lokalizacja" },
-    { name: "productName", label: "Nazwa produktu" },
-    { name: "scaleId", label: "ID wagi" }
+    {name: "company", label: "Firma"},
+    {name: "location", label: "Lokalizacja"},
+    {name: "productName", label: "Nazwa produktu"},
+    {name: "scaleId", label: "ID wagi"}
 ];
 
 
@@ -51,7 +51,7 @@ const ALIAS_ADDRESS_MAPPING = {
 
 
 // Inicjalizacja
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Elementy DOM
     const deviceIdInput = document.getElementById('deviceId');
     const loadDeviceBtn = document.getElementById('loadDevice');
@@ -74,18 +74,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== FUNKCJE POMOCNICZE =====
 // Funkcja dodająca wpis do logu odczytów
-function addOdczytyLogEntry(data, type = 'new') {
-    if (!odczytyLogEntries) return;
+    function addOdczytyLogEntry(data, type = 'new') {
+        if (!odczytyLogEntries) return;
 
-    const entry = document.createElement('div');
-    entry.className = `odczyty-log-entry reading-${type}`;
+        const entry = document.createElement('div');
+        entry.className = `odczyty-log-entry reading-${type}`;
 
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('pl-PL');
-    const dateString = now.toLocaleDateString('pl-PL');
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('pl-PL');
+        const dateString = now.toLocaleDateString('pl-PL');
 
-    if (data && data.has_data) {
-        entry.innerHTML = `
+        if (data && data.has_data) {
+            entry.innerHTML = `
             <div class="odczyty-log-header">
                 <span class="odczyty-log-device">Urządzenie: ${data.device_id}</span>
                 <span class="odczyty-log-time">${dateString} ${timeString}</span>
@@ -113,10 +113,10 @@ function addOdczytyLogEntry(data, type = 'new') {
                 </div>
             </div>
         `;
-    } else {
-        // Wpis informacyjny
-        entry.className = `odczyty-log-entry reading-${type}`;
-        entry.innerHTML = `
+        } else {
+            // Wpis informacyjny
+            entry.className = `odczyty-log-entry reading-${type}`;
+            entry.innerHTML = `
             <div class="odczyty-log-header">
                 <span class="odczyty-log-device">System</span>
                 <span class="odczyty-log-time">${dateString} ${timeString}</span>
@@ -125,105 +125,105 @@ function addOdczytyLogEntry(data, type = 'new') {
                 <span class="odczyty-log-field-value">${data || 'Brak nowych danych'}</span>
             </div>
         `;
-    }
+        }
 
-    odczytyLogEntries.appendChild(entry);
-    odczytyLogEntries.scrollTop = odczytyLogEntries.scrollHeight;
+        odczytyLogEntries.appendChild(entry);
+        odczytyLogEntries.scrollTop = odczytyLogEntries.scrollHeight;
 
-    // Ograniczenie liczby wpisów do 100
-    const entries = odczytyLogEntries.children;
-    if (entries.length > 100) {
-        odczytyLogEntries.removeChild(entries[0]);
+        // Ograniczenie liczby wpisów do 100
+        const entries = odczytyLogEntries.children;
+        if (entries.length > 100) {
+            odczytyLogEntries.removeChild(entries[0]);
+        }
     }
-}
 
 // Funkcja ładująca odczyty dynamiczne
-async function loadDynamicReadings() {
-    try {
-        const response = await fetch(`${API_URL}/dynamic-readings/readings`);
-        if (response.ok) {
-            const data = await response.json();
+    async function loadDynamicReadings() {
+        try {
+            const response = await fetch(`${API_URL}/dynamic-readings/readings`);
+            if (response.ok) {
+                const data = await response.json();
 
-            if (data.has_data) {
-                addOdczytyLogEntry(data, 'new');
-                updateOdczytyStatus('active', 'Odczyty aktywne - dane otrzymane');
+                if (data.has_data) {
+                    addOdczytyLogEntry(data, 'new');
+                    updateOdczytyStatus('active', 'Odczyty aktywne - dane otrzymane');
+                } else {
+                    addOdczytyLogEntry('Brak nowych danych odczytów', 'update');
+                    updateOdczytyStatus('waiting', 'Tryb odczytów aktywny - oczekiwanie na dane');
+                }
             } else {
-                addOdczytyLogEntry('Brak nowych danych odczytów', 'update');
-                updateOdczytyStatus('waiting', 'Tryb odczytów aktywny - oczekiwanie na dane');
+                addOdczytyLogEntry('Błąd komunikacji z serwerem', 'error');
+                updateOdczytyStatus('inactive', 'Błąd komunikacji');
             }
-        } else {
-            addOdczytyLogEntry('Błąd komunikacji z serwerem', 'error');
-            updateOdczytyStatus('inactive', 'Błąd komunikacji');
+        } catch (error) {
+            console.error('Błąd podczas ładowania odczytów:', error);
+            addOdczytyLogEntry(`Błąd: ${error.message}`, 'error');
+            updateOdczytyStatus('inactive', 'Błąd połączenia');
+            addLogEntry('Błąd podczas ładowania odczytów dynamicznych', 'error');
         }
-    } catch (error) {
-        console.error('Błąd podczas ładowania odczytów:', error);
-        addOdczytyLogEntry(`Błąd: ${error.message}`, 'error');
-        updateOdczytyStatus('inactive', 'Błąd połączenia');
-        addLogEntry('Błąd podczas ładowania odczytów dynamicznych', 'error');
     }
-}
 
 // Funkcja aktualizująca status odczytów
-function updateOdczytyStatus(status, message) {
-    if (!odczytyStatus) return;
+    function updateOdczytyStatus(status, message) {
+        if (!odczytyStatus) return;
 
-    odczytyStatus.className = `status-indicator ${status}`;
-    odczytyStatus.textContent = message;
-}
+        odczytyStatus.className = `status-indicator ${status}`;
+        odczytyStatus.textContent = message;
+    }
 
 // Aktywacja trybu odczytów
-async function activateReadingsMode() {
-    try {
-        const response = await fetch(`${API_URL}/dynamic-readings/activate`, {
-            method: 'POST'
-        });
-        if (response.ok) {
-            const data = await response.json();
-            dynamicReadingsActive = true;
-            updateOdczytyStatus('waiting', 'Tryb odczytów aktywowany');
-            addOdczytyLogEntry('Tryb odczytów dynamicznych aktywowany', 'update');
-            addLogEntry('Tryb odczytów dynamicznych aktywowany', 'success');
+    async function activateReadingsMode() {
+        try {
+            const response = await fetch(`${API_URL}/dynamic-readings/activate`, {
+                method: 'POST'
+            });
+            if (response.ok) {
+                const data = await response.json();
+                dynamicReadingsActive = true;
+                updateOdczytyStatus('waiting', 'Tryb odczytów aktywowany');
+                addOdczytyLogEntry('Tryb odczytów dynamicznych aktywowany', 'update');
+                addLogEntry('Tryb odczytów dynamicznych aktywowany', 'success');
+            }
+        } catch (error) {
+            addOdczytyLogEntry(`Błąd aktywacji: ${error.message}`, 'error');
+            addLogEntry('Błąd aktywacji trybu odczytów', 'error');
         }
-    } catch (error) {
-        addOdczytyLogEntry(`Błąd aktywacji: ${error.message}`, 'error');
-        addLogEntry('Błąd aktywacji trybu odczytów', 'error');
     }
-}
 
 // Deaktywacja trybu odczytów
-async function deactivateReadingsMode() {
-    try {
-        const response = await fetch(`${API_URL}/dynamic-readings/deactivate`, {
-            method: 'POST'
-        });
-        if (response.ok) {
-            dynamicReadingsActive = false;
-            updateOdczytyStatus('inactive', 'Tryb odczytów deaktywowany');
-            addOdczytyLogEntry('Tryb odczytów dynamicznych deaktywowany', 'update');
-            addLogEntry('Tryb odczytów dynamicznych deaktywowany', 'info');
+    async function deactivateReadingsMode() {
+        try {
+            const response = await fetch(`${API_URL}/dynamic-readings/deactivate`, {
+                method: 'POST'
+            });
+            if (response.ok) {
+                dynamicReadingsActive = false;
+                updateOdczytyStatus('inactive', 'Tryb odczytów deaktywowany');
+                addOdczytyLogEntry('Tryb odczytów dynamicznych deaktywowany', 'update');
+                addLogEntry('Tryb odczytów dynamicznych deaktywowany', 'info');
+            }
+        } catch (error) {
+            addOdczytyLogEntry(`Błąd deaktywacji: ${error.message}`, 'error');
+            addLogEntry('Błąd deaktywacji trybu odczytów', 'error');
         }
-    } catch (error) {
-        addOdczytyLogEntry(`Błąd deaktywacji: ${error.message}`, 'error');
-        addLogEntry('Błąd deaktywacji trybu odczytów', 'error');
     }
-}
 
 // Event listenery dla odczytów
-if (refreshOdczytyBtn) {
-    refreshOdczytyBtn.addEventListener('click', () => {
-        addOdczytyLogEntry('Ręczne odświeżanie odczytów...', 'update');
-        loadDynamicReadings();
-    });
-}
+    if (refreshOdczytyBtn) {
+        refreshOdczytyBtn.addEventListener('click', () => {
+            addOdczytyLogEntry('Ręczne odświeżanie odczytów...', 'update');
+            loadDynamicReadings();
+        });
+    }
 
-if (clearOdczytyLogBtn) {
-    clearOdczytyLogBtn.addEventListener('click', () => {
-        if (odczytyLogEntries) {
-            odczytyLogEntries.innerHTML = '';
-            addOdczytyLogEntry('Log odczytów wyczyszczony', 'update');
-        }
-    });
-}
+    if (clearOdczytyLogBtn) {
+        clearOdczytyLogBtn.addEventListener('click', () => {
+            if (odczytyLogEntries) {
+                odczytyLogEntries.innerHTML = '';
+                addOdczytyLogEntry('Log odczytów wyczyszczony', 'update');
+            }
+        });
+    }
 
 //-------------------------------------- koniec funkcji odczytow dynamicznych
 
@@ -283,7 +283,7 @@ if (clearOdczytyLogBtn) {
     // Funkcja startująca automatyczne odświeżanie
     function startAutoRefresh() {
 
-         return;
+        return;
         // Zatrzymaj poprzedni interval jeśli istnieje
 
         if (serviceModeAutoRefreshInterval) {
@@ -338,10 +338,10 @@ if (clearOdczytyLogBtn) {
         loadServiceModeStatus(true);
 
         // Rozpocznij automatyczne odświeżanie (zakładka Parametry jest aktywna domyślnie)
-       // startAutoRefresh();
+        // startAutoRefresh();
 
         // JEDYNY event listener dla serviceModeToggle
-        serviceModeToggle.addEventListener('change', async function() {
+        serviceModeToggle.addEventListener('change', async function () {
             const enabled = this.checked;
 
             try {
@@ -350,7 +350,7 @@ if (clearOdczytyLogBtn) {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ enabled: enabled })
+                    body: JSON.stringify({enabled: enabled})
                 });
 
                 if (!response.ok) {
@@ -379,7 +379,7 @@ if (clearOdczytyLogBtn) {
 
     // Obsługa przycisku odświeżania trybu serwisowego
     if (refreshServiceModeBtn) {
-        refreshServiceModeBtn.addEventListener('click', async function() {
+        refreshServiceModeBtn.addEventListener('click', async function () {
             addLogEntry('Ręczne odświeżanie statusu trybu serwisowego...', 'info');
             await loadServiceModeStatus(true); // true = ręczne odświeżanie (z logowaniem)
         });
@@ -399,15 +399,14 @@ if (clearOdczytyLogBtn) {
             const tabId = button.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
 
-            // Zarządzanie automatycznym odświeżaniem w zależności od zakładki
+            if (tabId === 'aliasy') {
+                deactivateReadingsMode();
+                addLogEntry('Tryb odczytow wylaczony', 'info');
+            }
+
             if (tabId === 'parameters') {
-                // Włącz automatyczne odświeżanie dla zakładki Parametry
-                startAutoRefresh();
-                addLogEntry('Automatyczne odświeżanie trybu serwisowego włączone', 'info');
-            } else {
-                // Wyłącz automatyczne odświeżanie dla innych zakładek
-                stopAutoRefresh();
-                addLogEntry('Automatyczne odświeżanie trybu serwisowego wyłączone', 'info');
+                deactivateReadingsMode();
+                addLogEntry('Tryb odczytow wylaczony', 'info');
             }
 
             // Jeśli przełączamy na zakładkę pomiary, wczytujemy dane pomiarowe
@@ -417,26 +416,24 @@ if (clearOdczytyLogBtn) {
                     loadPomiaryData();
                 }
             }
-           // Obsługa zakładki odczytów
+            // Obsługa zakładki odczytów
             if (tabId === 'odczyty') {
-                        // Aktywuj tryb odczytów
-                      activateReadingsMode();
-                       addOdczytyLogEntry('Przełączono na zakładkę odczytów', 'update');
+                // Aktywuj tryb odczytów
+                activateReadingsMode();
+                addOdczytyLogEntry('Przełączono na zakładkę odczytów', 'update');
             } else {
-                      // Deaktywuj tryb odczytów gdy opuszczamy zakładkę
-                       if (dynamicReadingsActive) {
-                         deactivateReadingsMode();
-                       }
+                // Deaktywuj tryb odczytów gdy opuszczamy zakładkę
+                if (dynamicReadingsActive) {
+                    deactivateReadingsMode();
+                }
             }
-
-
 
 
         });
     });
 
     // Zatrzymaj automatyczne odświeżanie gdy strona jest ukrywana
-    document.addEventListener('visibilitychange', function() {
+    document.addEventListener('visibilitychange', function () {
         if (document.hidden) {
             stopAutoRefresh();
         } else if (isParametersTabActive()) {
@@ -446,16 +443,16 @@ if (clearOdczytyLogBtn) {
     });
 
     // Zatrzymaj automatyczne odświeżanie przed zamknięciem strony
-    window.addEventListener('beforeunload', function() {
+    window.addEventListener('beforeunload', function () {
         stopAutoRefresh();
 
-         if (dynamicReadingsActive) {
-        // Synchroniczne wywołanie deaktywacji
-        fetch(`${API_URL}/dynamic-readings/deactivate`, {
-            method: 'POST',
-            keepalive: true
-        });
-    }
+        if (dynamicReadingsActive) {
+            // Synchroniczne wywołanie deaktywacji
+            fetch(`${API_URL}/dynamic-readings/deactivate`, {
+                method: 'POST',
+                keepalive: true
+            });
+        }
 
     });
 
@@ -739,7 +736,7 @@ if (clearOdczytyLogBtn) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ param_data: value })
+                body: JSON.stringify({param_data: value})
             });
 
             const data = await response.json();
@@ -758,6 +755,7 @@ if (clearOdczytyLogBtn) {
             addLogEntry(`Błąd połączenia: ${error.message}`, 'error');
         }
     }
+
 //--------------------------------------------------------------
     // Aktualizuje alias na serwerze - nowa wersja z adresami
     async function updateAlias(fieldName, value) {

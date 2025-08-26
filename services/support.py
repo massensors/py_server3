@@ -347,7 +347,8 @@ class ProtocolAnalyzer:
         conv_digits = data[data_content_start + 10:data_content_start + 18].decode('ascii').strip()
         scale_weight = data[data_content_start + 18:data_content_start + 26].decode('ascii').strip()
         belt_weight = data[data_content_start + 26:data_content_start + 34].decode('ascii').strip()
-        current_time = data[data_content_start + 34:data_content_start + 53].decode('ascii').strip()
+        zero_factor = data[data_content_start + 34:data_content_start + 42].decode('ascii').strip()
+        current_time = data[data_content_start + 42:data_content_start + 61].decode('ascii').strip()
 
         # Zapisz odczyty w globalnym kontenerze
         dynamic_readings_store.update_readings(
@@ -356,11 +357,12 @@ class ProtocolAnalyzer:
             conv_digits=conv_digits,
             scale_weight=scale_weight,
             belt_weight=belt_weight,
+            zero_factor=zero_factor,
             current_time=current_time
         )
 
         logger.info(f"Przechwycono odczyty dynamiczne - Reading:{mv_reading}, Digits:{conv_digits}, "
-                    f"Scale:{scale_weight}, Belt:{belt_weight}, Time:{current_time}")
+                    f"Scale:{scale_weight}, Belt:{belt_weight},ZeroFactor:{zero_factor} Time:{current_time}")
 
 
 
