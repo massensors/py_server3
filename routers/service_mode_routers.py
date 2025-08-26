@@ -46,6 +46,7 @@ async def toggle_service_mode(request: ServiceModeRequest):
     request_value = ServiceMode.get_request_value()
     status_message = ServiceMode.get_status_message()  # Dodana nowa funkcjonalność
 
+    ServiceMode.deactivate_readings_mode()
     return ServiceModeResponse(
         enabled=enabled,
         request_value=request_value,
