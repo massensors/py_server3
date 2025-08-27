@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Pomiarowy - Panel Kontrolny</title>
+    <link rel="stylesheet" href="/frontend/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>System Pomiarowy.</h1>
+        <p>Panel kontrolny parametrów urządzenia</p>
+    </header>
+
+    <div class="device-section">
+        <div class="input-group">
+            <label for="deviceId">ID urządzenia:</label>
+            <input type="text" id="deviceId" placeholder="Wprowadź ID urządzenia">
+            <button id="loadDevice" class="primary-btn">Wczytaj dane</button>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="parameters">Parametry</button>
+        <button class="tab-btn" data-tab="aliasy">Aliasy</button>
+        <button class="tab-btn" data-tab="odczyty">Odczyty</button>
+        <button class="tab-btn" data-tab="monitor">Monitor</button>
+        <button class="tab-btn" data-tab="pomiary">Pomiary</button>
+    </div>
+
+    <!-- Zawartość zakładek bez zmian -->
+    <div id="odczyty" class="tab-content">
+        <h2>Monitor odczytów dynamicznych</h2>
+        <div class="odczyty-controls">
+            <button id="refreshOdczyty" class="primary-btn">Odśwież</button>
+            <span id="odczytyStatus" class="status-indicator inactive">Tryb odczytów nieaktywny</span>
+            <button id="clearOdczytyLog" class="secondary-btn">Wyczyść</button>
+        </div>
+        <div class="odczyty-log-container">
+            <div id="odczytyLogEntries" class="odczyty-log-entries"></div>
+        </div>
+    </div>
+
+    <div id="parameters" class="tab-content active">
+        <div class="parameters-controls">
+            <div class="service-mode-control">
+                <label class="switch">
+                    <input type="checkbox" id="serviceModeToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="service-mode-label">Tryb serwisowy</span>
+                <button id="refreshServiceMode" class="refresh-btn">Odśwież</button>
+                <div class="service-mode-status" id="serviceModeStatus">
+                    <span class="status-text">Status nieznany</span>
+                </div>
+            </div>
+        </div>
+        <div class="parameters-grid">
+            <!-- Parametry będą dynamicznie wypełniane przez JavaScript -->
+        </div>
+    </div>
+
+    <div id="aliasy" class="tab-content">
+        <div class="aliasy-grid">
+            <!-- Aliasy będą dynamicznie wypełniane przez JavaScript -->
+        </div>
+    </div>
+
+    <div id="monitor" class="tab-content">
+        <h2>Monitor komunikacji</h2>
+        <div class="log-container">
+            <div id="logEntries" class="log-entries"></div>
+            <button id="clearLog" class="secondary-btn">Wyczyść</button>
+        </div>
+    </div>
+
+    <div id="pomiary" class="tab-content">
+        <h2>Dane pomiarowe</h2>
+        <div class="pomiary-controls">
+            <button id="refreshPomiary" class="primary-btn">Odśwież dane</button>
+        </div>
+        <div class="pomiary-container">
+            <table id="pomiaryTable" class="pomiary-table">
+                <thead>
+                <tr>
+                    <th>Data i czas</th>
+                    <th>Prędkość</th>
+                    <th>Natężenie</th>
+                    <th>Suma</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Dane pomiarowe będą dynamicznie wypełniane przez JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>System Pomiarowy &copy; 2025</p>
+    </footer>
+</div>
+
+<script type="module" src="/frontend/js/main.js"></script>
+</body>
+</html>

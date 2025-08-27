@@ -1,0 +1,519 @@
+/* Podstawowe style */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+/* Sekcja urządzenia */
+.device-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-group label {
+    font-weight: bold;
+}
+
+.input-group input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Przyciski */
+button {
+    cursor: pointer;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.primary-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.secondary-btn {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.update-btn {
+    background-color: #2ecc71;
+    color: white;
+    font-size: 0.8rem;
+}
+
+/* Zakładki */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    background-color: #eee;
+    border: none;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn.active {
+    background-color: white;
+    border-bottom: 3px solid #3498db;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Siatka parametrów */
+.parameters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.parameter-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.param-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.param-name {
+    font-weight: bold;
+}
+
+.param-address {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.param-input {
+    display: flex;
+    gap: 10px;
+}
+
+.param-value {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Monitor komunikacji */
+.log-container {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.log-entries {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-family: monospace;
+}
+
+.log-entry {
+    margin-bottom: 5px;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.log-request {
+    color: #2980b9;
+}
+
+.log-response {
+    color: #27ae60;
+}
+
+.log-error {
+    color: #c0392b;
+}
+
+/* Pomiary */
+.pomiary-controls {
+    margin-bottom: 15px;
+}
+
+.pomiary-container {
+    overflow-x: auto;
+    max-height: 400px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.pomiary-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pomiary-table th,
+.pomiary-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.pomiary-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.pomiary-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Stopka */
+footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+/* Dodaj to do istniejącego pliku CSS */
+
+/* Stylizacja zakładki Aliasy */
+#aliasy {
+    padding: 1rem;
+}
+
+.aliasy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.alias-item {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.alias-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.alias-name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.alias-input {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.alias-value {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+/* Dodanie stylów dla kontroli trybu serwisowego */
+.parameters-controls {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.service-mode-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.service-mode-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Styl przełącznika */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #007bff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider:focus {
+    box-shadow: 0 0 1px #007bff;
+}
+.service-mode-status {
+    margin-top: 5px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+.service-mode-status.status-active {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.service-mode-status.status-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.service-mode-status.status-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-text {
+    display: block;
+}
+
+.refresh-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+}
+
+.refresh-btn:hover {
+    background-color: #2980b9;
+}
+
+.service-mode-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Style dla zakładki Odczyty */
+.odczyty-controls {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-indicator {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.status-indicator.active {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-indicator.inactive {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-indicator.waiting {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+/* Monitor odczytów - podobny do monitora komunikacji */
+.odczyty-log-container {
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+.odczyty-log-entries {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.odczyty-log-entry {
+    margin-bottom: 8px;
+    padding: 8px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: white;
+    border-radius: 3px;
+}
+
+.odczyty-log-entry:last-child {
+    border-bottom: none;
+}
+
+.odczyty-log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.odczyty-log-time {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.odczyty-log-device {
+    color: #007bff;
+    font-size: 0.9rem;
+}
+
+.odczyty-log-data {
+    margin-left: 10px;
+    color: #333;
+}
+
+.odczyty-log-field {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 3px;
+}
+
+.odczyty-log-field-name {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.odczyty-log-field-value {
+    color: #dc3545;
+    margin-left: 5px;
+}
+
+/* Różne kolory dla różnych typów odczytów */
+.odczyty-log-entry.reading-new {
+    border-left: 4px solid #28a745;
+}
+
+.odczyty-log-entry.reading-update {
+    border-left: 4px solid #ffc107;
+}
+
+.odczyty-log-entry.reading-error {
+    border-left: 4px solid #dc3545;
+    background-color: #f8d7da;
+}

@@ -113,18 +113,32 @@ app.include_router(dynamic_readings.router)  # NOWY ROUTER
 
 
 # Dodanie obsługi plików statycznych
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
+#app.mount("/static", StaticFiles(directory="static"), name="static")
+#app.mount("/static", StaticFiles(directory="frontend"), name="static")
+app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")  # DODANE!
 
 # Endpoint zwracający główny plik HTML interfejsu
 @app.get("/ui")
 async def get_ui():
-    return FileResponse("static/index.html")
+    #return FileResponse("static/index.html")
+    return FileResponse("frontend/index.html")
 
 
 
 @app.get("/")
 async def root():
+
+    #return FileResponse("frontend/index.html")
+
+     return {
+         "message": "System pomiarowy API",
+         "version": "1.0",
+         "status": "active"
+     }
+
+# Endpoint dla API info
+@app.get("/api")
+async def api_info():
     return {
         "message": "System pomiarowy API",
         "version": "1.0",
