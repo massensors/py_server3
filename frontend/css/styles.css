@@ -1,3 +1,8 @@
+/* Import stylów dla urządzeń */
+@import url('devices.css');
+
+
+
 /* Podstawowe style */
 * {
     margin: 0;
@@ -516,4 +521,44 @@ input:checked + .slider:before {
 .odczyty-log-entry.reading-error {
     border-left: 4px solid #dc3545;
     background-color: #f8d7da;
+}
+
+
+/* Zakładki */
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px;
+    background-color: #eee;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    background-color: #ddd;
+}
+
+.tab-btn.active {
+    background-color: white;
+    border-bottom: 3px solid #3498db;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content.active {
+    display: block;
 }

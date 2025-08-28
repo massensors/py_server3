@@ -1,6 +1,7 @@
 import { getDeviceId } from '../utils/helpers.js';
 import { loadPomiaryData } from '../services/api.js';
 import { activateReadingsMode, deactivateReadingsMode, isDynamicReadingsActive } from './readings.js';
+import { devicesService } from '../services/devicesService.js';
 import { logger } from '../services/logger.js';
 
 // Inicjalizuje obsługę zakładek
@@ -38,6 +39,12 @@ function handleTabSwitch(tabId) {
             loadPomiaryData();
         }
     }
+    if (tabId === 'urzadzenia') {
+        deactivateReadingsMode();
+        loadDevicesTab();
+        logger.addEntry('Przełączono na zakładkę urządzeń', 'info');
+    }
+
 
     if (tabId === 'odczyty') {
         activateReadingsMode();
@@ -46,5 +53,30 @@ function handleTabSwitch(tabId) {
         if (isDynamicReadingsActive()) {
             deactivateReadingsMode();
         }
+    }
+}
+
+// Funkcja ładująca zawartość zakładki urządzeń
+async function loadDevicesTab() {
+    const urzadzeniaList = document.getElementById('urzadzeniaList');
+    const devicesCount = document.getElementById('devicesCount');
+    const refreshBtn = document.getElementById('refreshUrzadzenia');
+
+    // Pokaż stan ładowania
+    devicesService.showLoadingState(urzadzeniaList);
+
+    try {
+        const devices = await devicesService.loadDevicesList();
+        devicesService.displayDevicesList(devices, urzadzeniaList, devicesCount);
+    } catch (error) {
+        devicesService.showErrorState(urzadzeniaList, error);
+    }
+
+    // Dodaj event listener dla przycisku odświeżania jeśli jeszcze nie ma
+    if (refreshBtn && !refreshBtn.hasAttribute('data-listener-added')) {
+        refreshBtn.addEventListener('click', () => {
+            loadDevicesTab();
+        });
+        refreshBtn.setAttribute('data-listener-added', 'true');
     }
 }

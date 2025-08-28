@@ -1,0 +1,106 @@
+/* Stylizacja zakładki Urządzenia */
+.urzadzenia-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #e9ecef;
+}
+
+.devices-count {
+    font-weight: 500;
+    color: #495057;
+}
+
+.urzadzenia-list {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.device-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.device-row:hover {
+    background-color: #f8f9fa;
+}
+
+.device-row:last-child {
+    border-bottom: none;
+}
+
+.device-row.selected {
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196f3;
+}
+
+.device-info {
+    flex: 1;
+}
+
+.device-id {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.device-aliases {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.device-alias-item {
+    display: inline-block;
+    background-color: #e9ecef;
+    padding: 2px 8px;
+    margin: 2px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.device-alias-empty {
+    font-style: italic;
+    color: #999;
+}
+
+.device-select-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+    margin-left: 10px;
+}
+
+.device-select-btn:hover {
+    background-color: #218838;
+}
+
+.loading-message, .error-message, .no-devices-message {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.error-message {
+    color: #c0392b;
+    font-weight: bold;
+}

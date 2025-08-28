@@ -26,8 +26,23 @@
         <button class="tab-btn" data-tab="aliasy">Aliasy</button>
         <button class="tab-btn" data-tab="odczyty">Odczyty</button>
         <button class="tab-btn" data-tab="monitor">Monitor</button>
+        <button class="tab-btn" data-tab="urzadzenia">Urządzenia</button>
         <button class="tab-btn" data-tab="pomiary">Pomiary</button>
     </div>
+
+
+    <!-- Nowa zakładka Urządzenia -->
+    <div id="urzadzenia" class="tab-content">
+        <h2>Lista urządzeń</h2>
+        <div class="urzadzenia-controls">
+            <button id="refreshUrzadzenia" class="primary-btn">Odśwież listę</button>
+            <span class="devices-count">Liczba urządzeń: <span id="devicesCount">0</span></span>
+        </div>
+        <div id="urzadzeniaList" class="urzadzenia-list">
+            <div class="loading-message">Ładowanie listy urządzeń...</div>
+        </div>
+    </div>
+
 
     <!-- Zawartość zakładek bez zmian -->
     <div id="odczyty" class="tab-content">

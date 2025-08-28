@@ -6,3 +6,4 @@ from . import commands
 from . import app_interface
 from . import service_mode_routers
 from . import dynamic_readings
+from . import devices
