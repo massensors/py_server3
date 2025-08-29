@@ -114,18 +114,32 @@ class CommandHandler:
         Obsługa komendy CAPTURE_ALIASES (0x0002)
         """
         alias_data = ProtocolAnalyzer.parse_alias_data(decoded_data)
+        # Sprawdź czy alias dla tego deviceId już istnieje
+        existing_alias = db.query(Aliases).filter(Aliases.deviceId == alias_data.deviceId).first()
 
-        # Tworzenie nowego rekordu w bazie danych
-        db_aliases = Aliases(
-            deviceId=alias_data.deviceId,
-            company=alias_data.company,
-            location=alias_data.location,
-            productName=alias_data.productName,
-            scaleId=alias_data.scaleId
-        )
+        if existing_alias:
+            # Aktualizuj istniejący rekord
+            existing_alias.company = alias_data.company
+            existing_alias.location = alias_data.location
+            existing_alias.productName = alias_data.productName
+            existing_alias.scaleId = alias_data.scaleId
+            # Opcjonalnie dodaj timestamp aktualizacji
+            # existing_alias.updated_at = datetime.now()
 
-        # Dodanie i zatwierdzenie w bazie danych
-        db.add(db_aliases)
+            logger.info(f"Zaktualizowano alias dla deviceId: {alias_data.deviceId}")
+        else:
+            # Utwórz nowy rekord
+            existing_alias = Aliases(
+                deviceId=alias_data.deviceId,
+                company=alias_data.company,
+                location=alias_data.location,
+                productName=alias_data.productName,
+                scaleId=alias_data.scaleId
+            )
+            db.add(existing_alias)
+            logger.info(f"Utworzono nowy alias dla deviceId: {alias_data.deviceId}")
+
+            # Zatwierdzenie w bazie danych
         db.commit()
 
         # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
@@ -153,28 +167,55 @@ class CommandHandler:
         Obsługa komendy CAPTURE_STATIC (0x0005)
         """
         static_data = ProtocolAnalyzer.parse_static_data(decoded_data)
+        # Sprawdź czy parametry statyczne dla tego deviceId już istnieją
+        existing_static = db.query(StaticParams).filter(StaticParams.deviceId == static_data.deviceId).first()
 
-        # Tworzenie nowego rekordu w bazie danych
-        db_static = StaticParams(
-            deviceId=static_data.deviceId,
-            filterRate=static_data.filterRate,
-            scaleCapacity=static_data.scaleCapacity,
-            autoZero=static_data.autoZero,
-            deadBand=static_data.deadBand,
-            scaleType=static_data.scaleType,
-            loadcellSet=static_data.loadcellSet,
-            loadcellCapacity=static_data.loadcellCapacity,
-            trimm=static_data.trimm,
-            idlerSpacing=static_data.idlerSpacing,
-            speedSource=static_data.speedSource,
-            wheelDiameter=static_data.wheelDiameter,
-            pulsesPerRev=static_data.pulsesPerRev,
-            beltLength=static_data.beltLength,
-            beltLengthPulses=static_data.beltLengthPulses,
-            currentTime=static_data.currentTime
-        )
-        # Dodanie i zatwierdzenie w bazie danych
-        db.add(db_static)
+        if existing_static:
+            # Aktualizuj istniejący rekord
+            existing_static.filterRate = static_data.filterRate
+            existing_static.scaleCapacity = static_data.scaleCapacity
+            existing_static.autoZero = static_data.autoZero
+            existing_static.deadBand = static_data.deadBand
+            existing_static.scaleType = static_data.scaleType
+            existing_static.loadcellSet = static_data.loadcellSet
+            existing_static.loadcellCapacity = static_data.loadcellCapacity
+            existing_static.trimm = static_data.trimm
+            existing_static.idlerSpacing = static_data.idlerSpacing
+            existing_static.speedSource = static_data.speedSource
+            existing_static.wheelDiameter = static_data.wheelDiameter
+            existing_static.pulsesPerRev = static_data.pulsesPerRev
+            existing_static.beltLength = static_data.beltLength
+            existing_static.beltLengthPulses = static_data.beltLengthPulses
+            existing_static.currentTime = static_data.currentTime
+            # Opcjonalnie dodaj timestamp aktualizacji
+            # existing_static.updated_at = datetime.now()
+
+            logger.info(f"Zaktualizowano parametry statyczne dla deviceId: {static_data.deviceId}")
+        else:
+            # Utwórz nowy rekord
+            existing_static = StaticParams(
+                deviceId=static_data.deviceId,
+                filterRate=static_data.filterRate,
+                scaleCapacity=static_data.scaleCapacity,
+                autoZero=static_data.autoZero,
+                deadBand=static_data.deadBand,
+                scaleType=static_data.scaleType,
+                loadcellSet=static_data.loadcellSet,
+                loadcellCapacity=static_data.loadcellCapacity,
+                trimm=static_data.trimm,
+                idlerSpacing=static_data.idlerSpacing,
+                speedSource=static_data.speedSource,
+                wheelDiameter=static_data.wheelDiameter,
+                pulsesPerRev=static_data.pulsesPerRev,
+                beltLength=static_data.beltLength,
+                beltLengthPulses=static_data.beltLengthPulses,
+                currentTime=static_data.currentTime
+            )
+            db.add(existing_static)
+            logger.info(f"Utworzono nowe parametry statyczne dla deviceId: {static_data.deviceId}")
+
+        # Zatwierdzenie w bazie danych
+
         db.commit()
 
         # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego

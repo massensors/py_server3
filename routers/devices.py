@@ -2,12 +2,13 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import select, distinct
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Optional
 from starlette import status
 
 from repositories.database import get_db
 from models.models import Aliases
 from pydantic import BaseModel
+from sqlalchemy import func
 
 # Konfiguracja loggera
 logger = logging.getLogger(__name__)
@@ -76,37 +77,43 @@ class DevicesListResponse(BaseModel):
 @router.get("/list", response_model=List[DeviceInfo])
 async def get_devices_list(db: Session = Depends(get_db)):
     """
-    Pobierz listę wszystkich urządzeń z ich aliasami.
+    Pobierz listę wszystkich urządzeń z ich najnowszymi aliasami.
 
     Zwraca listę unikalnych urządzeń na podstawie device_id z tabeli Aliases.
-    Każde urządzenie zawiera swoje ID oraz powiązane aliasy.
+    Każde urządzenie zawiera swoje ID oraz najnowsze powiązane aliasy.
     """
     try:
-        # Pobranie wszystkich rekordów z tabeli Aliases
-        # Grupujemy po deviceId żeby uniknąć duplikatów
-        query = (
-            select(Aliases)
-            .distinct(Aliases.deviceId)
-            .order_by(Aliases.deviceId)
-        )
-
-        result = db.execute(query)
-        aliases_records = result.scalars().all()
+        # Najpierw pobierz wszystkie unikalne deviceId
+        unique_device_ids = db.query(Aliases.deviceId).distinct().all()
 
         devices = []
-        for record in aliases_records:
-            device_info = DeviceInfo(
-                device_id=record.deviceId,
-                aliases=DeviceAliases(
-                    company=record.company,
-                    location=record.location,
-                    productName=record.productName,
-                    scaleId=record.scaleId
-                )
+        for (device_id,) in unique_device_ids:
+            # Dla każdego deviceId pobierz najnowszy rekord (według najwyższego id)
+            latest_alias = (
+                db.query(Aliases)
+                .filter(Aliases.deviceId == device_id)
+                .order_by(Aliases.id.desc())
+                .first()
             )
-            devices.append(device_info)
 
-        logger.info(f"Pobrano listę {len(devices)} urządzeń")
+            if latest_alias:
+                device_info = DeviceInfo(
+                    device_id=latest_alias.deviceId,
+                    aliases=DeviceAliases(
+                        company=latest_alias.company,
+                        location=latest_alias.location,
+                        productName=latest_alias.productName,
+                        scaleId=latest_alias.scaleId
+                    )
+                )
+                devices.append(device_info)
+
+        logger.info(f"Pobrano listę {len(devices)} urządzeń z najnowszymi aliasami")
+
+        # Debug log - wypisz pierwsze kilka deviceId
+        for i, device in enumerate(devices[:5]):
+            logger.info(f"Device {i+1}: ID={device.device_id}, company={device.aliases.company}")
+
         return devices
 
     except Exception as e:
@@ -115,7 +122,6 @@ async def get_devices_list(db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Błąd podczas pobierania listy urządzeń: {str(e)}"
         )
-
 
 @router.get("/list/summary", response_model=DevicesListResponse)
 async def get_devices_list_with_summary(db: Session = Depends(get_db)):
@@ -205,8 +211,6 @@ async def get_device_info(device_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Błąd podczas pobierania urządzenia: {str(e)}"
         )
-
-
 @router.get("/search/by-alias")
 async def search_devices_by_alias(
         company: Optional[str] = None,
@@ -216,44 +220,46 @@ async def search_devices_by_alias(
         db: Session = Depends(get_db)
 ) -> List[DeviceInfo]:
     """
-    Wyszukaj urządzenia po aliasach.
-
-    Args:
-        company: Nazwa firmy (częściowe dopasowanie)
-        location: Lokalizacja (częściowe dopasowanie)
-        product_name: Nazwa produktu (częściowe dopasowanie)
-        scale_id: ID wagi (częściowe dopasowanie)
-
-    Returns:
-        Lista urządzeń spełniających kryteria wyszukiwania
+    Wyszukaj urządzenia po najnowszych aliasach.
     """
     try:
-        query = db.query(Aliases)
-
-        # Dodaj filtry jeśli parametry są podane
-        if company:
-            query = query.filter(Aliases.company.ilike(f"%{company}%"))
-        if location:
-            query = query.filter(Aliases.location.ilike(f"%{location}%"))
-        if product_name:
-            query = query.filter(Aliases.productName.ilike(f"%{product_name}%"))
-        if scale_id:
-            query = query.filter(Aliases.scaleId.ilike(f"%{scale_id}%"))
-
-        results = query.all()
+        # Pobierz wszystkie unikalne deviceId
+        unique_device_ids = db.query(Aliases.deviceId).distinct().all()
 
         devices = []
-        for record in results:
-            device_info = DeviceInfo(
-                device_id=record.deviceId,
-                aliases=DeviceAliases(
-                    company=record.company,
-                    location=record.location,
-                    productName=record.productName,
-                    scaleId=record.scaleId
-                )
+        for (device_id,) in unique_device_ids:
+            # Dla każdego deviceId pobierz najnowszy rekord
+            latest_alias = (
+                db.query(Aliases)
+                .filter(Aliases.deviceId == device_id)
+                .order_by(Aliases.id.desc())
+                .first()
             )
-            devices.append(device_info)
+
+            if latest_alias:
+                # Sprawdź filtry wyszukiwania
+                match = True
+
+                if company and not (latest_alias.company and company.lower() in latest_alias.company.lower()):
+                    match = False
+                if location and not (latest_alias.location and location.lower() in latest_alias.location.lower()):
+                    match = False
+                if product_name and not (latest_alias.productName and product_name.lower() in latest_alias.productName.lower()):
+                    match = False
+                if scale_id and not (latest_alias.scaleId and scale_id.lower() in latest_alias.scaleId.lower()):
+                    match = False
+
+                if match:
+                    device_info = DeviceInfo(
+                        device_id=latest_alias.deviceId,
+                        aliases=DeviceAliases(
+                            company=latest_alias.company,
+                            location=latest_alias.location,
+                            productName=latest_alias.productName,
+                            scaleId=latest_alias.scaleId
+                        )
+                    )
+                    devices.append(device_info)
 
         logger.info(f"Znaleziono {len(devices)} urządzeń dla kryteriów wyszukiwania")
         return devices
