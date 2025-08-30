@@ -6,6 +6,7 @@ import { initReadingsEventListeners, isDynamicReadingsActive, deactivateReadings
 import { initServiceMode } from './services/serviceMode.js';
 import { getDeviceId } from './utils/helpers.js';
 import { API_URL } from './config/constants.js';
+import { deviceSelection } from './services/deviceSelection.js';
 
 // Główna inicjalizacja aplikacji
 document.addEventListener('DOMContentLoaded', function () {
@@ -14,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Inicjalizacja wszystkich komponentów
     initializeComponents();
     initializeEventListeners();
+    initializeDeviceSelection();
+
 
     console.log('✅ Aplikacja zainicjalizowana pomyślnie');
 });
@@ -69,32 +72,86 @@ function initializeEventListeners() {
         }
     });
 }
+// NOWE - Inicjalizacja obsługi wyboru urządzeń
+function initializeDeviceSelection() {
+    // Event listenery dla wyboru urządzenia
+    document.addEventListener('deviceSelected', (event) => {
+        const { deviceId, data } = event.detail;
+        console.log('📱 Wybrano urządzenie:', deviceId, data);
 
-// Obsługuje wczytywanie danych urządzenia
-function handleLoadDevice() {
+        // Aktualizuj UI - pokaż informacje o urządzeniu
+        updateDeviceInfoUI(deviceId, data);
+    });
+
+    document.addEventListener('deviceDeselected', () => {
+        console.log('📱 Usunięto wybór urządzenia');
+        clearDeviceInfoUI();
+    });
+
+    // Pobierz aktualny wybór przy starcie
+    deviceSelection.getCurrentSelection().catch(console.error);
+}
+
+
+
+
+// Obsługuje wczytywanie danych urządzenia - ZMODYFIKOWANE
+async function handleLoadDevice() {
     const deviceId = getDeviceId();
     if (!deviceId) {
         logger.addEntry('Błąd: Wprowadź ID urządzenia', 'error');
         return;
     }
 
-    // Określ aktywną zakładkę
-    const activeTabBtn = document.querySelector('.tab-btn.active');
-    const activeTab = activeTabBtn ? activeTabBtn.getAttribute('data-tab') : 'parameters';
+    try {
+        // NOWE - Najpierw wybierz urządzenie w backendzie
+        await deviceSelection.selectDevice(deviceId);
 
-    // Wczytaj odpowiednie dane
-    switch (activeTab) {
-        case 'parameters':
-            loadDeviceData();
-            break;
-        case 'pomiary':
-            loadPomiaryData();
-            break;
-        case 'aliasy':
-            loadAliasyData();
-            break;
-        default:
-            loadDeviceData();
-            break;
+        // Określ aktywną zakładkę
+        const activeTabBtn = document.querySelector('.tab-btn.active');
+        const activeTab = activeTabBtn ? activeTabBtn.getAttribute('data-tab') : 'parameters';
+
+        // Wczytaj odpowiednie dane
+        switch (activeTab) {
+            case 'parameters':
+                loadDeviceData();
+                break;
+            case 'pomiary':
+                loadPomiaryData();
+                break;
+            case 'aliasy':
+                loadAliasyData();
+                break;
+            default:
+                loadDeviceData();
+                break;
+        }
+    } catch (error) {
+        logger.addEntry(`Błąd wyboru urządzenia: ${error.message}`, 'error');
+    }
+}
+
+// NOWE - Aktualizuj UI z informacjami o urządzeniu
+function updateDeviceInfoUI(deviceId, data) {
+    // Dodaj wskaźnik wybranego urządzenia
+    const deviceInput = document.getElementById('deviceId');
+    if (deviceInput) {
+        deviceInput.style.borderColor = data.device_exists ? '#28a745' : '#ffc107';
+        deviceInput.title = data.device_exists ? 'Urządzenie istnieje w bazie' : 'Nowe urządzenie';
+    }
+
+    // Jeśli masz miejsce na informacje o urządzeniu, wyświetl je
+    if (data.device_info && data.device_info.alias) {
+        const alias = data.device_info.alias;
+        logger.addEntry(`📋 Info: ${alias.company} | ${alias.location} | ${alias.productName}`, 'info');
+    }
+}
+
+// NOWE - Wyczyść UI informacji o urządzeniu
+function clearDeviceInfoUI() {
+    const deviceInput = document.getElementById('deviceId');
+    if (deviceInput) {
+        deviceInput.style.borderColor = '';
+        deviceInput.title = '';
     }
 }

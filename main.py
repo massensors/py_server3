@@ -4,8 +4,9 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles  # Dodajemy import
 from fastapi.responses import FileResponse  # Dodajemy import dla serwowania pliku HTML
 from repositories.database import init_db
-from routers import todos, measure_data, aliases, static_params, commands, app_interface, dynamic_readings, devices
+from routers import  measure_data, aliases, static_params, commands, app_interface, dynamic_readings, devices
 from routers.service_mode_routers import router as service_mode_router
+from routers import device_selection
 
 import uvicorn
 
@@ -96,7 +97,7 @@ async def log_requests(request: Request, call_next):
 init_db()
 
 # Dodanie routerów
-app.include_router(todos.router)
+
 app.include_router(measure_data.router)
 app.include_router(aliases.router)
 app.include_router(static_params.router)
@@ -108,6 +109,8 @@ app.include_router(app_interface.router)  # Dodanie nowego routera dla aplikacji
 app.include_router(service_mode_router)
 app.include_router(dynamic_readings.router)  # NOWY ROUTER
 app.include_router(devices.router, prefix="/api")
+app.include_router(device_selection.router, prefix="/api")
+
 
 
 

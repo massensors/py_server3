@@ -265,7 +265,12 @@ class CommandHandler:
                 # Sprawdź czy device_id się zgadza
                 try:
                      current_device_id = decoded_data[4:14].decode('ascii').rstrip('\x00')
-                     if stored_device_id == current_device_id:
+
+                     # Konwertuj oba ID do stringów i usuń białe znaki
+                     stored_id_clean = str(stored_device_id).strip()
+                     current_id_clean = str(current_device_id).strip()
+
+                     if stored_id_clean == current_id_clean:
                          param_address = stored_param_address
                          param_data = stored_param_data
                          logger.info(f"Wykorzystano parametry ze store: address={param_address}, data='{param_data}'")
