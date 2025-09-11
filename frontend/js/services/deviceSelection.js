@@ -15,6 +15,9 @@ class DeviceSelection {
             throw new Error('Device ID nie może być pusty');
         }
 
+        // Zapamiętaj poprzednie ID (jeśli istnieje)
+        const previousDeviceId = this.selectedDeviceId;
+
         try {
             const response = await fetch(`${API_URL}/device-selection/select`, {
                 method: 'POST',
@@ -35,10 +38,18 @@ class DeviceSelection {
             this.selectedDeviceId = data.selected_device_id;
             this.deviceInfo = data.device_info;
 
+            // Dodatkowe logowanie dla diagnostyki
+            console.log(`DeviceSelection: ustawiono selectedDeviceId=${this.selectedDeviceId}`);
+
             logger.addEntry(
                 `✅ Wybrano urządzenie: ${deviceId} ${data.device_exists ? '(istnieje w bazie)' : '(nowe urządzenie)'}`,
                 'success'
             );
+
+            // Sprawdź czy trzeba wyłączyć tryb serwisowy poprzedniego urządzenia
+            if (previousDeviceId && previousDeviceId !== deviceId) {
+                await this._checkAndDisablePreviousServiceMode(previousDeviceId);
+            }
 
             // Wywołaj event dla innych komponentów
             this._notifyDeviceSelected(deviceId, data);
@@ -144,6 +155,134 @@ class DeviceSelection {
         const event = new CustomEvent('deviceDeselected');
         document.dispatchEvent(event);
     }
+
+    /**
+     * Sprawdza czy poprzednie urządzenie było w trybie serwisowym i wyłącza go
+     * jeśli jesteśmy w zakładce parametry
+     */
+    async _checkAndDisablePreviousServiceMode(previousDeviceId) {
+        try {
+            // Sprawdź czy jesteśmy na zakładce parametry
+            const parametersTab = document.querySelector('.tab-btn[data-tab="parameters"]');
+            const isParametersActive = parametersTab && parametersTab.classList.contains('active');
+
+            if (isParametersActive) {
+                // Sprawdź status trybu serwisowego
+                const response = await fetch(`${API_URL}/service-mode/status`);
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Jeśli tryb serwisowy jest włączony, wyłącz go dla poprzedniego urządzenia
+                    if (data.enabled) {
+                        logger.addEntry(`🔄 Wyłączanie trybu serwisowego dla poprzedniego urządzenia...`, 'info');
+
+                        // Użyj nowego endpointu do wyłączenia trybu serwisowego
+                        const disableResponse = await fetch(`${API_URL}/service-mode/toggle-for-device`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({enabled: false})
+                        });
+
+                        if (disableResponse.ok) {
+                            logger.addEntry(`✅ Tryb serwisowy wyłączony dla poprzedniego urządzenia`, 'success');
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Błąd podczas sprawdzania trybu serwisowego:", error);
+        }
+    }
+    // Dodaj nowe metody do klasy DeviceSelection
+
+    /**
+     * Włącz tryb serwisowy dla wybranego urządzenia
+     */
+    async enableServiceMode() {
+        try {
+            const response = await fetch(`${API_URL}/device-selection/service-mode/enable`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            logger.addEntry(
+                `✅ Włączono tryb serwisowy dla urządzenia: ${data.device_id}`,
+                'success'
+            );
+
+            return data;
+
+        } catch (error) {
+            logger.addEntry(`❌ Błąd włączania trybu serwisowego: ${error.message}`, 'error');
+            throw error;
+        }
+    }
+
+    /**
+     * Wyłącz tryb serwisowy dla wybranego urządzenia
+     */
+    async disableServiceMode() {
+        try {
+            const response = await fetch(`${API_URL}/device-selection/service-mode/disable`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            logger.addEntry(
+                `⭕ Wyłączono tryb serwisowy dla urządzenia: ${data.device_id}`,
+                'info'
+            );
+
+            return data;
+
+        } catch (error) {
+            logger.addEntry(`❌ Błąd wyłączania trybu serwisowego: ${error.message}`, 'error');
+            throw error;
+        }
+    }
+
+    /**
+     * Pobierz status trybu serwisowego
+     */
+    async getServiceModeStatus() {
+        try {
+            const response = await fetch(`${API_URL}/device-selection/service-mode/status`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data;
+
+        } catch (error) {
+            logger.addEntry(`❌ Błąd pobierania statusu trybu serwisowego: ${error.message}`, 'error');
+            throw error;
+        }
+    }
+
+
+
+
+
 }
 
 // Eksportuj instancję

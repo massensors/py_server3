@@ -7,6 +7,7 @@ from typing import Dict, Any, Optional
 from repositories.database import get_db
 from models.models import Aliases, StaticParams, MeasureData
 from services.selected_device_store import selected_device_store
+from services.service_mode_manager import service_mode_manager
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +33,8 @@ class DeviceSelectionResponse(BaseModel):
     selected_device_id: Optional[str] = None
     device_exists: bool = False
     device_info: Optional[Dict[str, Any]] = None
+    service_mode_changes: Optional[list] = None
+
 
 @router.post("/select", response_model=DeviceSelectionResponse)
 async def select_device(request: DeviceSelectionRequest, db: Session = Depends(get_db)):
@@ -43,8 +46,15 @@ async def select_device(request: DeviceSelectionRequest, db: Session = Depends(g
     if not device_id:
         raise HTTPException(status_code=400, detail="Device ID nie może być pusty")
 
-    # Zapisz w rejestrze
-    selected_device_store.set_device_id(device_id)
+    # Pobierz aktualne urządzenie przed zmianą
+    old_device_id = selected_device_store.get_device_id()
+
+    # Obsługuj zmianę urządzenia z zarządzaniem trybem serwisowym
+    if old_device_id != device_id:
+        service_changes = service_mode_manager.handle_device_selection_change(device_id, old_device_id)
+        logger.info(f"Zmiana urządzenia z '{old_device_id}' na '{device_id}': {service_changes}")
+    else:
+        service_changes = {"actions_performed": [], "service_mode_changes": []}
 
     # Sprawdź czy urządzenie istnieje w bazie danych
     device_info = {}
@@ -102,8 +112,88 @@ async def select_device(request: DeviceSelectionRequest, db: Session = Depends(g
         message=f"Wybrano urządzenie: {device_id}",
         selected_device_id=device_id,
         device_exists=device_exists,
-        device_info=device_info if device_info else None
+        device_info=device_info if device_info else None,
+        service_mode_changes=service_changes["service_mode_changes"]
     )
+
+# POPRAWIONE - Endpoint do zarządzania trybem serwisowym z lepszym logowaniem
+@router.post("/service-mode/enable")
+async def enable_service_mode():
+    """Włącz tryb serwisowy dla wybranego urządzenia"""
+    try:
+        logger.debug("Próba włączenia trybu serwisowego...")
+
+        # Sprawdź czy urządzenie jest wybrane
+        current_device = selected_device_store.get_device_id()
+        logger.debug(f"Aktualne wybrane urządzenie: {current_device}")
+
+        if not current_device:
+            logger.warning("Brak wybranego urządzenia podczas próby włączenia trybu serwisowego")
+            raise HTTPException(
+                status_code=400,
+                detail="Brak wybranego urządzenia. Najpierw wybierz urządzenie."
+            )
+
+        result = service_mode_manager.enable_service_mode_for_current_device()
+        logger.debug(f"Wynik włączenia trybu serwisowego: {result}")
+
+        if result["status"] == "error":
+            logger.error(f"Błąd włączenia trybu serwisowego: {result['message']}")
+            raise HTTPException(status_code=400, detail=result["message"])
+
+        logger.info(f"Pomyślnie włączono tryb serwisowy dla urządzenia: {current_device}")
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Nieoczekiwany błąd podczas włączania trybu serwisowego: {e}")
+        raise HTTPException(status_code=500, detail=f"Błąd wewnętrzny: {str(e)}")
+
+@router.get("/service-mode/status")
+async def get_service_mode_status():
+    """Pobierz status trybu serwisowego"""
+    try:
+        logger.debug("Pobieranie statusu trybu serwisowego...")
+        status = service_mode_manager.get_service_mode_status()
+        logger.debug(f"Status trybu serwisowego: {status}")
+        return status
+    except Exception as e:
+        logger.error(f"Błąd podczas pobierania statusu trybu serwisowego: {e}")
+        raise HTTPException(status_code=500, detail=f"Błąd pobierania statusu: {str(e)}")
+
+@router.post("/service-mode/disable")
+async def disable_service_mode():
+    """Wyłącz tryb serwisowy dla wybranego urządzenia"""
+    try:
+        logger.debug("Próba wyłączenia trybu serwisowego...")
+
+        # Sprawdź czy urządzenie jest wybrane
+        current_device = selected_device_store.get_device_id()
+        logger.debug(f"Aktualne wybrane urządzenie: {current_device}")
+
+        if not current_device:
+            logger.warning("Brak wybranego urządzenia podczas próby wyłączenia trybu serwisowego")
+            raise HTTPException(
+                status_code=400,
+                detail="Brak wybranego urządzenia. Najpierw wybierz urządzenie."
+            )
+
+        result = service_mode_manager.disable_service_mode_for_current_device()
+        logger.debug(f"Wynik wyłączenia trybu serwisowego: {result}")
+
+        if result["status"] == "error":
+            logger.error(f"Błąd wyłączenia trybu serwisowego: {result['message']}")
+            raise HTTPException(status_code=400, detail=result["message"])
+
+        logger.info(f"Pomyślnie wyłączono tryb serwisowy dla urządzenia: {current_device}")
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Nieoczekiwany błąd podczas wyłączania trybu serwisowego: {e}")
+        raise HTTPException(status_code=500, detail=f"Błąd wewnętrzny: {str(e)}")
 
 @router.get("/current", response_model=DeviceSelectionResponse)
 async def get_current_selection(db: Session = Depends(get_db)):

@@ -3,6 +3,7 @@ import { logger } from './logger.js';
 class DevicesService {
     constructor() {
         this.API_URL = '/api';
+        this.BASE_URL = ''; // Dodaj BASE_URL bez /api dla niektórych endpointów
     }
 
     async loadDevicesList() {
@@ -23,6 +24,7 @@ class DevicesService {
             throw error;
         }
     }
+
     async loadDevicesCount() {
         try {
             const response = await fetch(`${this.API_URL}/devices/count`);
@@ -37,7 +39,8 @@ class DevicesService {
             throw error;
         }
     }
-     async searchDevices(searchParams) {
+
+    async searchDevices(searchParams) {
         try {
             const queryParams = new URLSearchParams();
 
@@ -61,9 +64,95 @@ class DevicesService {
         }
     }
 
+    // POPRAWIONA FUNKCJA - używa BASE_URL zamiast API_URL
+    async selectAndLoadDevice(deviceId) {
+        try {
+            logger.addEntry(`Automatyczne wczytywanie danych dla urządzenia: ${deviceId}`, 'info');
 
+            // 1. Wywołaj endpoint /device-selection/select (BEZ /api prefix!)
+            const selectionResponse = await fetch(`${this.BASE_URL}/device-selection/select`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    device_id: deviceId
+                })
+            });
 
+            if (!selectionResponse.ok) {
+                throw new Error(`Błąd wyboru urządzenia: ${selectionResponse.status}`);
+            }
 
+            const selectionData = await selectionResponse.json();
+            logger.addEntry(`Wybrano urządzenie: ${selectionData.message}`, 'success');
+
+            // 2. Wywołaj endpoint /app/devices/{deviceId}/parameters (BEZ /api prefix!)
+            const parametersResponse = await fetch(`${this.BASE_URL}/app/devices/${deviceId}/parameters`);
+
+            if (!parametersResponse.ok) {
+                throw new Error(`Błąd pobierania parametrów: ${parametersResponse.status}`);
+            }
+
+            const parametersData = await parametersResponse.json();
+
+            if (parametersData.status === 'error') {
+                logger.addEntry(`Błąd parametrów: ${parametersData.message}`, 'error');
+                return { success: false, error: parametersData.message };
+            }
+
+            logger.addEntry(`Pobrano parametry dla urządzenia ${deviceId}`, 'success');
+
+            // 3. Wypełnij pola parametrów
+            this.fillParametersData(parametersData.parameters);
+
+            // 4. Przełącz na zakładkę "Parametry"
+            this.switchToParametersTab();
+
+            return {
+                success: true,
+                selectionData,
+                parametersData
+            };
+
+        } catch (error) {
+            logger.addEntry(`Błąd automatycznego wczytania: ${error.message}`, 'error');
+            return { success: false, error: error.message };
+        }
+    }
+
+    // FUNKCJA DO WYPEŁNIANIA PARAMETRÓW
+    fillParametersData(parameters) {
+        for (const [address, param] of Object.entries(parameters)) {
+            const paramItem = document.querySelector(`.parameter-item[data-address="${address}"]`);
+            if (paramItem) {
+                const valueInput = paramItem.querySelector('.param-value');
+                if (valueInput) {
+                    valueInput.value = param.value;
+                }
+            }
+        }
+    }
+
+    // FUNKCJA DO PRZEŁĄCZANIA NA ZAKŁADKĘ PARAMETRY
+    switchToParametersTab() {
+        const parametersTab = document.querySelector('[data-tab="parameters"]');
+        const parametersContent = document.getElementById('parameters');
+
+        if (parametersTab && parametersContent) {
+            // Usuń aktywne klasy z wszystkich zakładek
+            document.querySelectorAll('.tab-btn').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Aktywuj zakładkę "Parametry"
+            parametersTab.classList.add('active');
+            parametersContent.classList.add('active');
+        }
+    }
 
     displayDevicesList(devices, containerElement, devicesCountElement) {
         if (!containerElement) return;
@@ -94,6 +183,9 @@ class DevicesService {
         const deviceRow = document.createElement('div');
         deviceRow.className = 'device-row';
         deviceRow.setAttribute('data-device-id', device.device_id);
+
+        // Dodaj style dla hover i cursor
+        deviceRow.style.cursor = 'pointer';
 
         // Tworzenie listy aliasów
         let aliasesHtml = this.formatAliases(device.aliases);
@@ -135,15 +227,39 @@ class DevicesService {
         // Event listener dla przycisku "Wybierz"
         selectBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            this.selectDevice(deviceId);
+            this.handleDeviceSelection(deviceId);
         });
 
         // Event listener dla kliknięcia na cały wiersz
         deviceRow.addEventListener('click', () => {
-            this.selectDevice(deviceId);
+            this.handleDeviceSelection(deviceId);
         });
     }
 
+    // FUNKCJA OBSŁUGI WYBORU URZĄDZENIA
+    async handleDeviceSelection(deviceId) {
+        // Ustaw wartość w polu deviceId
+        const deviceIdInput = document.getElementById('deviceId');
+        if (deviceIdInput) {
+            deviceIdInput.value = deviceId;
+        }
+
+        // Usuń poprzednie zaznaczenie
+        document.querySelectorAll('.device-row.selected').forEach(row => {
+            row.classList.remove('selected');
+        });
+
+        // Zaznacz nowy wiersz
+        const selectedRow = document.querySelector(`[data-device-id="${deviceId}"]`);
+        if (selectedRow) {
+            selectedRow.classList.add('selected');
+        }
+
+        // GŁÓWNA FUNKCJONALNOŚĆ - automatyczne wczytanie danych
+        await this.selectAndLoadDevice(deviceId);
+    }
+
+    // STARA FUNKCJA - zachowana dla kompatybilności
     selectDevice(deviceId) {
         const deviceIdInput = document.getElementById('deviceId');
         if (!deviceIdInput) return;

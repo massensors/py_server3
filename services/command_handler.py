@@ -5,11 +5,14 @@ from datetime import datetime
 # from main import config
 from models.models import MeasureData, Aliases, StaticParams
 from repositories.database import get_db
-from services.support import ProtocolAnalyzer, CommandID, AliasDataPayload
+from services.machine_state import machine_state_observer
+from services.support import ProtocolAnalyzer, CommandID
 from fastapi.responses import Response
 from services.cipher import RC4KeyGenerator
-from services.service_mode import ServiceMode
+from services.selected_device_store import selected_device_store
 from services.service_parameter_store import service_parameter_store
+from services.service_mode import ServiceMode
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -64,28 +67,35 @@ class CommandHandler:
         db.add(db_measure)
         db.commit()
 
+        current_device_id = measure_data.deviceId
+
+        # Konwertuj oba ID do stringów i usuń białe znaki
+
+        current_id_clean = str(current_device_id).strip()
 
 
-
-
-        # Sprawdzanie stanu trybu serwisowego
-        if not ServiceMode.is_enabled():
-            ServiceMode.set_active(False)
-            ServiceMode.set_status_message("Nieaktywny")
-            logger.info("Tryb serwisowy nieaktywny")
-
-
-
-        # Przygotowanie odpowiedzi z uwzględnieniem trybu serwisowego
-        try:
+        # -- NOWA IMPLEMENTACJA Z WYKOZYSTANIEM MACHINE STATE
+        if selected_device_store.is_device_selected(current_id_clean):
+            machine_state_observer.observe_network_activity(command_id=0x0003)
             request = ServiceMode.get_request_value()
-        except Exception as e:
-            logger.error(f"Błąd pobierania request_value z ServiceMode: {e}")
-            # Fallback - domyślna wartość
-            request = 0x03 if ServiceMode.is_enabled() else 0x00
+            mode = ServiceMode.get_request_mode()
+            logger.info(f"Ustawiam request w odpowiedzi na: {request} dla: {current_device_id}")
+            machine_state_observer.observe_network_activity(request_value=request)
+            state = machine_state_observer.get_current_observed_state()
+            logger.info(f"aktualny stan to: {state}")
+            logger.info(f"aktualny request to: {request}")
+            logger.info(f"aktualny request mode  to: {mode}")
+
+        else:
+            request = 0x00
+            # Wyczyść urządzenie z rejestru trybu serwisowego
+            selected_device_store.clear_service_mode_device()
+            logger.info(f"Wymuszenie wyłączenia trybu serwisowego, request:{request} dla: {current_device_id}")
 
 
         return self._prepare_response(decoded_data, flag, status=0x01, request=request)
+
+
 
     def _handle_register_unit(self, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
@@ -97,7 +107,9 @@ class CommandHandler:
         except Exception as e:
             logger.error(f"Błąd pobierania request_value z ServiceMode: {e}")
             # Fallback - domyślna wartość
-            request = 0x03 if ServiceMode.is_enabled() else 0x00
+            #request = 0x03 if ServiceMode.is_enabled() else 0x00
+            # z poziomu rejestracji nie mozna przejsc do service mode
+            request = 0x00 if ServiceMode.is_enabled() else 0x00
 
         return self._prepare_response_register(decoded_data, flag, status=0x01, request=request)
 
@@ -257,42 +269,61 @@ class CommandHandler:
         """
 
 
-        # Pobierz parametry ze store jeśli nie zostały przekazane w argumentach
-        if param_address == 0 and param_data == "":
-            if service_parameter_store.has_parameters():
-                stored_device_id, stored_param_address, stored_param_data = service_parameter_store.get_parameters()
+        # Importy lokalne żeby uniknąć cykli importów
+        from services.selected_device_store import selected_device_store
 
-                # Sprawdź czy device_id się zgadza
-                try:
-                     current_device_id = decoded_data[4:14].decode('ascii').rstrip('\x00')
+        # Pobierz device_id z pakietu
 
-                     # Konwertuj oba ID do stringów i usuń białe znaki
-                     stored_id_clean = str(stored_device_id).strip()
-                     current_id_clean = str(current_device_id).strip()
+        try:
+            current_device_id = decoded_data[4:14].decode('ascii').rstrip('\x00')
+        except Exception as e:
+            logger.error(f"Błąd dekodowania device_id z pakietu: {e}")
+            current_device_id = ""
 
-                     if stored_id_clean == current_id_clean:
-                         param_address = stored_param_address
-                         param_data = stored_param_data
-                         logger.info(f"Wykorzystano parametry ze store: address={param_address}, data='{param_data}'")
+        current_id_clean = str(current_device_id).strip()
 
-                         # Wyczyść store po wykorzystaniu
-                         service_parameter_store.clear_parameters()
-                     else:
-                          logger.warning(f"Device ID się nie zgadza: store={stored_device_id}, pakiet={current_device_id}")
-                except Exception as e:
-                     logger.error(f"Błąd dekodowania device_id z pakietu: {e}")
+        if service_parameter_store.has_parameters():
+            stored_device_id, stored_param_address, stored_param_data = service_parameter_store.get_parameters()
+            stored_id_clean = str(stored_device_id).strip()
+
+            if stored_id_clean == current_id_clean:
+                param_address = stored_param_address
+                param_data = stored_param_data
+                logger.info(f"Wykorzystano parametry ze store: address={param_address}, data='{param_data}'")
+
+        # Wyczyść store po wykorzystaniu
+                service_parameter_store.clear_parameters()
+            else:
+                logger.warning(f"Device ID się nie zgadza: store={stored_device_id}, pakiet={current_device_id}")
+
+
+        # -- NOWA IMPLEMENTACJA Z WYKOZYSTANIEM MACHINE STATE
+        if selected_device_store.is_device_selected(current_id_clean):
+            machine_state_observer.observe_network_activity(command_id=0x0006)
+            request = ServiceMode.get_request_value()
+            logger.info(f"Ustawiam request w odpowiedzi na: {request} dla: {current_device_id}")
+            machine_state_observer.observe_network_activity(request_value=request)
+            state = machine_state_observer.get_current_observed_state()
+            logger.info(f"aktualny stan to: {state}")
+        else:
+            request = 0x00
+            # Wyczyść urządzenie z rejestru trybu serwisowego
+            selected_device_store.clear_service_mode_device()
+            logger.info(f"Wymuszenie wyłączenia trybu serwisowego, request:{request} dla: {current_device_id}")
+
+
+
+
 
         # Pobieramy parametry z pakietu danych
         data_start = 4 + 17 + 1  # HEADER(4B) + JAWNA(17B) + DATA_LEN(1B)
 
-        # Standardowo status i request z uwzględnieniem trybu serwisowego
+        # Status zawsze 0x01 (domyślny)
         status = 0x01
-        try:
-            request = ServiceMode.get_request_value()
-        except Exception as e:
-            logger.error(f"Błąd pobierania request_value z ServiceMode: {e}")
-            # Fallback - domyślna wartość
-            request = 0x03 if ServiceMode.is_enabled() else 0x00
+
+
+
+
 
         # Ustawianie adresu parametru - używamy przekazanego parametru lub domyślnego
         param_address_byte = param_address if param_address > 0 else 0x00
@@ -300,8 +331,11 @@ class CommandHandler:
         # Przygotowanie danych parametru (19 bajtów)
         param_data_bytes = bytearray(19)
 
-        if param_data:
-            # Konwersja przekazanego stringa na bytearray
+        #if param_data:
+        if param_data and param_data != "DISABLE_SERVICE_MODE":
+
+
+            # Konwersja przekazanego stringa na bytearray(pomijamy specjalną komendę)
             param_data_str = str(param_data)
             param_data_encoded = bytearray(param_data_str.encode('ascii'))
 

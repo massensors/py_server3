@@ -9,6 +9,7 @@ class SelectedDeviceStore:
     """
     _instance = None
     _selected_device_id: Optional[str] = None
+    _service_mode_device_id: Optional[str] = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -38,6 +39,26 @@ class SelectedDeviceStore:
     def is_device_selected(self, device_id: str) -> bool:
         """Sprawdź czy podane urządzenie jest aktualnie wybrane"""
         return self._selected_device_id == device_id
+
+    def set_service_mode_device(self, device_id: str) -> None:
+        """Ustaw ID urządzenia aktualnie w trybie serwisowym"""
+        old_device_id = self._service_mode_device_id
+        self._service_mode_device_id = device_id
+        logger.info(f"Urządzenie w trybie serwisowym zmienione z '{old_device_id}' na '{device_id}'")
+
+    def get_service_mode_device(self) -> Optional[str]:
+        """Pobierz ID urządzenia aktualnie w trybie serwisowym"""
+        return self._service_mode_device_id
+
+    def is_device_in_service_mode(self, device_id: str) -> bool:
+        """Sprawdź czy podane urządzenie jest aktualnie w trybie serwisowym"""
+        return self._service_mode_device_id == device_id
+
+    def clear_service_mode_device(self) -> None:
+        """Wyczyść informację o urządzeniu w trybie serwisowym"""
+        old_device_id = self._service_mode_device_id
+        self._service_mode_device_id = None
+        logger.info(f"Usunięto urządzenie z trybu serwisowego: '{old_device_id}'")
 
 # Globalna instancja
 selected_device_store = SelectedDeviceStore()
