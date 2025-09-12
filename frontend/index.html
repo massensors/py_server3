@@ -30,7 +30,6 @@
         <button class="tab-btn" data-tab="pomiary">Pomiary</button>
     </div>
 
-
     <!-- Nowa zakładka Urządzenia -->
     <div id="urzadzenia" class="tab-content">
         <h2>Lista urządzeń</h2>
@@ -42,7 +41,6 @@
             <div class="loading-message">Ładowanie listy urządzeń...</div>
         </div>
     </div>
-
 
     <!-- Zawartość zakładek bez zmian -->
     <div id="odczyty" class="tab-content">
@@ -92,9 +90,69 @@
 
     <div id="pomiary" class="tab-content">
         <h2>Dane pomiarowe</h2>
-        <div class="pomiary-controls">
-            <button id="refreshPomiary" class="primary-btn">Odśwież dane</button>
+
+        <!-- Kontrola okresu pomiarów -->
+        <div class="period-control">
+            <h3>OKRES:</h3>
+            <div class="period-options">
+                <div class="period-option">
+                    <label class="period-radio-container">
+                        <input type="radio" name="period" value="custom" id="periodCustom">
+                        <span class="period-label">Ustaw własny</span>
+                    </label>
+                    <div class="custom-period-controls" id="customPeriodControls">
+                        <div class="date-control">
+                            <span class="date-label">od:</span>
+                            <button type="button" class="calendar-btn" id="startDateBtn">📅</button>
+                            <input type="date" id="startDateInput" style="display: none;">
+                            <div class="selected-date" id="startDateDisplay">wybierz datę</div>
+                        </div>
+                        <div class="date-control">
+                            <span class="date-label">do:</span>
+                            <button type="button" class="calendar-btn" id="endDateBtn">📅</button>
+                            <input type="date" id="endDateInput" style="display: none;">
+                            <div class="selected-date" id="endDateDisplay">wybierz datę</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="period-option">
+                    <label class="period-radio-container">
+                        <input type="radio" name="period" value="current_month" id="periodCurrentMonth">
+                        <span class="period-label">Bieżący miesiąc</span>
+                    </label>
+                </div>
+
+                <div class="period-option">
+                    <label class="period-radio-container">
+                        <input type="radio" name="period" value="previous_month" id="periodPreviousMonth">
+                        <span class="period-label">Poprzedni miesiąc</span>
+                    </label>
+                </div>
+
+                <div class="period-option">
+                    <label class="period-radio-container">
+                        <input type="radio" name="period" value="current_year" id="periodCurrentYear">
+                        <span class="period-label">Bieżący rok</span>
+                    </label>
+                </div>
+
+                <div class="period-option">
+                    <label class="period-radio-container">
+                        <input type="radio" name="period" value="previous_year" id="periodPreviousYear">
+                        <span class="period-label">Poprzedni rok</span>
+                    </label>
+                </div>
+            </div>
         </div>
+
+        <div class="pomiary-controls compact">
+            <button id="refreshPomiary" class="primary-btn">Odśwież dane</button>
+            <div class="period-info">
+                <span class="current-period-display" id="currentPeriodDisplay">Wybierz okres</span>
+            </div>
+        </div>
+
         <div class="pomiary-container">
             <table id="pomiaryTable" class="pomiary-table">
                 <thead>

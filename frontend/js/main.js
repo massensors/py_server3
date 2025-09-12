@@ -1,3 +1,5 @@
+import { PeriodControl } from './components/period-control.js';
+
 import { loadDeviceData, loadAliasyData, loadPomiaryData } from './services/api.js';
 import { logger } from './services/logger.js';
 import { createParametersGrid, createAliasyGrid } from './components/grids.js';
@@ -7,6 +9,10 @@ import { initServiceMode } from './services/serviceMode.js';
 import { getDeviceId } from './utils/helpers.js';
 import { API_URL } from './config/constants.js';
 import { deviceSelection } from './services/deviceSelection.js';
+
+// Globalna zmienna dla kontroli okresu
+let periodControl;
+
 
 // Główna inicjalizacja aplikacji
 document.addEventListener('DOMContentLoaded', function () {
@@ -35,6 +41,11 @@ function initializeComponents() {
 
     // Tryb serwisowy
     initServiceMode();
+
+    // Kontrola okresu dla zakładki pomiary
+    periodControl = new PeriodControl();
+    console.log('📅 Kontrola okresu zainicjalizowana');
+
 }
 
 // Inicjalizuje główne event listenery
@@ -155,3 +166,6 @@ function clearDeviceInfoUI() {
         deviceInput.title = '';
     }
 }
+
+// **EXPORT periodControl dla innych modułów**
+export { periodControl };

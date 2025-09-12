@@ -562,3 +562,177 @@ input:checked + .slider:before {
 .tab-content.active {
     display: block;
 }
+
+/* Dodaj do istniejącego styles.css */
+
+/* Kontrola okresu pomiarów */
+.period-control {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.period-control h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.period-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.period-option {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.period-radio-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+}
+
+.period-radio-container input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #007bff;
+}
+
+.period-label {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Kontrole dla okresu niestandardowego */
+.custom-period-controls {
+    display: none;
+    margin-left: 24px;
+    padding: 10px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.custom-period-controls.active {
+    display: flex;
+}
+
+.date-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 200px;
+}
+
+.date-label {
+    font-size: 14px;
+    color: #666;
+    min-width: 20px;
+}
+
+.calendar-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.calendar-btn:hover {
+    background: #0056b3;
+}
+
+.selected-date {
+    padding: 8px 12px;
+    background: white;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    min-width: 120px;
+    font-size: 14px;
+    color: #495057;
+    text-align: center;
+}
+
+.selected-date.has-date {
+    color: #007bff;
+    font-weight: 500;
+}
+
+/* Informacja o aktualnym okresie */
+.period-info {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.current-period-display {
+    font-size: 14px;
+    color: #666;
+    background: #ffffff;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid #ced4da;
+    white-space: nowrap;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+
+.current-period-display.selected {
+    background: #e3f2fd;
+    color: #1976d2;
+    border-color: #90caf9;
+    box-shadow: 0 2px 4px rgba(25, 118, 210, 0.2);
+}
+
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .period-options {
+        gap: 15px;
+    }
+
+    .custom-period-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .date-control {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .pomiary-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px; /* Odstęp między przyciskiem a informacją o okresie */
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+
+    .period-info {
+    display: flex;
+    align-items: center;
+}
+
+}
