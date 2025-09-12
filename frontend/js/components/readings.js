@@ -77,6 +77,14 @@ function updateOdczytyStatus(status, message) {
     odczytyStatus.textContent = message;
 }
 
+// Funkcja kontrolująca widoczność przycisku Odśwież
+function updateRefreshButtonVisibility(visible) {
+    const refreshOdczytyBtn = document.getElementById('refreshOdczyty');
+    if (refreshOdczytyBtn) {
+        refreshOdczytyBtn.style.display = visible ? 'inline-block' : 'none';
+    }
+}
+
 // Funkcja ładująca odczyty dynamiczne
 export async function loadDynamicReadings() {
     try {
@@ -112,13 +120,24 @@ export async function activateReadingsMode() {
         if (response.ok) {
             const data = await response.json();
             dynamicReadingsActive = true;
-            updateOdczytyStatus('waiting', 'Tryb odczytów aktywowany');
-            addOdczytyLogEntry('Tryb odczytów dynamicznych aktywowany', 'update');
-            logger.addEntry('Tryb odczytów dynamicznych aktywowany', 'success');
+
+            // Kontrola widoczności przycisku na podstawie stanu trybu serwisowego
+            updateRefreshButtonVisibility(data.service_mode_enabled);
+
+            if (data.additional_info) {
+                updateOdczytyStatus('warning', data.additional_info);
+                addOdczytyLogEntry(data.additional_info, 'warning');
+                logger.addEntry('Wymagane włączenie trybu serwisowego', 'warning');
+            } else {
+                updateOdczytyStatus('waiting', 'Tryb odczytów aktywowany');
+                addOdczytyLogEntry('Tryb odczytów dynamicznych aktywowany', 'update');
+                logger.addEntry('Tryb odczytów dynamicznych aktywowany', 'success');
+            }
         }
     } catch (error) {
         addOdczytyLogEntry(`Błąd aktywacji: ${error.message}`, 'error');
         logger.addEntry('Błąd aktywacji trybu odczytów', 'error');
+        updateRefreshButtonVisibility(false);
     }
 }
 
@@ -133,6 +152,7 @@ export async function deactivateReadingsMode() {
             updateOdczytyStatus('inactive', 'Tryb odczytów deaktywowany');
             addOdczytyLogEntry('Tryb odczytów dynamicznych deaktywowany', 'update');
             logger.addEntry('Tryb odczytów dynamicznych deaktywowany', 'info');
+            updateRefreshButtonVisibility(false);
         }
     } catch (error) {
         addOdczytyLogEntry(`Błąd deaktywacji: ${error.message}`, 'error');

@@ -39,7 +39,8 @@ async def toggle_service_mode(request: ServiceModeRequest):
     if not request.enabled:
         ServiceMode.set_request_mode("normal")
         ServiceMode.deactivate_readings_mode()
-
+        #ServiceMode.set_active(False)
+        #ServiceMode.set_enabled(False)
     return {
         "enabled": ServiceMode.is_enabled(),
         "active": ServiceMode.is_active(),

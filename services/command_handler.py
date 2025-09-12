@@ -52,6 +52,7 @@ class CommandHandler:
         """
         Obsługa komendy MEASURE_DATA (0x0003)
         """
+        ServiceMode.set_active(False)
         measure_data = ProtocolAnalyzer.parse_measure_data(decoded_data)
 
         # Tworzenie nowego rekordu w bazie danych
@@ -268,7 +269,7 @@ class CommandHandler:
             param_data: Dane parametru jako string (domyślnie pusty)
         """
 
-
+        ServiceMode.set_active(True)
         # Importy lokalne żeby uniknąć cykli importów
         from services.selected_device_store import selected_device_store
 

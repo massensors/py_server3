@@ -63,8 +63,12 @@ class ServiceMode:
     @classmethod
     def activate_readings_mode(cls) -> None:
         """Aktywuje tryb odczytów dynamicznych"""
-        cls.set_request_mode("readings")
-        cls._status_message = "Tryb odczytów dynamicznych aktywny"
+        if cls._enabled:
+            cls.set_request_mode("readings")
+            cls._status_message = "Tryb odczytów dynamicznych aktywny"
+        else:
+            cls.set_request_mode("normal")
+            cls._status_message = "Tryb normalny"
 
     @classmethod
     def deactivate_readings_mode(cls) -> None:

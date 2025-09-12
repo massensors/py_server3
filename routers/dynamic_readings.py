@@ -1,10 +1,12 @@
 
+import logging
+
 from fastapi import APIRouter
 from pydantic import BaseModel
-from services.dynamic_mode import dynamic_readings_store
+
 from services.dynamic_mode import dynamic_mode_response
+from services.dynamic_mode import dynamic_readings_store
 from services.service_mode import ServiceMode
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +35,8 @@ async def get_dynamic_readings():
     readings = dynamic_readings_store.get_readings()
     has_data = dynamic_readings_store.has_readings()
 
-    if has_data:
+    if has_data and ServiceMode.is_enabled():
+        logger.info("*has_data* - true  ")
         return DynamicReadingsResponse(
             device_id=readings.get('device_id', ''),
             mv_reading=readings.get('mv_reading', ''),
@@ -44,6 +47,7 @@ async def get_dynamic_readings():
             has_data=True
         )
     else:
+        logger.info("*has_data* - false  ")
         return DynamicReadingsResponse(has_data=False)
 
 
@@ -52,6 +56,9 @@ async def activate_readings_mode():
     """
     Aktywuje tryb odczytów (ustawia request_value = 0x02 w ServiceMode)
     """
+    # Sprawdź stan przed aktywacją
+    service_mode_enabled = ServiceMode.is_enabled()
+
     # Aktywacja trybu odczytów w ServiceMode
     ServiceMode.activate_readings_mode()
 
@@ -61,12 +68,22 @@ async def activate_readings_mode():
     except Exception as e:
         logger.warning(f"Błąd aktywacji w dynamic_mode_response: {e}")
 
-    logger.info("Aktywowano tryb odczytów dynamicznych")
+    logger.info("Podjecie aktywacji odczytów dynamicznych")
+
+    # Ustal wiadomość na podstawie stanu trybu serwisowego
+    if service_mode_enabled:
+        message = "Tryb odczytów aktywowany"
+        additional_info = None
+    else:
+        message = "Wcześniej uruchom tryb serwisowy"
+        additional_info = "Włącz tryb serwisowy"
 
     return {
-        "message": "Tryb odczytów aktywowany",
+        "message": message,
         "request_value": ServiceMode.get_request_value(),
-        "request_mode": ServiceMode.get_request_mode()
+        "request_mode": ServiceMode.get_request_mode(),
+        "service_mode_enabled": service_mode_enabled,
+        "additional_info": additional_info
     }
 
 
