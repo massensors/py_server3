@@ -107,8 +107,8 @@ class DevicesService {
             this.fillParametersData(parametersData.parameters);
 
             // 4. Przełącz na zakładkę "Parametry"
-            this.switchToParametersTab();
-
+            //this.switchToParametersTab();
+            this.switchToPomiaryTab();
             return {
                 success: true,
                 selectionData,
@@ -151,6 +151,35 @@ class DevicesService {
             // Aktywuj zakładkę "Parametry"
             parametersTab.classList.add('active');
             parametersContent.classList.add('active');
+        }
+    }
+    // NOWA FUNKCJA DO PRZEŁĄCZANIA NA ZAKŁADKĘ POMIARY
+    switchToPomiaryTab() {
+        console.log('🔄 devicesService.switchToPomiaryTab() - przełączam na Pomiary');
+
+        const pomiaryTab = document.querySelector('[data-tab="pomiary"]');
+        const pomiaryContent = document.getElementById('pomiary');
+
+        if (pomiaryTab && pomiaryContent) {
+            // Usuń aktywne klasy z wszystkich zakładek
+            document.querySelectorAll('.tab-btn').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Aktywuj zakładkę "Pomiary"
+            pomiaryTab.classList.add('active');
+            pomiaryContent.classList.add('active');
+
+            console.log('✅ Przełączono na zakładkę Pomiary');
+
+            // Opcjonalnie: wczytaj dane pomiarowe
+            // Możesz tutaj dodać logikę wczytywania danych jeśli potrzebujesz
+
+        } else {
+            console.error('❌ Nie znaleziono elementów zakładki Pomiary');
         }
     }
 
