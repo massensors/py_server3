@@ -226,3 +226,255 @@ export async function updateAlias(fieldName, value) {
         logger.addEntry(`Błąd podczas aktualizacji pola '${fieldName}' (adres ${fieldAddress}): ${error.message}`, 'error');
     }
 }
+
+// Dodaj do istniejącego api.js lub utwórz nowy jeśli nie istnieje
+
+
+
+export async function loadMeasureData(periodControl = null) {
+    try {
+        logger.addEntry(' Pobieranie danych pomiarowych z inteligentnym próbkowaniem...', 'info');
+
+        // Pobierz okres z periodControl
+        let period = null;
+        if (periodControl) {
+            period = periodControl.getCurrentPeriod();
+        }
+
+        // Przygotuj parametry URL
+        const params = new URLSearchParams();
+
+        if (period) {
+            // Dodaj typ okresu
+            if (period.type && period.type !== 'custom') {
+                params.append('period_type', period.type);
+            }
+
+            // Dla okresu niestandardowego dodaj konkretne daty
+            if (period.type === 'custom') {
+                if (period.startDateFormatted && period.endDateFormatted) {
+                    params.append('period_type', 'custom');
+                    params.append('start_date', period.startDateFormatted);
+                    params.append('end_date', period.endDateFormatted);
+                } else {
+                    logger.addEntry('⚠️ Niepełne daty dla okresu niestandardowego', 'warning');
+                }
+            }
+
+            logger.addEntry(` Pobieranie danych dla okresu: ${period.type}`, 'info');
+        }
+
+        // Automatyczne dostosowanie limitu na podstawie okresu
+        const maxResults = _calculateOptimalLimit(period);
+        params.append('max_results', maxResults.toString());
+
+        const url = `${API_URL}/measure-data/filtered/list?${params.toString()}`;
+        logger.addEntry(` Żądanie: ${url}`, 'debug');
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorData}`);
+        }
+
+        const data = await response.json();
+
+        logger.addEntry(`✅ Pobrano ${data.shown_count} z ${data.total_count} dostępnych pomiarów`, 'success');
+        logger.addEntry(` ${data.sampling_info}`, 'info');
+
+        // Aktualizuj tabelę
+        updateMeasureTable(data.data, {
+            total_count: data.total_count,
+            shown_count: data.shown_count,
+            sampling_info: data.sampling_info,
+            period_info: data.period_info,
+            device_id: data.device_id
+        });
+
+        return data;
+
+    } catch (error) {
+        const errorMsg = `Błąd pobierania danych pomiarowych: ${error.message}`;
+        logger.addEntry(errorMsg, 'error');
+        console.error('Błąd loadMeasureData:', error);
+
+        // Wyczyść tabelę w przypadku błędu
+        updateMeasureTable([], {
+            total_count: 0,
+            shown_count: 0,
+            sampling_info: 'Błąd ładowania',
+            period_info: 'Błąd'
+        });
+
+        throw error;
+    }
+}
+
+export async function loadMeasureSummary(periodControl = null) {
+    try {
+        logger.addEntry(' Pobieranie podsumowania pomiarów...', 'info');
+
+        let period = null;
+        if (periodControl) {
+            period = periodControl.getCurrentPeriod();
+        }
+
+        const params = new URLSearchParams();
+
+        if (period) {
+            if (period.type && period.type !== 'custom') {
+                params.append('period_type', period.type);
+            }
+
+            if (period.type === 'custom' && period.startDateFormatted && period.endDateFormatted) {
+                params.append('period_type', 'custom');
+                params.append('start_date', period.startDateFormatted);
+                params.append('end_date', period.endDateFormatted);
+            }
+        }
+
+        const url = `${API_URL}/measure-data/filtered/summary?${params.toString()}`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errorData}`);
+        }
+
+        const data = await response.json();
+
+        logger.addEntry(` Podsumowanie: ${data.total_records} rekordów dla okresu ${data.period_info}`, 'success');
+        console.log('Podsumowanie danych:', data);
+
+        return data;
+
+    } catch (error) {
+        const errorMsg = `Błąd pobierania podsumowania: ${error.message}`;
+        logger.addEntry(errorMsg, 'error');
+        console.error('Błąd loadMeasureSummary:', error);
+        throw error;
+    }
+}
+
+function _calculateOptimalLimit(period) {
+    // Automatyczne dostosowanie limitu na podstawie okresu
+    if (!period || !period.type) return 500; // domyślny
+
+    switch (period.type) {
+        case 'current_month':
+        case 'previous_month':
+            return 1000; // miesiąc - więcej szczegółów
+        case 'current_year':
+        case 'previous_year':
+            return 800; // rok - mniej szczegółów
+        case 'custom':
+            // Dla niestandardowego okresu sprawdź różnicę dat
+            if (period.startDate && period.endDate) {
+                const daysDiff = Math.abs((period.endDate - period.startDate) / (1000 * 60 * 60 * 24));
+                if (daysDiff <= 7) return 1000; // tydzień - wszystkie szczegóły
+                if (daysDiff <= 31) return 800;  // miesiąc
+                if (daysDiff <= 365) return 500; // rok
+                return 300; // więcej niż rok - rzadkie próbkowanie
+            }
+            return 500;
+        default:
+            return 500;
+    }
+}
+
+function updateMeasureTable(measures, metadata = {}) {
+    const tableBody = document.querySelector('#pomiaryTable tbody');
+    if (!tableBody) {
+        logger.addEntry('❌ Nie znaleziono tabeli pomiarów', 'error');
+        return;
+    }
+
+    // Wyczyść tabelę
+    tableBody.innerHTML = '';
+
+    // Zaktualizuj informacje o próbkowaniu w UI
+    updateSamplingInfo(metadata);
+
+    if (!measures || measures.length === 0) {
+        const row = tableBody.insertRow();
+        const cell = row.insertCell();
+        cell.colSpan = 4;
+        cell.textContent = 'Brak danych pomiarowych dla wybranego okresu';
+        cell.style.textAlign = 'center';
+        cell.style.color = '#6c757d';
+        cell.style.fontStyle = 'italic';
+        cell.style.padding = '20px';
+        return;
+    }
+
+    // Dodaj wiersze z danymi
+    measures.forEach((measure, index) => {
+        const row = tableBody.insertRow();
+
+        // Data i czas
+        const timeCell = row.insertCell();
+        timeCell.textContent = measure.currentTime || 'N/A';
+
+        // Prędkość
+        const speedCell = row.insertCell();
+        speedCell.textContent = _formatNumericValue(measure.speed);
+
+        // Natężenie
+        const rateCell = row.insertCell();
+        rateCell.textContent = _formatNumericValue(measure.rate);
+
+        // Suma
+        const totalCell = row.insertCell();
+        totalCell.textContent = _formatNumericValue(measure.total);
+
+        // Stylowanie co drugiej linii
+        if (index % 2 === 0) {
+            row.style.backgroundColor = '#f8f9fa';
+        }
+    });
+
+    logger.addEntry(` Wyświetlono ${measures.length} rekordów`, 'info');
+}
+
+function updateSamplingInfo(metadata) {
+    // Znajdź lub utwórz element do wyświetlania informacji o próbkowaniu
+    let samplingInfo = document.getElementById('samplingInfo');
+    if (!samplingInfo) {
+        // Utwórz element jeśli nie istnieje
+        samplingInfo = document.createElement('div');
+        samplingInfo.id = 'samplingInfo';
+        samplingInfo.className = 'sampling-info';
+
+        const pomiaryContainer = document.querySelector('.pomiary-container');
+        if (pomiaryContainer) {
+            pomiaryContainer.insertBefore(samplingInfo, document.getElementById('pomiaryTable'));
+        }
+    }
+
+    if (metadata.sampling_info || metadata.total_count !== undefined) {
+        let infoText = '';
+
+        if (metadata.total_count > 0) {
+            infoText += ` ${metadata.total_count} rekordów w okresie: ${metadata.period_info || 'Wszystkie'}`;
+        }
+
+        if (metadata.sampling_info && metadata.shown_count < metadata.total_count) {
+            infoText += ` |  ${metadata.sampling_info}`;
+        }
+
+        samplingInfo.innerHTML = `<small style="color: #6c757d; margin-bottom: 10px; display: block;">${infoText}</small>`;
+    }
+}
+
+function _formatNumericValue(value) {
+    try {
+        const numValue = parseFloat(value);
+        return isNaN(numValue) ? value : numValue.toFixed(2);
+    } catch {
+        return value || 'N/A';
+    }
+}
+
+// Eksportuj funkcje
+export { updateMeasureTable, updateSamplingInfo };

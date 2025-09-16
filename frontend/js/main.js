@@ -9,6 +9,8 @@ import { initServiceMode } from './services/serviceMode.js';
 import { getDeviceId } from './utils/helpers.js';
 import { API_URL } from './config/constants.js';
 import { deviceSelection } from './services/deviceSelection.js';
+import { loadMeasureData } from './services/api.js'; // dodaj import
+
 
 // Globalna zmienna dla kontroli okresu
 let periodControl;
@@ -61,7 +63,9 @@ function initializeEventListeners() {
     if (refreshPomiaryBtn) {
         refreshPomiaryBtn.addEventListener('click', () => {
             console.log('Odświeżanie danych pomiarowych...');
-            loadPomiaryData();
+             loadMeasureData(periodControl); // ← NOWA FUNKCJA
+
+            //loadPomiaryData();
         });
     }
 
@@ -128,7 +132,9 @@ async function handleLoadDevice() {
                 loadDeviceData();
                 break;
             case 'pomiary':
-                loadPomiaryData();
+                //loadPomiaryData();
+                loadMeasureData(periodControl)
+
                 break;
             case 'aliasy':
                 loadAliasyData();

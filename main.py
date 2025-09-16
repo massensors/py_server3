@@ -8,6 +8,7 @@ from routers import measure_data, aliases, static_params, commands, app_interfac
     network_observer
 from routers.service_mode import router as service_mode_router
 from routers import device_selection
+from routers import measure_data
 
 import uvicorn
 
@@ -113,6 +114,7 @@ app.include_router(devices.router, prefix="/api")
 app.include_router(device_selection.router)
 
 app.include_router(network_observer.router)
+
 
 
 
