@@ -10,6 +10,7 @@ import { getDeviceId } from './utils/helpers.js';
 import { API_URL } from './config/constants.js';
 import { deviceSelection } from './services/deviceSelection.js';
 import { loadMeasureData } from './services/api.js'; // dodaj import
+import { reportService } from './services/reportService.js';
 
 
 // Globalna zmienna dla kontroli okresu
@@ -76,6 +77,19 @@ function initializeEventListeners() {
             logger.clear();
         });
     }
+    // Przycisk generowania raportu
+    const generateReportBtn = document.getElementById('generateReport');
+      if (generateReportBtn) {
+      generateReportBtn.addEventListener('click', async () => {
+        try {
+            console.log('🔄 Generowanie raportu CSV...');
+            await reportService.generateReport(periodControl);
+        } catch (error) {
+            console.error('Błąd generowania raportu:', error);
+        }
+    });
+}
+
 
     // Event listener dla zamknięcia strony
     window.addEventListener('beforeunload', function () {

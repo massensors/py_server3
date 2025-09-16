@@ -736,3 +736,13 @@ input:checked + .slider:before {
 }
 
 }
+
+.pomiary-controls .secondary-btn {
+    background-color: #6c757d;
+    color: white;
+    margin-left: 10px;
+}
+
+.pomiary-controls .secondary-btn:hover {
+    background-color: #5a6268;
+}

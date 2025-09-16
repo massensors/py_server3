@@ -9,3 +9,4 @@ from . import dynamic_readings
 from . import devices
 from . import device_selection
 from . import network_observer
+from . import reports

@@ -189,11 +189,12 @@ export class PeriodControl {
         console.log(`📅 Zmiana daty ${dateType}:`, dateValue);
 
         if (dateType === 'start') {
-            this.startDate = dateValue ? new Date(dateValue) : null;
+            // ✅ POPRAWIONE: Utworz obiekt Date z prawidłowego formatu input[type="date"]
+            this.startDate = dateValue ? new Date(dateValue + 'T00:00:00') : null;
             const display = document.getElementById('startDateDisplay');
             if (display) {
                 if (dateValue) {
-                    display.textContent = this.formatDate(new Date(dateValue));
+                    display.textContent = this.formatDate(new Date(dateValue + 'T00:00:00'));
                     display.classList.add('has-date');
                 } else {
                     display.textContent = 'wybierz datę';
@@ -201,11 +202,12 @@ export class PeriodControl {
                 }
             }
         } else if (dateType === 'end') {
-            this.endDate = dateValue ? new Date(dateValue) : null;
+            // ✅ POPRAWIONE: Utworz obiekt Date z prawidłowego formatu input[type="date"]
+            this.endDate = dateValue ? new Date(dateValue + 'T23:59:59') : null;
             const display = document.getElementById('endDateDisplay');
             if (display) {
                 if (dateValue) {
-                    display.textContent = this.formatDate(new Date(dateValue));
+                    display.textContent = this.formatDate(new Date(dateValue + 'T23:59:59'));
                     display.classList.add('has-date');
                 } else {
                     display.textContent = 'wybierz datę';
@@ -296,18 +298,41 @@ export class PeriodControl {
         return date.toLocaleDateString('pl-PL');
     }
 
+    // ✅ KLUCZOWA POPRAWKA: Właściwy format daty dla API
     formatDateForAPI(date) {
-        return date.toISOString().split('T')[0];
+        if (!date) return null;
+
+        // Upewnij się, że to obiekt Date
+        const dateObj = date instanceof Date ? date : new Date(date);
+
+        // Sprawdź czy data jest prawidłowa
+        if (isNaN(dateObj.getTime())) {
+            console.error('❌ Nieprawidłowa data:', date);
+            return null;
+        }
+
+        // Zwróć w formacie YYYY-MM-DD
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+
+        const formatted = `${year}-${month}-${day}`;
+        console.log('📅 Sformatowana data dla API:', formatted);
+
+        return formatted;
     }
 
     getCurrentPeriod() {
-        return {
+        const result = {
             type: this.currentPeriod,
             startDate: this.startDate,
             endDate: this.endDate,
-            startDateFormatted: this.startDate ? this.formatDateForAPI(this.startDate) : null,
-            endDateFormatted: this.endDate ? this.formatDateForAPI(this.endDate) : null
+            startDateFormatted: this.formatDateForAPI(this.startDate),
+            endDateFormatted: this.formatDateForAPI(this.endDate)
         };
+
+        console.log('📊 getCurrentPeriod wynik:', result);
+        return result;
     }
 
     isValidPeriod() {
