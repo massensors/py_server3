@@ -2,6 +2,22 @@ import { API_URL, PARAMETER_MAPPING, ALIAS_ADDRESS_MAPPING } from '../config/con
 import { getDeviceId, formatDateTime } from '../utils/helpers.js';
 import { logger } from './logger.js';
 
+
+export function formatDateForAPI(date) {
+    if (!date) return null;
+
+    const dateObj = date instanceof Date ? date : new Date(date);
+    if (isNaN(dateObj.getTime())) return null;
+
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+
+
 // Wczytuje dane urządzenia z serwera
 export async function loadDeviceData() {
     const deviceId = getDeviceId();
@@ -252,10 +268,18 @@ export async function loadMeasureData(periodControl = null) {
 
             // Dla okresu niestandardowego dodaj konkretne daty
             if (period.type === 'custom') {
-                if (period.startDateFormatted && period.endDateFormatted) {
+                if (period.startDate && period.endDate) {
                     params.append('period_type', 'custom');
-                    params.append('start_date', period.startDateFormatted);
-                    params.append('end_date', period.endDateFormatted);
+                   const startFormatted = formatDateForAPI(period.startDate);
+                   const endFormatted = formatDateForAPI(period.endDate);
+
+                     if (startFormatted && endFormatted) {
+                        params.append('start_date', startFormatted);
+                        params.append('end_date', endFormatted);
+                                 }
+
+
+
                 } else {
                     logger.addEntry('⚠️ Niepełne daty dla okresu niestandardowego', 'warning');
                 }

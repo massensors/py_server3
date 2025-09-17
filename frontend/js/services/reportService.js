@@ -1,11 +1,18 @@
 import { logger } from './logger.js';
 import { API_URL } from '../config/constants.js';
 import { getDeviceId } from '../utils/helpers.js';
+import { formatDateForAPI } from "./api.js";
 
 class ReportService {
     constructor() {
         this.API_URL = API_URL;
     }
+
+    /**
+     * ✅ POPRAWIONE: Formatowanie dat do ISO przed wysłaniem
+     */
+
+
 
     /**
      * Generuje i pobiera raport CSV dla wybranego okresu
@@ -33,8 +40,39 @@ class ReportService {
                 if (!periodData.startDate || !periodData.endDate) {
                     throw new Error('Wybierz daty początku i końca okresu');
                 }
-                params.append('start_date', periodData.startDate);
-                params.append('end_date', periodData.endDate);
+
+                // ✅ DEBUGOWANIE - sprawdź co otrzymujesz
+    console.log('🔍 DEBUGOWANIE - otrzymane daty:', {
+        startDate: periodData.startDate,
+        startType: typeof periodData.startDate,
+        startToString: periodData.startDate?.toString(),
+        endDate: periodData.endDate,
+        endType: typeof periodData.endDate,
+        endToString: periodData.endDate?.toString()
+    });
+
+
+                // ✅ KLUCZOWA POPRAWKA: Formatuj daty przed wysłaniem
+                const startFormatted = formatDateForAPI(periodData.startDate);
+                const endFormatted = formatDateForAPI(periodData.endDate);
+
+                 console.log('📅 Sformatowane daty:', {
+        start: startFormatted,
+        end: endFormatted
+    });
+
+
+                if (!startFormatted || !endFormatted) {
+                    throw new Error('Błąd formatowania dat');
+                }
+
+                params.append('start_date', startFormatted);
+                params.append('end_date', endFormatted);
+
+                console.log('📅 Wysyłane daty do raportu:', {
+                    start: startFormatted,
+                    end: endFormatted
+                });
             }
 
             // Wywołaj endpoint

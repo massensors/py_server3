@@ -327,8 +327,7 @@ export class PeriodControl {
             type: this.currentPeriod,
             startDate: this.startDate,
             endDate: this.endDate,
-            startDateFormatted: this.formatDateForAPI(this.startDate),
-            endDateFormatted: this.formatDateForAPI(this.endDate)
+
         };
 
         console.log('📊 getCurrentPeriod wynik:', result);
