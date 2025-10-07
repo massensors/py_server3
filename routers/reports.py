@@ -224,7 +224,7 @@ async def generate_report(
         writer.writerow(["Maksymalna prędkość:", f"{max_speed:.2f}"])
         writer.writerow(["Średnie natężenie:", f"{avg_rate:.2f}"])
         writer.writerow(["Maksymalne natężenie:", f"{max_rate:.2f}"])
-        writer.writerow(["Suma przyrostowa:", f"{incremental_sum:.2f}"])
+        writer.writerow(["Suma przyrostowa:", f"{incremental_sum:g}"])
         writer.writerow(["Liczba pomiarów:", len(measurements)])
         writer.writerow([])
 

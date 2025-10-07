@@ -12,7 +12,7 @@ export const API_URL = '';  // Puste dla relatywnych URLi
 
 // Mapowanie parametrów
 export const PARAMETER_MAPPING = {
-    0: {name: "dummy", label: "Dummy", format: "1B"},
+   // 0: {name: "dummy", label: "Dummy", format: "1B"},
     1: {name: "filterRate", label: "Filter Rate", format: "1B"},
     2: {name: "scaleCapacity", label: "Scale Capacity", format: "8B"},
     // ... pozostałe parametry
@@ -28,7 +28,7 @@ export const PARAMETER_MAPPING = {
     12: {name: "pulsesPerRev", label: "Pulses Per Rev", format: "8B"},
     13: {name: "beltLength", label: "Belt Length", format: "8B"},
     14: {name: "beltLengthPulses", label: "Belt Length Pulses", format: "8B"},
-    15: {name: "currentTime", label: "Current Time", format: "19B"}
+   // 15: {name: "currentTime", label: "Current Time", format: "19B"}
 };
 
 
