@@ -396,10 +396,10 @@ class ProtocolAnalyzer:
         idlerspacing = data[data_content_start + 45:data_content_start + 53].decode('ascii').strip()
         speedsource = data[data_content_start + 53:data_content_start + 54].decode('ascii').strip()
         wheeldiameter = data[data_content_start + 54:data_content_start + 62].decode('ascii').strip()
-        pulsesperrev = data[data_content_start + 62:data_content_start + 69].decode('ascii').strip()
-        beltlength = data[data_content_start + 69:data_content_start + 77].decode('ascii').strip()
-        beltlengthpulses = data[data_content_start + 77:data_content_start + 85].decode('ascii').strip()
-        currenttime = data[data_content_start + 85:data_content_start + 104].decode('ascii').strip()
+        pulsesperrev = data[data_content_start + 62:data_content_start + 70].decode('ascii').strip()
+        beltlength = data[data_content_start + 70:data_content_start + 78].decode('ascii').strip()
+        beltlengthpulses = data[data_content_start + 78:data_content_start + 86].decode('ascii').strip()
+        currenttime = data[data_content_start + 86:data_content_start + 105].decode('ascii').strip()
 
 
 
