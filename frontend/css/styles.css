@@ -746,3 +746,60 @@ input:checked + .slider:before {
 .pomiary-controls .secondary-btn:hover {
     background-color: #5a6268;
 }
+/* Style dla statusu urządzeń */
+.device-row {
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.device-row.device-online {
+    border-color: #4CAF50;
+    background: linear-gradient(to right, rgba(76, 175, 80, 0.05), transparent);
+}
+
+.device-row.device-offline {
+    border-color: #f44336;
+    background: linear-gradient(to right, rgba(244, 67, 54, 0.05), transparent);
+    opacity: 0.8;
+}
+
+.device-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.device-id {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.device-status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.device-status-badge.online {
+    background: #4CAF50;
+    color: white;
+}
+
+.device-status-badge.offline {
+    background: #f44336;
+    color: white;
+}
+
+.device-last-seen {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+

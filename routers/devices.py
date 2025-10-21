@@ -9,12 +9,14 @@ from repositories.database import get_db
 from models.models import Aliases
 from pydantic import BaseModel
 from sqlalchemy import func
+from services.device_activity_tracker import device_activity_tracker
 
 # Konfiguracja loggera
 logger = logging.getLogger(__name__)
 
+# JEDEN ROUTER DLA WSZYSTKICH ENDPOINTÓW
 router = APIRouter(
-    prefix="/devices",
+    prefix="/api/devices",  # DODAJ /api tutaj
     tags=["devices"],
     responses={404: {"description": "Not found"}},
 )
@@ -72,7 +74,68 @@ class DevicesListResponse(BaseModel):
                 "count": 1
             }
         }
+# NOWY ENDPOINT - Status urządzeń z informacją online/offline
+@router.get("/status")
+async def get_devices_status(db: Session = Depends(get_db)):
+    """
+    Zwraca listę urządzeń z ich statusem online/offline.
+    """
+    logger.info("Wywołano endpoint /status")  # DODAJ TEN LOG
+    try:
+        # Pobierz wszystkie unikalne urządzenia z bazy
+        unique_device_ids = db.query(Aliases.deviceId).distinct().all()
 
+        # Pobierz status aktywności z trackera
+        activity_status = device_activity_tracker.get_all_devices_status()
+
+        devices_list = []
+
+        for (device_id,) in unique_device_ids:
+            device_id_clean = device_id.strip()
+
+            # Pobierz najnowszy alias dla urządzenia
+            latest_alias = (
+                db.query(Aliases)
+                .filter(Aliases.deviceId == device_id_clean)
+                .order_by(Aliases.id.desc())
+                .first()
+            )
+
+            if latest_alias:
+                # Sprawdź status online
+                status_info = activity_status.get(device_id_clean, {
+                    'online': False,
+                    'last_seen': None,
+                    'seconds_since_last_seen': None
+                })
+
+                devices_list.append({
+                    'deviceId': device_id_clean,
+                    'company': latest_alias.company,
+                    'location': latest_alias.location,
+                    'productName': latest_alias.productName,
+                    'scaleId': latest_alias.scaleId,
+                    'online': status_info['online'],
+                    'last_seen': status_info['last_seen'],
+                    'seconds_since_last_seen': status_info['seconds_since_last_seen']
+                })
+
+        logger.info(f"Zwrócono status dla {len(devices_list)} urządzeń")
+
+        return {
+            'success': True,
+            'devices': devices_list,
+            'total': len(devices_list)
+        }
+
+    except Exception as e:
+        logger.error(f"Błąd pobierania statusu urządzeń: {e}")
+        return {
+            'success': False,
+            'error': str(e),
+            'devices': [],
+            'total': 0
+        }
 
 @router.get("/list", response_model=List[DeviceInfo])
 async def get_devices_list(db: Session = Depends(get_db)):
@@ -112,7 +175,7 @@ async def get_devices_list(db: Session = Depends(get_db)):
 
         # Debug log - wypisz pierwsze kilka deviceId
         for i, device in enumerate(devices[:5]):
-            logger.info(f"Device {i+1}: ID={device.device_id}, company={device.aliases.company}")
+            logger.info(f"Device {i + 1}: ID={device.device_id}, company={device.aliases.company}")
 
         return devices
 
@@ -122,6 +185,7 @@ async def get_devices_list(db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Błąd podczas pobierania listy urządzeń: {str(e)}"
         )
+
 
 @router.get("/list/summary", response_model=DevicesListResponse)
 async def get_devices_list_with_summary(db: Session = Depends(get_db)):
@@ -211,6 +275,8 @@ async def get_device_info(device_id: str, db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Błąd podczas pobierania urządzenia: {str(e)}"
         )
+
+
 @router.get("/search/by-alias")
 async def search_devices_by_alias(
         company: Optional[str] = None,
@@ -244,7 +310,8 @@ async def search_devices_by_alias(
                     match = False
                 if location and not (latest_alias.location and location.lower() in latest_alias.location.lower()):
                     match = False
-                if product_name and not (latest_alias.productName and product_name.lower() in latest_alias.productName.lower()):
+                if product_name and not (
+                        latest_alias.productName and product_name.lower() in latest_alias.productName.lower()):
                     match = False
                 if scale_id and not (latest_alias.scaleId and scale_id.lower() in latest_alias.scaleId.lower()):
                     match = False
@@ -270,3 +337,5 @@ async def search_devices_by_alias(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Błąd podczas wyszukiwania urządzeń: {str(e)}"
         )
+
+

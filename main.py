@@ -112,7 +112,7 @@ app.include_router(app_interface.router)  # Dodanie nowego routera dla aplikacji
 
 app.include_router(service_mode_router)
 app.include_router(dynamic_readings.router)  # NOWY ROUTER
-app.include_router(devices.router, prefix="/api")
+app.include_router(devices.router)
 app.include_router(device_selection.router)
 
 app.include_router(network_observer.router)
@@ -149,7 +149,7 @@ async def root():
      }
 
 # Endpoint dla API info
-@app.get("/api")
+@app.get("/api/info")
 async def api_info():
     return {
         "message": "System pomiarowy API",
@@ -157,6 +157,10 @@ async def api_info():
         "status": "active"
     }
 
+logger.info("📋 Lista wszystkich zarejestrowanych endpointów:")
+for route in app.routes:
+    if hasattr(route, 'path') and hasattr(route, 'methods'):
+        logger.info(f"  {route.methods} {route.path}")
 
 
 

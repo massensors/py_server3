@@ -10,15 +10,19 @@ class DevicesService {
         try {
             logger.addEntry('Ładowanie listy urządzeń...', 'request');
 
-            const response = await fetch(`${this.API_URL}/devices/list`);
+            const response = await fetch(`${this.API_URL}/devices/status`);
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
-            const devices = await response.json();
-            logger.addEntry(`Załadowano listę ${devices.length} urządzeń`, 'success');
+             const result = await response.json();
 
-            return devices;
+            if (!result.success) {
+                throw new Error(result.error || 'Błąd pobierania urządzeń');
+            }
+            logger.addEntry(`Załadowano listę ${result.devices.length} urządzeń`, 'success');
+
+            return result.devices;
         } catch (error) {
             logger.addEntry(`Błąd ładowania urządzeń: ${error.message}`, 'error');
             throw error;
@@ -211,26 +215,61 @@ class DevicesService {
     createDeviceRow(device) {
         const deviceRow = document.createElement('div');
         deviceRow.className = 'device-row';
-        deviceRow.setAttribute('data-device-id', device.device_id);
+        deviceRow.setAttribute('data-device-id', device.deviceId);
+
+        // Dodaj klasę online/offline
+        if (device.online) {
+            deviceRow.classList.add('device-online');
+        } else {
+            deviceRow.classList.add('device-offline');
+        }
 
         // Dodaj style dla hover i cursor
         deviceRow.style.cursor = 'pointer';
 
+
+        // Status online/offline
+        const onlineClass = device.online ? 'online' : 'offline';
+        const onlineText = device.online ? '🟢 ONLINE' : '🔴 OFFLINE';
+
+        // Formatowanie czasu ostatniej aktywności
+        let lastSeenText = '';
+        if (device.last_seen) {
+            const secondsAgo = device.seconds_since_last_seen;
+            if (secondsAgo < 60) {
+                lastSeenText = `${secondsAgo}s temu`;
+            } else {
+                const minutesAgo = Math.floor(secondsAgo / 60);
+                lastSeenText = `${minutesAgo}m temu`;
+            }
+        } else {
+            lastSeenText = 'nigdy';
+        }
         // Tworzenie listy aliasów
-        let aliasesHtml = this.formatAliases(device.aliases);
+        let aliasesHtml = this.formatAliases({
+            company: device.company,
+            location: device.location,
+            productName: device.productName,
+            scaleId: device.scaleId
+        });
 
         deviceRow.innerHTML = `
             <div class="device-info">
-                <div class="device-id">${device.device_id}</div>
+                <div class="device-header-row">
+                    <div class="device-id">${device.deviceId}</div>
+                    <span class="device-status-badge ${onlineClass}">${onlineText}</span>
+                </div>
                 <div class="device-aliases">${aliasesHtml}</div>
+                <div class="device-last-seen">Ostatnia aktywność: ${lastSeenText}</div>
             </div>
             <button class="device-select-btn">Wybierz</button>
         `;
 
         // Event listenery
-        this.attachRowEventListeners(deviceRow, device.device_id);
+        this.attachRowEventListeners(deviceRow, device.deviceId);
 
         return deviceRow;
+
     }
 
     formatAliases(aliases) {

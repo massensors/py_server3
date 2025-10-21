@@ -11,10 +11,13 @@ import { API_URL } from './config/constants.js';
 import { deviceSelection } from './services/deviceSelection.js';
 import { loadMeasureData } from './services/api.js'; // dodaj import
 import { reportService } from './services/reportService.js';
+import { devicesService } from './services/devicesService.js';
 
 
 // Globalna zmienna dla kontroli okresu
 let periodControl;
+
+let devicesAutoRefresh = null;
 
 
 // Główna inicjalizacja aplikacji
@@ -25,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeComponents();
     initializeEventListeners();
     initializeDeviceSelection();
-
+    initializeDevicesAutoRefresh(); // DODAJ TUTAJ
 
     console.log('✅ Aplikacja zainicjalizowana pomyślnie');
 });
@@ -99,6 +102,10 @@ function initializeEventListeners() {
                 keepalive: true
             });
         }
+
+        // DODAJ - Zatrzymaj auto-refresh przy zamykaniu strony
+        stopDevicesAutoRefresh();
+
     });
 }
 // NOWE - Inicjalizacja obsługi wyboru urządzeń
@@ -186,6 +193,69 @@ function clearDeviceInfoUI() {
         deviceInput.title = '';
     }
 }
+
+//------------111
+// DODAJ NOWĄ FUNKCJĘ - Inicjalizacja auto-refresh dla zakładki urządzeń
+function initializeDevicesAutoRefresh() {
+    console.log('🔄 Inicjalizacja auto-refresh listy urządzeń...');
+
+    // Startuj auto-refresh
+    startDevicesAutoRefresh();
+
+    // Nasłuchuj zmiany zakładek - odśwież natychmiast po przejściu do zakładki urządzeń
+    document.addEventListener('tabChanged', (event) => {
+        if (event.detail && event.detail.tab === 'urzadzenia') {
+            console.log('📱 Przełączono na zakładkę Urządzenia - odświeżanie listy...');
+            refreshDevicesList();
+        }
+    });
+}
+
+// DODAJ NOWĄ FUNKCJĘ - Start auto-refresh
+function startDevicesAutoRefresh() {
+    // Jeśli już działa, zatrzymaj poprzedni
+    if (devicesAutoRefresh) {
+        clearInterval(devicesAutoRefresh);
+    }
+
+    // Ustaw interwał na 10 sekund
+    devicesAutoRefresh = setInterval(async () => {
+        const urzadzeniaTab = document.querySelector('.tab-btn[data-tab="urzadzenia"]');
+
+        // Odświeżaj tylko jeśli zakładka jest aktywna
+        if (urzadzeniaTab && urzadzeniaTab.classList.contains('active')) {
+            await refreshDevicesList();
+        }
+    }, 10000); // 10 sekund
+
+    console.log('✅ Auto-refresh urządzeń uruchomiony (co 10s)');
+}
+
+// DODAJ NOWĄ FUNKCJĘ - Stop auto-refresh
+function stopDevicesAutoRefresh() {
+    if (devicesAutoRefresh) {
+        clearInterval(devicesAutoRefresh);
+        devicesAutoRefresh = null;
+        console.log('⏹️ Auto-refresh urządzeń zatrzymany');
+    }
+}
+
+// DODAJ NOWĄ FUNKCJĘ - Odświeżanie listy urządzeń
+async function refreshDevicesList() {
+    try {
+        const devices = await devicesService.loadDevicesList();
+        const listContainer = document.getElementById('urzadzeniaList');
+        const countElement = document.getElementById('devicesCount');
+
+        if (listContainer && devices) {
+            devicesService.displayDevicesList(devices, listContainer, countElement);
+            console.log(`🔄 Lista urządzeń odświeżona: ${devices.length} urządzeń`);
+        }
+    } catch (error) {
+        console.error('❌ Błąd auto-refresh urządzeń:', error);
+    }
+}
+//-------------222
 
 // **EXPORT periodControl dla innych modułów**
 export { periodControl };

@@ -10,18 +10,27 @@ export function initTabHandlers() {
     const tabContents = document.querySelectorAll('.tab-content');
 
     tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Usuwamy klasę active z wszystkich przycisków i zawartości
+        button.addEventListener('click', function () {
+            const tabName = this.getAttribute('data-tab');
+
+            // Usuń aktywne klasy
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
 
-            // Dodajemy klasę active do klikniętego przycisku i odpowiedniej zawartości
-            button.classList.add('active');
-            const tabId = button.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
+            // Dodaj aktywne klasy
+            this.classList.add('active');
+            const activeContent = document.getElementById(tabName);
+            if (activeContent) {
+                activeContent.classList.add('active');
+            }
 
-            // Obsługa specyficzna dla każdej zakładki
-            handleTabSwitch(tabId);
+            // DODAJ - Emituj event o zmianie zakładki
+            const event = new CustomEvent('tabChanged', {
+                detail: { tab: tabName }
+            });
+            document.dispatchEvent(event);
+
+            console.log(`📑 Przełączono na zakładkę: ${tabName}`);
         });
     });
 }

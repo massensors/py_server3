@@ -12,6 +12,7 @@ from services.cipher import RC4KeyGenerator
 from services.selected_device_store import selected_device_store
 from services.service_parameter_store import service_parameter_store
 from services.service_mode import ServiceMode
+from services.device_activity_tracker import device_activity_tracker  # NOWY IMPORT
 
 import logging
 
@@ -55,6 +56,9 @@ class CommandHandler:
         ServiceMode.set_active(False)
         measure_data = ProtocolAnalyzer.parse_measure_data(decoded_data)
 
+        # AKTUALIZACJA AKTYWNOŚCI URZĄDZENIA
+        device_activity_tracker.update_activity(measure_data.deviceId)
+
         # Tworzenie nowego rekordu w bazie danych
         db_measure = MeasureData(
             deviceId=measure_data.deviceId,
@@ -67,6 +71,39 @@ class CommandHandler:
         # Dodanie i zatwierdzenie w bazie danych
         db.add(db_measure)
         db.commit()
+
+        # Pobieramy parametry z pakietu danych
+        data_start = 4 + 17 + 1  # HEADER(4B) + JAWNA(17B) + DATA_LEN(1B)
+        #----------dodaje stan przenosnika
+        # Pobieram STATUS z odpowiedzi (jeśli dane są dostępne)
+        status=0
+        if len(decoded_data) > data_start:
+            _status = decoded_data[data_start:data_start + 1]
+            status = int.from_bytes(_status, 'big')
+
+        # Logowanie statusu i interpretacja
+
+        if status == 0:
+           # logger.info("Tryb serwisowy jest aktywny")
+           # ServiceMode.set_active(True)
+           # ServiceMode.set_status_message("Tryb serwisowy aktywny")
+            ServiceMode.set_conveyor_status("stopped")  # Przenośnik zatrzymany
+        elif status == 1:
+            #logger.info("Przenośnik w ruchu")
+            #ServiceMode.set_active(False)
+            #ServiceMode.set_status_message("Przenośnik w ruchu")
+            ServiceMode.set_conveyor_status("running")  # Przenośnik w ruchu
+        elif status == 2:
+           # logger.info("Inny błąd - tryb serwisowy nieaktywny")
+           # ServiceMode.set_active(False)
+           # ServiceMode.set_status_message("Błąd - tryb nieaktywny")
+            ServiceMode.set_conveyor_status("error")  # Błąd
+        else:
+           # logger.warning(f"Nieznany status: {status}")
+           # ServiceMode.set_active(False)
+           # ServiceMode.set_status_message(f"Nieznany status: {status}")
+            ServiceMode.set_conveyor_status("unknown")  # Status nieznany
+        #----------
 
         current_device_id = measure_data.deviceId
 
@@ -280,6 +317,9 @@ class CommandHandler:
         except Exception as e:
             logger.error(f"Błąd dekodowania device_id z pakietu: {e}")
             current_device_id = ""
+
+            # AKTUALIZACJA AKTYWNOŚCI URZĄDZENIA
+            device_activity_tracker.update_activity(current_device_id)
 
         current_id_clean = str(current_device_id).strip()
 
