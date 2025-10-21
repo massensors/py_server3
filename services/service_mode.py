@@ -7,11 +7,24 @@ class ServiceMode:
     _active = False
     _status_message = "Nieznany status"
     _request_mode = "service"  # Nowe pole: "service", "readings", "normal"
+    _conveyor_status = "unknown"  # Nowe pole
 
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super(ServiceMode, cls).__new__(cls)
         return cls._instance
+
+    @classmethod
+    def set_conveyor_status(cls, status: str):
+        """Ustawia status przenośnika: 'stopped', 'running', 'error', 'unknown'"""
+        cls._conveyor_status = status
+       # logger.info(f"Status przenośnika ustawiony na: {status}")
+
+    @classmethod
+    def get_conveyor_status(cls) -> str:
+        """Zwraca aktualny status przenośnika"""
+        return cls._conveyor_status
+
 
     @classmethod
     def is_enabled(cls) -> bool:

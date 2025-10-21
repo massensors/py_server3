@@ -372,18 +372,22 @@ class CommandHandler:
             logger.info("Tryb serwisowy jest aktywny")
             ServiceMode.set_active(True)
             ServiceMode.set_status_message("Tryb serwisowy aktywny")
+            ServiceMode.set_conveyor_status("stopped")  # Przenośnik zatrzymany
         elif status == 1:
             logger.info("Przenośnik w ruchu")
             ServiceMode.set_active(False)
             ServiceMode.set_status_message("Przenośnik w ruchu")
+            ServiceMode.set_conveyor_status("running")  # Przenośnik w ruchu
         elif status == 2:
             logger.info("Inny błąd - tryb serwisowy nieaktywny")
             ServiceMode.set_active(False)
             ServiceMode.set_status_message("Błąd - tryb nieaktywny")
+            ServiceMode.set_conveyor_status("error")  # Błąd
         else:
             logger.warning(f"Nieznany status: {status}")
             ServiceMode.set_active(False)
             ServiceMode.set_status_message(f"Nieznany status: {status}")
+            ServiceMode.set_conveyor_status("unknown")  # Status nieznany
 
             # Logowanie wartości request dla debugowania
         request_mode = ServiceMode.get_request_mode()

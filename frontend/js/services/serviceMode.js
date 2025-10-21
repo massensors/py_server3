@@ -99,6 +99,28 @@ function createDetailedStatusMessage(observationInfo, serviceData) {
     //let statusMessage = `${serviceData.status_message}`;
     let statusMessage = '';
 
+    // Dodaj informację o stanie przenośnika
+    if (serviceData.conveyor_status) {
+        switch (serviceData.conveyor_status) {
+            case 'stopped':
+                statusMessage += '🛑 Przenośnik: ZATRZYMANY';
+                break;
+            case 'running':
+                statusMessage += '▶️ Przenośnik: W RUCHU';
+                break;
+            case 'error':
+                statusMessage += '⚠️ Przenośnik: BŁĄD';
+                break;
+            case 'unknown':
+                statusMessage += '❓ Przenośnik: NIEZNANY';
+                break;
+            default:
+                statusMessage += `Przenośnik: ${serviceData.conveyor_status}`;
+        }
+        statusMessage += ' | ';
+    }
+
+
     // Dodaj informację o stanie state machine
     switch (currentState) {
         case 'SERVICE_MODE':

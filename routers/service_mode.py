@@ -26,7 +26,8 @@ async def get_service_mode_status():
         "enabled": ServiceMode.is_enabled(),
         "active": ServiceMode.is_active(),
         "status_message": ServiceMode.get_status_message(),
-        "request_mode": ServiceMode.get_request_mode()
+        "request_mode": ServiceMode.get_request_mode(),
+        "conveyor_status": ServiceMode.get_conveyor_status()  # Nowe pole
     }
 
 
