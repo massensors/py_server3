@@ -18,6 +18,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
+# Globalny słownik do śledzenia ostatniej prędkości dla każdego urządzenia
+# Musi być poza klasą, żeby przetrwał między wywołaniami
+_last_speed_by_device = {}
+
 class CommandHandler:
     """
     Klasa odpowiedzialna za obsługę komend protokołu
@@ -26,6 +31,7 @@ class CommandHandler:
     def __init__(self, key1: str, key2: str):
         self.key1 = key1
         self.key2 = key2
+        #self.last_speed_by_device = {}  # Słownik do śledzenia ostatniej prędkości dla każdego urządzenia
 
     def handle_command(self, command_id: int, decoded_data: bytes, flag: int, db: Session) -> Response:
         """
@@ -59,18 +65,71 @@ class CommandHandler:
         # AKTUALIZACJA AKTYWNOŚCI URZĄDZENIA
         device_activity_tracker.update_activity(measure_data.deviceId)
 
-        # Tworzenie nowego rekordu w bazie danych
-        db_measure = MeasureData(
-            deviceId=measure_data.deviceId,
-            speed=measure_data.speed,
-            rate=measure_data.rate,
-            total=measure_data.total,
-            currentTime=measure_data.currentTime
-        )
+        # Logika zapisu do bazy danych:
+        # - Zapisuj wszystkie dane z prędkością != 0
+        # - Zapisuj tylko jeden rekord z prędkością = 0 po zatrzymaniu (gdy poprzednia prędkość != 0)
 
-        # Dodanie i zatwierdzenie w bazie danych
-        db.add(db_measure)
-        db.commit()
+        device_id = measure_data.deviceId
+
+        # Bezpieczna konwersja prędkości do float - obsługa różnych typów danych
+        try:
+            if isinstance(measure_data.speed, str):
+                # Jeśli to string, usuń białe znaki i przekonwertuj
+                current_speed = float(measure_data.speed.strip())
+            else:
+                # Jeśli to już liczba, po prostu przekonwertuj
+                current_speed = float(measure_data.speed)
+        except (ValueError, AttributeError, TypeError) as e:
+            logger.error(f"Błąd konwersji prędkości dla urządzenia {device_id}: {measure_data.speed}, błąd: {e}")
+            current_speed = 0.0
+
+        # Pobierz ostatnią prędkość (też jako float)
+        last_speed = _last_speed_by_device.get(device_id)
+
+        # Debug - loguj typy i wartości
+        logger.info(f"Device {device_id}: current_speed={current_speed}, last_speed={last_speed}")
+
+        should_save = False
+
+        # Porównanie z tolerancją dla float (prędkość != 0 jeśli > 0.001)
+        if abs(current_speed) > 0.001:
+            # Prędkość różna od zera - zawsze zapisuj
+            should_save = True
+            logger.info(f"Zapisuję rekord z prędkością={current_speed} dla urządzenia {device_id}")
+        elif last_speed is not None and abs(last_speed) > 0.001:
+            # Prędkość = 0 i poprzednia była != 0 - zapisz jako ostatni rekord cyklu
+            should_save = True
+            logger.info(f"Zapisuję końcowy rekord z prędkością=0 dla urządzenia {device_id} (poprzednia: {last_speed})")
+        else:
+            # Prędkość = 0 i (poprzednia też była 0 LUB to pierwszy pomiar) - nie zapisuj
+            if last_speed is None:
+                logger.info(
+                    f"Pomijam zapis dla urządzenia {device_id} - pierwszy pomiar z prędkością=0 (urządzenie już stało)")
+            else:
+                logger.info(f"Pomijam zapis dla urządzenia {device_id} - prędkość nadal wynosi 0")
+
+
+
+
+        # Zapisz do bazy tylko jeśli spełnione warunki
+        if should_save:
+            try:
+                db_measure = MeasureData(
+                    deviceId=measure_data.deviceId,
+                    speed=measure_data.speed,
+                    rate=measure_data.rate,
+                    total=measure_data.total,
+                    currentTime=measure_data.currentTime
+                )
+                db.add(db_measure)
+                db.commit()
+                logger.info(f" SUKCES zapisu do bazy: device={device_id}, speed={current_speed}")
+            except Exception as e:
+                logger.error(f" BŁĄD zapisu do bazy: device={device_id}, speed={current_speed}, błąd: {e}")
+                db.rollback()
+
+        # Aktualizuj ostatnią prędkość
+        _last_speed_by_device[device_id] = current_speed
 
         # Pobieramy parametry z pakietu danych
         data_start = 4 + 17 + 1  # HEADER(4B) + JAWNA(17B) + DATA_LEN(1B)
