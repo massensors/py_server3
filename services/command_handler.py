@@ -31,7 +31,7 @@ class CommandHandler:
     def __init__(self, key1: str, key2: str):
         self.key1 = key1
         self.key2 = key2
-        #self.last_speed_by_device = {}  # Słownik do śledzenia ostatniej prędkości dla każdego urządzenia
+
 
     def handle_command(self, command_id: int, decoded_data: bytes, flag: int, db: Session) -> Response:
         """

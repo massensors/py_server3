@@ -1,10 +1,14 @@
 import logging
+import asyncio
+import random
 from fastapi import APIRouter, HTTPException, Body, Depends
 from sqlalchemy.orm import Session
 from repositories.database import get_db
 from services.command_handler import CommandHandler
 from services.support import command_support, ProtocolAnalyzer
 from fastapi.responses import Response
+
+
 
 
 # Dodanie loggera
@@ -17,12 +21,27 @@ router = APIRouter(
 )
 
 
+# Flaga do włączania/wyłączania symulacji
+SIMULATE_DELAY = True  # Zmień na False aby wyłączyć
+MIN_DELAY = 1.2  # min opóźnienie w sekundach
+MAX_DELAY = 3.8  # max opóźnienie w sekundach
+
+async def simulate_network_delay():
+    """Symuluje opóźnienie sieciowe"""
+    if SIMULATE_DELAY:
+        delay = random.uniform(MIN_DELAY, MAX_DELAY)
+        logger.info(f" Symulacja opóźnienia: {delay:.2f}s")
+        await asyncio.sleep(delay)
+
+
 
 @router.post("/analyze")
 async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
     """
     Endpoint do analizy przychodzącego strumienia danych i zapisu do bazy
     """
+    await simulate_network_delay()  # SYMULACJA
+
     try:
         
         # Sprawdzenie poprawności ramki

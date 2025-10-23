@@ -30,6 +30,9 @@ export function initTabHandlers() {
             });
             document.dispatchEvent(event);
 
+            // WYWOŁAJ funkcję obsługującą przełączenie zakładki
+            handleTabSwitch(tabName);
+
             console.log(`📑 Przełączono na zakładkę: ${tabName}`);
         });
     });
