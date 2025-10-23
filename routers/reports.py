@@ -22,6 +22,35 @@ def safe_float_convert(value):
     except (ValueError, TypeError):
         return None
 
+
+
+
+
+def format_number_for_csv(value, decimal_places=2):
+    """
+    Formatuje liczbę zmiennoprzecinkową dla CSV z przecinkiem jako separatorem dziesiętnym
+
+    Args:
+        value: Wartość do sformatowania (float lub None)
+        decimal_places: Liczba miejsc po przecinku (domyślnie 2)
+
+    Returns:
+        String z liczbą używającą przecinka zamiast kropki, lub pusty string dla None
+    """
+    if value is None:
+        return ""
+
+    try:
+        # Formatuj liczbę z określoną precyzją
+        formatted = f"{float(value):.{decimal_places}f}"
+        # Zamień kropkę na przecinek
+        return formatted.replace('.', ',')
+    except (ValueError, TypeError):
+        return ""
+
+
+
+
 def calculate_incremental_sum(total_values):
     """
     Specjalny algorytm do obliczania sumy przyrostowej.
@@ -33,7 +62,10 @@ def calculate_incremental_sum(total_values):
     Returns:
         Obliczona suma przyrostowa
     """
-    if not total_values or len(total_values) < 2:
+    if not total_values:
+        return 0.0
+
+    if len(total_values) == 1:
         return 0.0
 
     segments = []
@@ -42,27 +74,33 @@ def calculate_incremental_sum(total_values):
     # Podziel na segmenty - nowy segment gdy wartość spada
     for i in range(1, len(total_values)):
         current_val = total_values[i]
-        prev_val = total_values[i-1]
+        prev_val = total_values[i - 1]
 
         if current_val < prev_val:
-            # Wartość spadła - zakończ obecny segment i zacznij nowy
-            if len(current_segment) > 1:
-                segments.append(current_segment)
+            # Wartość spadła - zakończ obecny segment
+            segments.append(current_segment)
+            # Zacznij nowy segment z bieżącą wartością
             current_segment = [current_val]
         else:
+            # Wartość rosnie lub się nie zmienia
             current_segment.append(current_val)
 
-    # Dodaj ostatni segment
-    if len(current_segment) > 1:
-        segments.append(current_segment)
+    # ZAWSZE dodaj ostatni segment (nawet jeśli ma 1 element)
+    segments.append(current_segment)
+
+    logger.info(f"Znaleziono {len(segments)} segmentów")
 
     # Oblicz sumę różnic w każdym segmencie
     incremental_sum = 0.0
-    for segment in segments:
+    for idx, segment in enumerate(segments):
         if len(segment) >= 2:
-            segment_diff = max(segment) - min(segment)
+            # Różnica między ostatnim a pierwszym (nie max-min!)
+            segment_diff = segment[-1] - segment[0]
             incremental_sum += segment_diff
-            logger.info(f"Segment: {segment} -> różnica: {segment_diff}")
+            logger.info(
+                f"Segment {idx + 1}: [{segment[0]} ... {segment[-1]}] (długość: {len(segment)}) -> różnica: {segment_diff}")
+        else:
+            logger.info(f"Segment {idx + 1}: {segment} (długość: 1) -> pominięty")
 
     logger.info(f"Obliczona suma przyrostowa: {incremental_sum}")
     return incremental_sum
@@ -218,32 +256,32 @@ async def generate_report(
             writer.writerow(["ID wagi:", aliases.scaleId or ""])
             writer.writerow([])
 
-        # Statystyki
-        writer.writerow(["STATYSTYKI:"])
-        writer.writerow(["Średnia prędkość:", f"{avg_speed:.2f}"])
-        writer.writerow(["Maksymalna prędkość:", f"{max_speed:.2f}"])
-        writer.writerow(["Średnie natężenie:", f"{avg_rate:.2f}"])
-        writer.writerow(["Maksymalne natężenie:", f"{max_rate:.2f}"])
-        writer.writerow(["Suma przyrostowa:", f"{incremental_sum:g}"])
-        writer.writerow(["Liczba pomiarów:", len(measurements)])
-        writer.writerow([])
+            # Statystyki
+            writer.writerow(["STATYSTYKI:"])
+            writer.writerow(["Średnia prędkość:", format_number_for_csv(avg_speed, 2)])
+            writer.writerow(["Maksymalna prędkość:", format_number_for_csv(max_speed, 2)])
+            writer.writerow(["Średnie natężenie:", format_number_for_csv(avg_rate, 2)])
+            writer.writerow(["Maksymalne natężenie:", format_number_for_csv(max_rate, 2)])
+            writer.writerow(["Suma przyrostowa:", format_number_for_csv(incremental_sum, 2)])
+            writer.writerow(["Liczba pomiarów:", len(measurements)])
+            writer.writerow([])
 
-        # Dane szczegółowe
-        writer.writerow(["SZCZEGÓŁOWE DANE POMIAROWE:"])
-        writer.writerow(["Data i czas", "Prędkość", "Natężenie", "Suma"])
+            # Dane szczegółowe
+            writer.writerow(["SZCZEGÓŁOWE DANE POMIAROWE:"])
+            writer.writerow(["Data i czas", "Prędkość", "Natężenie", "Suma"])
 
-        for measurement in measurements:
-            # ✅ POPRAWIONE: Konwersja przy wyświetlaniu
-            speed_str = f"{safe_float_convert(measurement.speed):.2f}" if safe_float_convert(measurement.speed) is not None else ""
-            rate_str = f"{safe_float_convert(measurement.rate):.2f}" if safe_float_convert(measurement.rate) is not None else ""
-            total_str = f"{safe_float_convert(measurement.total):.2f}" if safe_float_convert(measurement.total) is not None else ""
+            for measurement in measurements:
+                # ✅ POPRAWIONE: Użyj formatowania z przecinkiem
+                speed_str = format_number_for_csv(safe_float_convert(measurement.speed), 2)
+                rate_str = format_number_for_csv(safe_float_convert(measurement.rate), 2)
+                total_str = format_number_for_csv(safe_float_convert(measurement.total), 2)
 
-            writer.writerow([
-                measurement.currentTime,  # currentTime może być już string
-                speed_str,
-                rate_str,
-                total_str
-            ])
+                writer.writerow([
+                    measurement.currentTime,  # currentTime może być już string
+                    speed_str,
+                    rate_str,
+                    total_str
+                ])
 
         # Przygotuj odpowiedź CSV
         csv_content = csv_data.getvalue()

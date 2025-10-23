@@ -29,6 +29,7 @@ class MeasureDataResponse(BaseModel):
     rate: str
     total: str
     currentTime: str
+    incremental_sum: Optional[float] = None  # Nowe pole
 
     class Config:
         from_attributes = True
@@ -113,6 +114,65 @@ async def create_data_record(data_request: MeasureDataRequest, db: Session = Dep
 
 
 # NOWE ENDPOINTY Z FILTROWANIEM I INTELIGENTNYM PRÓBKOWANIEM
+def _calculate_incremental_values(measures):
+    """
+    Oblicza sumę przyrostową dla listy pomiarów.
+
+    Args:
+        measures: Lista pomiarów posortowana od najstarszego do najnowszego
+
+    Returns:
+        Lista pomiarów z dodanym polem incremental_sum
+    """
+    if not measures or len(measures) == 0:
+        return measures
+
+    # Konwertuj wartości total na float
+    total_values = []
+    for m in measures:
+        try:
+            total_val = float(m.total)
+            total_values.append(total_val)
+        except (ValueError, TypeError):
+            total_values.append(None)
+
+    # Oblicz sumy przyrostowe używając tej samej logiki co w raportach
+    incremental_sums = []
+    current_sum = 0.0
+
+    # Pierwszy pomiar (najstarszy) ma sumę 0
+    incremental_sums.append(0.0)
+
+    # Dla każdego kolejnego pomiaru
+    for i in range(1, len(total_values)):
+        current_val = total_values[i]
+        prev_val = total_values[i - 1]
+
+        if current_val is not None and prev_val is not None:
+            if current_val >= prev_val:
+                # Wartość rosła - dodaj różnicę
+                current_sum += (current_val - prev_val)
+            else:
+                # Wartość spadła - reset, nie dodawaj
+                pass
+
+        incremental_sums.append(current_sum)
+
+    # Dodaj sumy przyrostowe do obiektów pomiarów
+    result = []
+    for i, measure in enumerate(measures):
+        measure_dict = {
+            'id': measure.id,
+            'deviceId': measure.deviceId,
+            'speed': measure.speed,
+            'rate': measure.rate,
+            'total': measure.total,
+            'currentTime': measure.currentTime,
+            'incremental_sum': round(incremental_sums[i], 2) if i < len(incremental_sums) else 0.0
+        }
+        result.append(measure_dict)
+
+    return result
 
 @router.get("/filtered/list", response_model=MeasureDataListResponse)
 async def get_filtered_measures(
