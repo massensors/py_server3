@@ -13,6 +13,82 @@ import logging
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
+
+def calculate_working_time(measurements):
+    """
+    Oblicza całkowity czas pracy urządzenia w wybranym okresie.
+
+    Czas pracy to suma czasów od momentu gdy prędkość > 0 do momentu gdy prędkość = 0
+    lub do końca okresu (jeśli ostatni pomiar nie jest zerem).
+
+    Args:
+        measurements: Lista pomiarów posortowana chronologicznie
+
+    Returns:
+        Tuple (total_hours, formatted_time_string)
+        - total_hours: Całkowity czas w godzinach (float)
+        - formatted_time_string: Sformatowany string "XXh YYm"
+    """
+    if not measurements or len(measurements) < 2:
+        return 0.0, "0h 0m"
+
+    total_seconds = 0.0
+    work_start_time = None
+
+    for i, measurement in enumerate(measurements):
+        speed = safe_float_convert(measurement.speed)
+        current_time = measurement.currentTime
+
+        # Parsuj czas jeśli to string
+        if isinstance(current_time, str):
+            try:
+                current_time = datetime.strptime(current_time, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                try:
+                    current_time = parse_date_string(current_time)
+                except:
+                    logger.warning(f"Nie można sparsować czasu: {current_time}")
+                    continue
+
+        if speed is not None and speed > 0:
+            # Urządzenie pracuje
+            if work_start_time is None:
+                # Początek okresu pracy
+                work_start_time = current_time
+                logger.debug(f"Start pracy: {work_start_time}")
+        else:
+            # Prędkość = 0 lub None - urządzenie nie pracuje
+            if work_start_time is not None:
+                # Koniec okresu pracy
+                work_duration = (current_time - work_start_time).total_seconds()
+                total_seconds += work_duration
+                logger.debug(f"Koniec pracy: {current_time}, czas trwania: {work_duration}s")
+                work_start_time = None
+
+    # Jeśli ostatni pomiar miał prędkość > 0, policz czas do końca
+    if work_start_time is not None:
+        last_measurement_time = measurements[-1].currentTime
+        if isinstance(last_measurement_time, str):
+            try:
+                last_measurement_time = datetime.strptime(last_measurement_time, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                last_measurement_time = parse_date_string(last_measurement_time)
+
+        work_duration = (last_measurement_time - work_start_time).total_seconds()
+        total_seconds += work_duration
+        logger.debug(f"Praca do końca okresu: {last_measurement_time}, czas trwania: {work_duration}s")
+
+    # Konwertuj na godziny i minuty
+    total_hours = total_seconds / 3600.0
+    hours = int(total_hours)
+    minutes = int((total_hours - hours) * 60)
+
+    formatted_time = f"{hours}h {minutes}m"
+
+    logger.info(f"Całkowity czas pracy: {formatted_time} ({total_hours:.2f}h)")
+
+    return total_hours, formatted_time
+
 def safe_float_convert(value):
     """Bezpieczna konwersja na float"""
     if value is None:
@@ -233,6 +309,9 @@ async def generate_report(
         # Oblicz sumę przyrostową używając specjalnego algorytmu
         incremental_sum = calculate_incremental_sum(totals)
 
+        # ✅ NOWE: Oblicz czas pracy
+        working_hours, working_time_formatted = calculate_working_time(measurements)
+
         # Przygotuj dane do CSV
         csv_data = io.StringIO()
         writer = csv.writer(csv_data, delimiter=';')
@@ -263,6 +342,7 @@ async def generate_report(
             writer.writerow(["Średnie natężenie:", format_number_for_csv(avg_rate, 2)])
             writer.writerow(["Maksymalne natężenie:", format_number_for_csv(max_rate, 2)])
             writer.writerow(["Suma przyrostowa:", format_number_for_csv(incremental_sum, 2)])
+            writer.writerow(["Czas pracy:", working_time_formatted])  # ✅ NOWE
             writer.writerow(["Liczba pomiarów:", len(measurements)])
             writer.writerow([])
 
