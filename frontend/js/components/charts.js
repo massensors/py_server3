@@ -82,6 +82,49 @@ export async function loadRateChart(periodControl = null) {
 }
 
 /**
+ * ✅ POPRAWIONA FUNKCJA - Formatowanie etykiet czasu dla wykresów
+ * Na osi X pokazuje tylko unikalne daty, w tooltipach pełne informacje z godziną
+ * @param {Array<string>} timestamps - Lista timestampów
+ * @returns {Array<string>} - Sformatowane etykiety
+ */
+function formatChartLabels(timestamps) {
+    if (!timestamps || timestamps.length === 0) {
+        return [];
+    }
+
+    // Konwertuj na obiekty Date
+    const dates = timestamps.map(ts => new Date(ts));
+
+    // Sprawdź zakres czasowy (w dniach)
+    const firstDate = dates[0];
+    const lastDate = dates[dates.length - 1];
+    const daysDiff = (lastDate - firstDate) / (1000 * 60 * 60 * 24);
+
+    // STRATEGIA: Pokaż datę tylko przy pierwszym wystąpieniu tego dnia
+    let lastDisplayedDate = null;
+
+    return dates.map((date, index) => {
+        const currentDate = date.toLocaleDateString('pl-PL', {
+            day: '2-digit',
+            month: '2-digit',
+            year: daysDiff > 365 ? '2-digit' : undefined  // Rok tylko jeśli okres > 1 rok
+        });
+
+        // Pokaż datę tylko jeśli:
+        // 1. To pierwszy punkt
+        // 2. Data różni się od ostatnio wyświetlonej
+        // 3. To ostatni punkt (dla pewności)
+        if (index === 0 || currentDate !== lastDisplayedDate || index === dates.length - 1) {
+            lastDisplayedDate = currentDate;
+            return currentDate;
+        }
+
+        // Dla pozostałych punktów tego samego dnia - pusta etykieta
+        return '';
+    });
+}
+
+/**
  * Wyświetla wykres wydajności w canvas
  * @param {Object} data - Dane wykresu z API
  */
@@ -89,7 +132,7 @@ function displayRateChart(data) {
     const chartCanvas = document.getElementById('rateChart');
 
     if (!chartCanvas) {
-        logger.addEntry(' Nie znaleziono elementu canvas dla wykresu wydajności', 'error');
+        logger.addEntry('❌ Nie znaleziono elementu canvas dla wykresu wydajności', 'error');
         return;
     }
 
@@ -98,7 +141,7 @@ function displayRateChart(data) {
         window.rateChartInstance.destroy();
     }
 
-    // ✅ NOWA LOGIKA - Inteligentne formatowanie etykiet czasu
+    // ✅ Użyj nowej funkcji formatowania (tylko unikalne daty na osi)
     const labels = formatChartLabels(data.timestamps);
 
     const ctx = chartCanvas.getContext('2d');
@@ -163,7 +206,7 @@ function displayRateChart(data) {
                     intersect: false,
                     callbacks: {
                         title: function(context) {
-                            // W tooltip pokaż pełną datę i godzinę
+                            // ✅ W tooltipie ZAWSZE pokazuj pełną datę i godzinę
                             const timestamp = data.timestamps[context[0].dataIndex];
                             const date = new Date(timestamp);
                             return date.toLocaleString('pl-PL', {
@@ -206,16 +249,16 @@ function displayRateChart(data) {
                     display: true,
                     title: {
                         display: true,
-                        text: 'Czas'
+                        text: 'Data'
                     },
                     ticks: {
                         maxRotation: 45,
                         minRotation: 45,
-                        autoSkip: true,
-                        maxTicksLimit: 20,
-                        // ✅ DODAJ - Callback dla lepszego formatowania
+                        autoSkip: false,  // ✅ Nie pomijaj automatycznie etykiet
                         callback: function(value, index, ticks) {
-                            return this.getLabelForValue(value);
+                            // Pokaż tylko niepuste etykiety
+                            const label = this.getLabelForValue(value);
+                            return label || undefined;  // undefined ukrywa etykietę
                         }
                     }
                 },
@@ -268,111 +311,7 @@ function displayRateChart(data) {
         }
     });
 
-    logger.addEntry(' Wykres wydajności został wyświetlony', 'success');
-}
-
-/**
- * ✅ NOWA FUNKCJA - Inteligentne formatowanie etykiet czasu dla wykresów
- * @param {Array<string>} timestamps - Lista timestampów
- * @returns {Array<string>} - Sformatowane etykiety
- */
-function formatChartLabels(timestamps) {
-    if (!timestamps || timestamps.length === 0) {
-        return [];
-    }
-
-    // Konwertuj na obiekty Date
-    const dates = timestamps.map(ts => new Date(ts));
-
-    // Sprawdź zakres czasowy (w dniach)
-    const firstDate = dates[0];
-    const lastDate = dates[dates.length - 1];
-    const daysDiff = (lastDate - firstDate) / (1000 * 60 * 60 * 24);
-
-    // Sprawdź czy wszystkie pomiary są z tego samego dnia
-    const allSameDay = dates.every(d =>
-        d.getDate() === firstDate.getDate() &&
-        d.getMonth() === firstDate.getMonth() &&
-        d.getFullYear() === firstDate.getFullYear()
-    );
-
-    // STRATEGIA FORMATOWANIA:
-
-    if (allSameDay) {
-        // 🟢 Przypadek 1: Wszystkie pomiary z tego samego dnia - pokazuj TYLKO GODZINY
-        return dates.map(date => {
-            return date.toLocaleTimeString('pl-PL', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        });
-    }
-
-    if (daysDiff <= 3) {
-        // 🟡 Przypadek 2: Do 3 dni - pokazuj datę + godzinę (ale krótko)
-        let lastDisplayedDate = null;
-
-        return dates.map(date => {
-            const currentDate = date.toLocaleDateString('pl-PL', {
-                day: '2-digit',
-                month: '2-digit'
-            });
-            const time = date.toLocaleTimeString('pl-PL', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-            // Pokaż datę tylko jeśli zmieniła się od ostatniego wyświetlenia
-            if (currentDate !== lastDisplayedDate) {
-                lastDisplayedDate = currentDate;
-                return `${currentDate}\n${time}`;
-            }
-
-            // W przeciwnym razie pokaż tylko godzinę
-            return time;
-        });
-    }
-
-    if (daysDiff <= 31) {
-        // 🟠 Przypadek 3: Do miesiąca - pokazuj dzień i godzinę co kilka punktów
-        const showEveryNth = Math.max(1, Math.floor(timestamps.length / 20));
-
-        return dates.map((date, index) => {
-            if (index % showEveryNth === 0 || index === 0 || index === dates.length - 1) {
-                // Pokaż datę i godzinę
-                return date.toLocaleString('pl-PL', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                }).replace(',', '\n');
-            }
-            // Dla pozostałych - tylko godzina
-            return date.toLocaleTimeString('pl-PL', {
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        });
-    }
-
-    if (daysDiff <= 365) {
-        // 🔴 Przypadek 4: Do roku - pokazuj datę (bez godzin)
-        return dates.map(date => {
-            return date.toLocaleDateString('pl-PL', {
-                day: '2-digit',
-                month: '2-digit'
-            });
-        });
-    }
-
-    // 🔵 Przypadek 5: Więcej niż rok - pokazuj datę z rokiem
-    return dates.map(date => {
-        return date.toLocaleDateString('pl-PL', {
-            year: '2-digit',
-            month: '2-digit',
-            day: '2-digit'
-        });
-    });
+    logger.addEntry('✅ Wykres wydajności został wyświetlony', 'success');
 }
 
 /**
@@ -518,13 +457,16 @@ function displayIncrementalChart(data) {
                     display: true,
                     title: {
                         display: true,
-                        text: 'Czas'
+                        text: 'Data'
                     },
                     ticks: {
                         maxRotation: 45,
                         minRotation: 45,
-                        autoSkip: true,
-                        maxTicksLimit: 20
+                        autoSkip: false,
+                        callback: function(value, index, ticks) {
+                            const label = this.getLabelForValue(value);
+                            return label || undefined;
+                        }
                     }
                 },
                 y: {
