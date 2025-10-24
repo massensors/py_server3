@@ -268,19 +268,36 @@ async def generate_report(
 
             # Dane szczegółowe
             writer.writerow(["SZCZEGÓŁOWE DANE POMIAROWE:"])
-            writer.writerow(["Data i czas", "Prędkość", "Natężenie", "Suma"])
+            writer.writerow(["Data i czas", "Prędkość", "Natężenie", "Suma", "Suma Przyrostowa"])
+
+            # Oblicz sumy przyrostowe dla raportu
+            cumulative_incremental = 0.0
+            prev_total = None
 
             for measurement in measurements:
-                # ✅ POPRAWIONE: Użyj formatowania z przecinkiem
+                # Konwersje wartości
                 speed_str = format_number_for_csv(safe_float_convert(measurement.speed), 2)
                 rate_str = format_number_for_csv(safe_float_convert(measurement.rate), 2)
-                total_str = format_number_for_csv(safe_float_convert(measurement.total), 2)
+                total_val = safe_float_convert(measurement.total)
+                total_str = format_number_for_csv(total_val, 2)
+
+                # Oblicz sumę przyrostową
+                if prev_total is None:
+                    # Pierwszy pomiar
+                    incremental_str = format_number_for_csv(0.0, 2)
+                else:
+                    if total_val is not None and total_val >= prev_total:
+                        cumulative_incremental += (total_val - prev_total)
+                    incremental_str = format_number_for_csv(cumulative_incremental, 2)
+
+                prev_total = total_val
 
                 writer.writerow([
                     measurement.currentTime,  # currentTime może być już string
                     speed_str,
                     rate_str,
-                    total_str
+                    total_str,
+                    incremental_str
                 ])
 
         # Przygotuj odpowiedź CSV

@@ -236,19 +236,21 @@ async def get_filtered_measures(
             query, total_count, max_results, calculated_start, calculated_end, db
         )
 
-        # Pobierz przefiltrowane dane
+        # Pobierz przefiltrowane dane - SORTUJ OD NAJSTARSZEGO
         measures = final_query.all()
+
+        # Posortuj w Pythonie od najstarszego do najnowszego
+        measures.sort(key=lambda m: m.currentTime)
+
+        # Oblicz sumy przyrostowe
+        measures_with_incremental = _calculate_incremental_values(measures)
+
+        # Odwróć kolejność dla wyświetlenia (najnowsze na górze)
+        measures_with_incremental.reverse()
 
         # Konwersja na modele odpowiedzi
         measure_responses = [
-            MeasureDataResponse(
-                id=m.id,
-                deviceId=m.deviceId,
-                speed=m.speed,
-                rate=m.rate,
-                total=m.total,
-                currentTime=m.currentTime
-            ) for m in measures
+            MeasureDataResponse(**m) for m in measures_with_incremental
         ]
 
         logger.info(f"Zwrócono {len(measure_responses)} z {total_count} dostępnych rekordów")
@@ -410,41 +412,55 @@ def _calculate_period_dates(period_type, start_date, end_date):
 
     return calculated_start, calculated_end, period_display
 
+
 def _apply_intelligent_sampling(query, total_count, max_results, start_date, end_date, db):
-    """Zastosuj inteligentne próbkowanie danych"""
+    """Zastosuj inteligentne próbkowanie danych z całego zakresu czasowego"""
 
     if total_count <= max_results:
         # Mało danych - pokaż wszystko chronologicznie
-        return "Wszystkie dostępne rekordy", query.order_by(desc(MeasureData.currentTime))
+        return "Wszystkie dostępne rekordy", query
 
-    # Oblicz okres czasowy
-    period_days = None
-    if start_date and end_date:
-        period_days = (end_date - start_date).days
+    # Oblicz krok próbkowania aby równomiernie rozłożyć rekordy
+    step = total_count / max_results
 
-    # Wybierz strategię próbkowania
-    if period_days and period_days > 365:
-        # Długi okres (>1 rok) - jedna próbka dziennie
-        sampling_info = f"Próbkowanie: 1 rekord na dzień (z {total_count} dostępnych)"
-        # Grupuj po dniu i weź najnowszy rekord z każdego dnia
-        subquery = db.query(func.max(MeasureData.id)).group_by(func.date(MeasureData.currentTime)).limit(max_results).subquery()
-        sampled_query = query.filter(MeasureData.id.in_(subquery)).order_by(desc(MeasureData.currentTime))
+    # Pobierz WSZYSTKIE ID posortowane chronologicznie
+    all_ids_query = query.with_entities(MeasureData.id).order_by(MeasureData.currentTime)
+    all_ids = [row[0] for row in all_ids_query.all()]
 
-    elif period_days and period_days > 30:
-        # Średni okres (1 miesiąc - 1 rok) - próbkowanie co kilka godzin
-        step = max(1, total_count // max_results)
-        sampling_info = f"Próbkowanie: co {step} rekord (z {total_count} dostępnych)"
-        # Weź co N-ty rekord używając modulo
-        sampled_query = query.filter(MeasureData.id % step == 0).order_by(desc(MeasureData.currentTime)).limit(max_results)
+    # Wybierz równomiernie rozłożone ID z całego zakresu
+    sampled_ids = []
+    for i in range(max_results):
+        index = int(i * step)
+        if index < len(all_ids):
+            sampled_ids.append(all_ids[index])
 
+    # Zawsze dołącz pierwszy i ostatni rekord
+    if all_ids[0] not in sampled_ids:
+        sampled_ids.insert(0, all_ids[0])
+    if all_ids[-1] not in sampled_ids:
+        sampled_ids.append(all_ids[-1])
+
+    # Ogranicz do max_results
+    if len(sampled_ids) > max_results:
+        sampled_ids = sampled_ids[:max_results]
+
+    # Oblicz rzeczywisty krok
+    actual_step = total_count / len(sampled_ids)
+
+    # Sprawdź czy faktycznie jest próbkowanie (pokazujemy mniej niż dostępne)
+    if len(sampled_ids) >= total_count:
+        sampling_info = f"Wszystkie rekordy ({total_count} dostępnych)"
     else:
-        # Krótki okres - równomiernie rozłożone próbki
-        step = max(1, total_count // max_results)
-        sampling_info = f"Równomierne próbkowanie: co {step} rekord (z {total_count} dostępnych)"
-        # Systematyczne próbkowanie
-        sampled_query = query.order_by(desc(MeasureData.currentTime)).filter(
-            MeasureData.id % step == 0
-        ).limit(max_results)
+        # Jest próbkowanie - pokaż szczegóły
+        if actual_step >= 10:
+            sampling_info = f"Próbkowanie: co ~{int(actual_step)} rekord z całego zakresu (wyświetlono {len(sampled_ids)} z {total_count})"
+        elif actual_step >= 5:
+            sampling_info = f"Próbkowanie: co ~{actual_step:.1f} rekord (wyświetlono {len(sampled_ids)} z {total_count})"
+        else:
+            sampling_info = f"Równomierne próbkowanie: co ~{actual_step:.2f} rekord (wyświetlono {len(sampled_ids)} z {total_count})"
+
+    # Zwróć zapytanie z wybranymi ID
+    sampled_query = query.filter(MeasureData.id.in_(sampled_ids))
 
     return sampling_info, sampled_query
 

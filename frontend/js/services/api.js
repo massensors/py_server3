@@ -423,7 +423,7 @@ function updateMeasureTable(measures, metadata = {}) {
     if (!measures || measures.length === 0) {
         const row = tableBody.insertRow();
         const cell = row.insertCell();
-        cell.colSpan = 4;
+        cell.colSpan = 5;
         cell.textContent = 'Brak danych pomiarowych dla wybranego okresu';
         cell.style.textAlign = 'center';
         cell.style.color = '#6c757d';
@@ -452,13 +452,27 @@ function updateMeasureTable(measures, metadata = {}) {
         const totalCell = row.insertCell();
         totalCell.textContent = _formatNumericValue(measure.total);
 
+        // NOWA KOLUMNA - Suma Przyrostowa
+        const incrementalCell = row.insertCell();
+        if (measure.incremental_sum !== undefined && measure.incremental_sum !== null) {
+            incrementalCell.textContent = measure.incremental_sum.toFixed(2);
+            // Podświetl ostatnią wartość (największą)
+            if (index === 0) {  // Pierwsza w tabeli = najnowsza
+                incrementalCell.style.fontWeight = 'bold';
+                incrementalCell.style.color = '#2ecc71';
+            }
+        } else {
+            incrementalCell.textContent = '0.00';
+        }
+
+
         // Stylowanie co drugiej linii
         if (index % 2 === 0) {
             row.style.backgroundColor = '#f8f9fa';
         }
     });
 
-    logger.addEntry(` Wyświetlono ${measures.length} rekordów`, 'info');
+    logger.addEntry(` Wyświetlono ${measures.length} rekordów z sumą przyrostową`, 'info');
 }
 
 function updateSamplingInfo(metadata) {
