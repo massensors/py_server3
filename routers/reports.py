@@ -337,11 +337,11 @@ async def generate_report(
 
             # Statystyki
             writer.writerow(["STATYSTYKI:"])
-            writer.writerow(["Średnia prędkość:", format_number_for_csv(avg_speed, 2)])
-            writer.writerow(["Maksymalna prędkość:", format_number_for_csv(max_speed, 2)])
-            writer.writerow(["Średnie natężenie:", format_number_for_csv(avg_rate, 2)])
-            writer.writerow(["Maksymalne natężenie:", format_number_for_csv(max_rate, 2)])
-            writer.writerow(["Suma przyrostowa:", format_number_for_csv(incremental_sum, 2)])
+            writer.writerow(["Średnia prędkość [m/s]:", format_number_for_csv(avg_speed, 2)])
+            writer.writerow(["Maksymalna prędkość [m/s]:", format_number_for_csv(max_speed, 2)])
+            writer.writerow(["Średnia wydajność [t/h]:", format_number_for_csv(avg_rate, 2)])
+            writer.writerow(["Maksymalna wydajność [t/h]:", format_number_for_csv(max_rate, 2)])
+            writer.writerow(["Suma przyrostowa [t]:", format_number_for_csv(incremental_sum, 2)])
             writer.writerow(["Czas pracy:", working_time_formatted])  # ✅ NOWE
             writer.writerow(["Liczba pomiarów:", len(measurements)])
             writer.writerow([])

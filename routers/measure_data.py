@@ -21,6 +21,20 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+class RateChartData(BaseModel):
+    """Dane do wykresu wydajności"""
+    timestamps: List[str]
+    rate_values: List[float]
+    speed_values: List[float]  # Opcjonalnie - do porównania
+    period_info: str
+    device_id: str
+    total_records: int
+    max_rate: float
+    avg_rate: float
+
+    class Config:
+        from_attributes = True
+
 
 class MeasureDataResponse(BaseModel):
     id: int
@@ -78,8 +92,133 @@ class PeriodSummary(BaseModel):
     first_measurement: Optional[str] = None
     last_measurement: Optional[str] = None
 
+#----odtad nowy endpoint
 
-# Istniejące podstawowe endpointy pozostają bez zmian
+@router.get("/filtered/rate-chart-data", response_model=RateChartData)
+async def get_rate_chart_data(
+        device_id: Optional[str] = Query(None, description="ID urządzenia (opcjonalne)"),
+        start_date: Optional[date] = Query(None, description="Data początkowa (YYYY-MM-DD)"),
+        end_date: Optional[date] = Query(None, description="Data końcowa (YYYY-MM-DD)"),
+        period_type: Optional[str] = Query(None, description="Typ okresu"),
+        max_points: int = Query(500, ge=10, le=2000, description="Maksymalna liczba punktów na wykresie"),
+        db: Session = Depends(get_db)
+):
+    """
+    Pobierz dane wydajności (rate) dla wykresu.
+    Automatycznie próbkuje dane jeśli jest ich więcej niż max_points.
+    """
+    try:
+        # Bazowe zapytanie
+        query = db.query(MeasureData)
+
+        # Filtrowanie po urządzeniu
+        if not device_id:
+            device_id = selected_device_store.get_device_id()
+
+        if device_id:
+            query = query.filter(MeasureData.deviceId == device_id)
+            logger.info(f"Pobieranie danych wykresu wydajności dla urządzenia: {device_id}")
+
+        # Obsługa okresów
+        calculated_start, calculated_end, period_display = _calculate_period_dates(period_type, start_date, end_date)
+
+        # Filtrowanie po datach
+        if calculated_start:
+            start_str = calculated_start.strftime('%Y-%m-%d %H:%M:%S')
+            query = query.filter(MeasureData.currentTime >= start_str)
+
+        if calculated_end:
+            end_str = calculated_end.strftime('%Y-%m-%d %H:%M:%S')
+            query = query.filter(MeasureData.currentTime <= end_str)
+
+        # Policz całkowitą liczbę rekordów
+        total_count = query.count()
+
+        if total_count == 0:
+            return RateChartData(
+                timestamps=[],
+                rate_values=[],
+                speed_values=[],
+                period_info=period_display or "Brak danych",
+                device_id=device_id or "",
+                total_records=0,
+                max_rate=0.0,
+                avg_rate=0.0
+            )
+
+        # Próbkowanie jeśli potrzebne
+        if total_count > max_points:
+            # Równomierne próbkowanie
+            all_ids_query = query.with_entities(MeasureData.id).order_by(MeasureData.currentTime)
+            all_ids = [row[0] for row in all_ids_query.all()]
+
+            step = total_count / max_points
+            sampled_ids = []
+
+            for i in range(max_points):
+                index = int(i * step)
+                if index < len(all_ids):
+                    sampled_ids.append(all_ids[index])
+
+            # Zawsze dołącz pierwszy i ostatni
+            if all_ids[0] not in sampled_ids:
+                sampled_ids.insert(0, all_ids[0])
+            if all_ids[-1] not in sampled_ids:
+                sampled_ids.append(all_ids[-1])
+
+            query = query.filter(MeasureData.id.in_(sampled_ids))
+            logger.info(f"Próbkowanie wykresu wydajności: {len(sampled_ids)} punktów z {total_count}")
+
+        # Pobierz dane posortowane chronologicznie
+        measures = query.order_by(MeasureData.currentTime).all()
+
+        # Przygotuj dane dla wykresu
+        timestamps = []
+        rate_values = []
+        speed_values = []
+        valid_rates = []
+
+        for m in measures:
+            timestamps.append(m.currentTime)
+
+            # Konwertuj rate na float
+            try:
+                rate_val = float(m.rate)
+                rate_values.append(rate_val)
+                valid_rates.append(rate_val)
+            except (ValueError, TypeError):
+                rate_values.append(0.0)
+
+            # Konwertuj speed na float
+            try:
+                speed_val = float(m.speed)
+                speed_values.append(speed_val)
+            except (ValueError, TypeError):
+                speed_values.append(0.0)
+
+        max_rate = max(valid_rates) if valid_rates else 0.0
+        avg_rate = sum(valid_rates) / len(valid_rates) if valid_rates else 0.0
+
+        logger.info(f"Dane wykresu wydajności: {len(timestamps)} punktów, max={max_rate:.2f}, avg={avg_rate:.2f}")
+
+        return RateChartData(
+            timestamps=timestamps,
+            rate_values=rate_values,
+            speed_values=speed_values,
+            period_info=period_display or "Wszystkie",
+            device_id=device_id or "",
+            total_records=total_count,
+            max_rate=max_rate,
+            avg_rate=avg_rate
+        )
+
+    except Exception as e:
+        logger.error(f"Błąd podczas pobierania danych wykresu wydajności: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Błąd podczas pobierania danych wykresu wydajności: {str(e)}"
+        )
+# ----------dotad nowy endpoint
 @router.get("/", response_model=List[MeasureDataResponse])
 async def read_all_measures(db: Session = Depends(get_db)):
     """Pobierz wszystkie zadania"""

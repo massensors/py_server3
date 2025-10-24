@@ -12,7 +12,7 @@ import { deviceSelection } from './services/deviceSelection.js';
 import { loadMeasureData } from './services/api.js'; // dodaj import
 import { reportService } from './services/reportService.js';
 import { devicesService } from './services/devicesService.js';
-
+import { loadRateChart, loadIncrementalChart, destroyAllCharts } from './components/charts.js';
 
 // Globalna zmienna dla kontroli okresu
 let periodControl;
@@ -65,9 +65,11 @@ function initializeEventListeners() {
     // Przycisk odświeżania pomiarów
     const refreshPomiaryBtn = document.getElementById('refreshPomiary');
     if (refreshPomiaryBtn) {
-        refreshPomiaryBtn.addEventListener('click', () => {
+        refreshPomiaryBtn.addEventListener('click', async () => {
             console.log('Odświeżanie danych pomiarowych...');
-             loadMeasureData(periodControl); // ← NOWA FUNKCJA
+            await loadMeasureData(periodControl); // ← NOWA FUNKCJA
+            await loadRateChart(periodControl); // ✅ DODAJ wykres wydajności
+            // await loadIncrementalChart(periodControl); // Opcjonalnie suma przyrostowa
 
             //loadPomiaryData();
         });
@@ -92,6 +94,13 @@ function initializeEventListeners() {
         }
     });
 }
+      // ✅ NOWE - Nasłuchuj zmiany zakładek i czyść wykresy
+    document.addEventListener('tabChanged', (event) => {
+        if (event.detail.tab !== 'pomiary') {
+            // Zniszcz wykresy gdy użytkownik opuszcza zakładkę Pomiary
+            destroyAllCharts();
+        }
+    });
 
 
     // Event listener dla zamknięcia strony
@@ -154,8 +163,8 @@ async function handleLoadDevice() {
                 break;
             case 'pomiary':
                 //loadPomiaryData();
-                loadMeasureData(periodControl)
-
+               await loadMeasureData(periodControl)
+               await loadRateChart(periodControl); // ✅ DODAJ wykres
                 break;
             case 'aliasy':
                 loadAliasyData();
