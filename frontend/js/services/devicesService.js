@@ -4,6 +4,7 @@ class DevicesService {
     constructor() {
         this.API_URL = '/api';
         this.BASE_URL = ''; // Dodaj BASE_URL bez /api dla niektórych endpointów
+        this.currentDeviceData = null;
     }
 
     async loadDevicesList() {
@@ -159,7 +160,7 @@ class DevicesService {
     }
     // NOWA FUNKCJA DO PRZEŁĄCZANIA NA ZAKŁADKĘ POMIARY
     switchToPomiaryTab() {
-        console.log('🔄 devicesService.switchToPomiaryTab() - przełączam na Pomiary');
+        console.log(' devicesService.switchToPomiaryTab() - przełączam na Pomiary');
 
         const pomiaryTab = document.querySelector('[data-tab="pomiary"]');
         const pomiaryContent = document.getElementById('pomiary');
@@ -181,6 +182,10 @@ class DevicesService {
 
             // Opcjonalnie: wczytaj dane pomiarowe
             // Możesz tutaj dodać logikę wczytywania danych jeśli potrzebujesz
+
+            if (this.currentDeviceData) {
+                this.updatePomiaryDeviceInfo(this.currentDeviceData);
+            }
 
         } else {
             console.error('❌ Nie znaleziono elementów zakładki Pomiary');
@@ -321,11 +326,82 @@ class DevicesService {
         const selectedRow = document.querySelector(`[data-device-id="${deviceId}"]`);
         if (selectedRow) {
             selectedRow.classList.add('selected');
+
+            // ✅ POBIERZ DANE Z KLIKNIĘTEGO WIERSZA (już są w HTML!)
+            const deviceInfo = selectedRow.querySelector('.device-info');
+            const aliases = {
+                deviceId: deviceId,
+                company: this.extractAliasValue(deviceInfo, 'Firma:'),
+                location: this.extractAliasValue(deviceInfo, 'Lokalizacja:'),
+                productName: this.extractAliasValue(deviceInfo, 'Produkt:'),
+                scaleId: this.extractAliasValue(deviceInfo, 'ID wagi:')
+            };
+
+            // ✅ ZAPISZ dane w pamięci
+            this.currentDeviceData = aliases;
+
+            // ✅ ZAKTUALIZUJ wyświetlanie w zakładce Pomiary
+            this.updatePomiaryDeviceInfo(aliases);
+
+
+
         }
 
         // GŁÓWNA FUNKCJONALNOŚĆ - automatyczne wczytanie danych
         await this.selectAndLoadDevice(deviceId);
     }
+
+    // ✅ NOWA FUNKCJA - wyciągnij wartość aliasu z HTML
+    extractAliasValue(deviceInfo, label) {
+        const aliasItems = deviceInfo.querySelectorAll('.device-alias-item');
+        for (const item of aliasItems) {
+            const text = item.textContent;
+            if (text.includes(label)) {
+                return text.replace(label, '').trim();
+            }
+        }
+        return null;
+    }
+
+    // ✅ NOWA FUNKCJA - aktualizuj informacje w zakładce Pomiary
+    updatePomiaryDeviceInfo(aliases) {
+        const infoContainer = document.getElementById('pomiaryDeviceInfo');
+
+        if (!infoContainer) {
+            return;
+        }
+
+        if (!aliases || !aliases.deviceId) {
+            infoContainer.innerHTML = '<span class="device-info-empty">Wybierz urządzenie</span>';
+            return;
+        }
+
+        // Buduj HTML z informacjami
+        let infoHtml = `<div class="device-info-compact">`;
+        infoHtml += `<strong>${aliases.deviceId}</strong>`;
+
+        const aliasItems = [];
+        if (aliases.company) aliasItems.push(`${aliases.company}`);
+        if (aliases.scaleId) aliasItems.push(`${aliases.scaleId}`);
+        if (aliases.location) aliasItems.push(`${aliases.location}`);
+        if (aliases.productName) aliasItems.push(`${aliases.productName}`);
+
+        if (aliasItems.length > 0) {
+            infoHtml += ` | ${aliasItems.join(' | ')}`;
+        }
+
+        infoHtml += `</div>`;
+
+        infoContainer.innerHTML = infoHtml;
+    }
+
+    // ✅ GETTER - pobierz aktualne dane urządzenia
+    getCurrentDeviceData() {
+        return this.currentDeviceData;
+    }
+
+
+
 
     // STARA FUNKCJA - zachowana dla kompatybilności
     selectDevice(deviceId) {
