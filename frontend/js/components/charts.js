@@ -98,15 +98,8 @@ function displayRateChart(data) {
         window.rateChartInstance.destroy();
     }
 
-    // Formatuj etykiety czasu
-    const labels = data.timestamps.map(timestamp => {
-        const date = new Date(timestamp);
-        // Jeśli więcej niż 100 punktów, pokaż tylko datę
-        if (data.timestamps.length > 100) {
-            return date.toLocaleDateString('pl-PL');
-        }
-        return date.toLocaleString('pl-PL');
-    });
+    // ✅ NOWA LOGIKA - Inteligentne formatowanie etykiet czasu
+    const labels = formatChartLabels(data.timestamps);
 
     const ctx = chartCanvas.getContext('2d');
 
@@ -169,6 +162,19 @@ function displayRateChart(data) {
                     mode: 'index',
                     intersect: false,
                     callbacks: {
+                        title: function(context) {
+                            // W tooltip pokaż pełną datę i godzinę
+                            const timestamp = data.timestamps[context[0].dataIndex];
+                            const date = new Date(timestamp);
+                            return date.toLocaleString('pl-PL', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                            });
+                        },
                         label: function(context) {
                             const label = context.dataset.label || '';
                             const value = context.parsed.y.toFixed(2);
@@ -206,7 +212,11 @@ function displayRateChart(data) {
                         maxRotation: 45,
                         minRotation: 45,
                         autoSkip: true,
-                        maxTicksLimit: 20
+                        maxTicksLimit: 20,
+                        // ✅ DODAJ - Callback dla lepszego formatowania
+                        callback: function(value, index, ticks) {
+                            return this.getLabelForValue(value);
+                        }
                     }
                 },
                 y: {
@@ -259,6 +269,110 @@ function displayRateChart(data) {
     });
 
     logger.addEntry(' Wykres wydajności został wyświetlony', 'success');
+}
+
+/**
+ * ✅ NOWA FUNKCJA - Inteligentne formatowanie etykiet czasu dla wykresów
+ * @param {Array<string>} timestamps - Lista timestampów
+ * @returns {Array<string>} - Sformatowane etykiety
+ */
+function formatChartLabels(timestamps) {
+    if (!timestamps || timestamps.length === 0) {
+        return [];
+    }
+
+    // Konwertuj na obiekty Date
+    const dates = timestamps.map(ts => new Date(ts));
+
+    // Sprawdź zakres czasowy (w dniach)
+    const firstDate = dates[0];
+    const lastDate = dates[dates.length - 1];
+    const daysDiff = (lastDate - firstDate) / (1000 * 60 * 60 * 24);
+
+    // Sprawdź czy wszystkie pomiary są z tego samego dnia
+    const allSameDay = dates.every(d =>
+        d.getDate() === firstDate.getDate() &&
+        d.getMonth() === firstDate.getMonth() &&
+        d.getFullYear() === firstDate.getFullYear()
+    );
+
+    // STRATEGIA FORMATOWANIA:
+
+    if (allSameDay) {
+        // 🟢 Przypadek 1: Wszystkie pomiary z tego samego dnia - pokazuj TYLKO GODZINY
+        return dates.map(date => {
+            return date.toLocaleTimeString('pl-PL', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        });
+    }
+
+    if (daysDiff <= 3) {
+        // 🟡 Przypadek 2: Do 3 dni - pokazuj datę + godzinę (ale krótko)
+        let lastDisplayedDate = null;
+
+        return dates.map(date => {
+            const currentDate = date.toLocaleDateString('pl-PL', {
+                day: '2-digit',
+                month: '2-digit'
+            });
+            const time = date.toLocaleTimeString('pl-PL', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Pokaż datę tylko jeśli zmieniła się od ostatniego wyświetlenia
+            if (currentDate !== lastDisplayedDate) {
+                lastDisplayedDate = currentDate;
+                return `${currentDate}\n${time}`;
+            }
+
+            // W przeciwnym razie pokaż tylko godzinę
+            return time;
+        });
+    }
+
+    if (daysDiff <= 31) {
+        // 🟠 Przypadek 3: Do miesiąca - pokazuj dzień i godzinę co kilka punktów
+        const showEveryNth = Math.max(1, Math.floor(timestamps.length / 20));
+
+        return dates.map((date, index) => {
+            if (index % showEveryNth === 0 || index === 0 || index === dates.length - 1) {
+                // Pokaż datę i godzinę
+                return date.toLocaleString('pl-PL', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }).replace(',', '\n');
+            }
+            // Dla pozostałych - tylko godzina
+            return date.toLocaleTimeString('pl-PL', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        });
+    }
+
+    if (daysDiff <= 365) {
+        // 🔴 Przypadek 4: Do roku - pokazuj datę (bez godzin)
+        return dates.map(date => {
+            return date.toLocaleDateString('pl-PL', {
+                day: '2-digit',
+                month: '2-digit'
+            });
+        });
+    }
+
+    // 🔵 Przypadek 5: Więcej niż rok - pokazuj datę z rokiem
+    return dates.map(date => {
+        return date.toLocaleDateString('pl-PL', {
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    });
 }
 
 /**
@@ -323,7 +437,6 @@ export async function loadIncrementalChart(periodControl = null) {
         throw error;
     }
 }
-
 /**
  * Wyświetla wykres sumy przyrostowej w canvas
  * @param {Object} data - Dane wykresu z API
@@ -340,13 +453,8 @@ function displayIncrementalChart(data) {
         window.incrementalChartInstance.destroy();
     }
 
-    const labels = data.timestamps.map(timestamp => {
-        const date = new Date(timestamp);
-        if (data.timestamps.length > 100) {
-            return date.toLocaleDateString('pl-PL');
-        }
-        return date.toLocaleString('pl-PL');
-    });
+    // ✅ UŻYJ NOWEJ FUNKCJI formatowania
+    const labels = formatChartLabels(data.timestamps);
 
     const ctx = chartCanvas.getContext('2d');
 
@@ -386,6 +494,19 @@ function displayIncrementalChart(data) {
                     mode: 'index',
                     intersect: false,
                     callbacks: {
+                        title: function(context) {
+                            // W tooltip pokaż pełną datę i godzinę
+                            const timestamp = data.timestamps[context[0].dataIndex];
+                            const date = new Date(timestamp);
+                            return date.toLocaleString('pl-PL', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                            });
+                        },
                         label: function(context) {
                             return `Suma: ${context.parsed.y.toFixed(2)}`;
                         }
