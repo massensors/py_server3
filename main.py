@@ -157,7 +157,7 @@ async def api_info():
         "status": "active"
     }
 
-logger.info("📋 Lista wszystkich zarejestrowanych endpointów:")
+logger.info("Lista wszystkich zarejestrowanych endpointów:")
 for route in app.routes:
     if hasattr(route, 'path') and hasattr(route, 'methods'):
         logger.info(f"  {route.methods} {route.path}")
