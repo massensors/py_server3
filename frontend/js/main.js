@@ -14,6 +14,45 @@ import { reportService } from './services/reportService.js';
 import { devicesService } from './services/devicesService.js';
 import { loadRateChart, loadIncrementalChart, destroyAllCharts } from './components/charts.js';
 
+
+// =====  FUNKCJE UWIERZYTELNIANIA =====
+// Funkcja pomocnicza do obsługi błędów uwierzytelniania
+function handleAuthError(error, context = '') {
+    console.error(`Błąd uwierzytelniania ${context}:`, error);
+
+    // Sprawdź czy to błąd 401 lub 403
+    if (error.status === 401 || error.status === 403) {
+        localStorage.removeItem('access_token');
+        window.location.href = '/login';
+        return true;
+    }
+    return false;
+}
+
+// Funkcja do wykonywania requestów z obsługą uwierzytelniania
+async function fetchWithAuth(url, options = {}) {
+    try {
+        const response = await fetch(url, options);
+
+        // Sprawdź czy nie ma błędu uwierzytelniania
+        if (response.status === 401 || response.status === 403) {
+            console.error('Błąd uwierzytelniania - przekierowywanie do logowania');
+            localStorage.removeItem('access_token');
+            window.location.href = '/login';
+            throw new Error('Unauthorized');
+        }
+
+        return response;
+    } catch (error) {
+        // Jeśli to błąd sieci lub inny, przekaż dalej
+        if (error.message !== 'Unauthorized') {
+            console.error('Błąd fetch:', error);
+        }
+        throw error;
+    }
+}
+
+
 // Globalna zmienna dla kontroli okresu
 let periodControl;
 
@@ -163,8 +202,8 @@ async function handleLoadDevice() {
                 break;
             case 'pomiary':
                 //loadPomiaryData();
-               await loadMeasureData(periodControl)
-               await loadRateChart(periodControl); // ✅ DODAJ wykres
+                await loadMeasureData(periodControl)
+                await loadRateChart(periodControl); // ✅ DODAJ wykres
                 break;
             case 'aliasy':
                 loadAliasyData();
@@ -173,9 +212,12 @@ async function handleLoadDevice() {
                 loadDeviceData();
                 break;
         }
-    } catch (error) {
-        logger.addEntry(`Błąd wyboru urządzenia: ${error.message}`, 'error');
+    } catch (error) {// ZMIENIONE - Dodaj obsługę błędów uwierzytelniania
+        if (!handleAuthError(error, 'wyboru urządzenia')) {
+            logger.addEntry(`Błąd wyboru urządzenia: ${error.message}`, 'error');
+        }
     }
+
 }
 
 // NOWE - Aktualizuj UI z informacjami o urządzeniu
@@ -261,10 +303,13 @@ async function refreshDevicesList() {
             console.log(`🔄 Lista urządzeń odświeżona: ${devices.length} urządzeń`);
         }
     } catch (error) {
-        console.error('❌ Błąd auto-refresh urządzeń:', error);
+
+        if (!handleAuthError(error, 'odświeżania listy urządzeń')) {
+            console.error(' Błąd auto-refresh urządzeń:', error);
+        }
     }
 }
 //-------------222
 
 // **EXPORT periodControl dla innych modułów**
-export { periodControl };
+export { periodControl, fetchWithAuth, handleAuthError };

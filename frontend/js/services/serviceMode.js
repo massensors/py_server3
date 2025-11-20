@@ -9,7 +9,7 @@ let serviceModeAutoRefreshInterval = null;
 // UPROSZCZONA FUNKCJA - toggleServiceMode
 async function toggleServiceMode(enabled) {
     try {
-        const response = await fetch(`${API_URL}/service-mode/toggle`, {
+        const response = await fetchWithAuth(`${API_URL}/service-mode/toggle`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -49,8 +49,8 @@ async function toggleServiceMode(enabled) {
 async function refreshServiceModeStatus() {
     try {
         // Pobierz dane z MachineStateObserver
-        const machineStateResponse = await fetch(`${API_URL}/machine-state/status`);
-        const serviceResponse = await fetch(`${API_URL}/service-mode/status`);
+        const machineStateResponse = await fetchWithAuth(`${API_URL}/machine-state/status`);
+        const serviceResponse = await fetchWithAuth(`${API_URL}/service-mode/status`);
 
         if (machineStateResponse.ok && serviceResponse.ok) {
             const machineData = await machineStateResponse.json();

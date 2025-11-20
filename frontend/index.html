@@ -13,6 +13,10 @@
     <header>
         <h1>System Pomiarowy.</h1>
         <p>Panel kontrolny parametrów urządzenia</p>
+        <!-- Dodanie przycisku wylogowania -->
+        <div class="auth-controls" style="position: absolute; top: 20px; right: 20px;">
+            <button id="logoutBtn" class="secondary-btn" style="background: #dc3545; color: white;">Wyloguj</button>
+        </div>
     </header>
 
     <div class="device-section">
@@ -201,6 +205,76 @@
         <p>System Pomiarowy &copy; 2025</p>
     </footer>
 </div>
+ <!-- nowy -->
+
+
+<script>
+// ===== FUNKCJE UWIERZYTELNIANIA =====
+function checkAuth() {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        window.location.href = '/login';
+        return false;
+    }
+    return true;
+}
+
+// Funkcja do dodawania tokenu do requestów
+function getAuthHeaders() {
+    const token = localStorage.getItem('access_token');
+    return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    };
+}
+
+// Funkcja wylogowania
+function logout() {
+    localStorage.removeItem('access_token');
+    window.location.href = '/logout';
+}
+
+// Sprawdź uwierzytelnianie przy ładowaniu strony
+document.addEventListener('DOMContentLoaded', function() {
+    // Sprawdź uwierzytelnianie
+    if (!checkAuth()) {
+        return; // Jeśli nie uwierzytelniony, nie wykonuj reszty kodu
+    }
+
+    // Dodaj obsługę przycisku wylogowania
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logout);
+    }
+
+    // Dodaj token do wszystkich przyszłych requestów fetch
+    const originalFetch = window.fetch;
+    window.fetch = function(url, options = {}) {
+        // Sprawdź czy to nie jest request do endpointów logowania
+        if (!url.includes('/login') && !url.includes('/logout')) {
+            options.headers = {
+                ...options.headers,
+                ...getAuthHeaders()
+            };
+        }
+        return originalFetch(url, options);
+    };
+});
+
+// Funkcja pomocnicza do obsługi błędów 401 (nieautoryzowany)
+function handleUnauthorized(response) {
+    if (response.status === 401) {
+        localStorage.removeItem('access_token');
+        window.location.href = '/login';
+        return true;
+    }
+    return false;
+}
+</script>
+
+
+ <!-- koniec nowy -->
+
 
 <script type="module" src="/frontend/js/main.js"></script>
 </body>

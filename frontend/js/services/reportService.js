@@ -76,7 +76,7 @@ class ReportService {
             }
 
             // Wywołaj endpoint
-            const response = await fetch(`${this.API_URL}/reports/generate-report?${params}`, {
+            const response = await fetchWithAuth(`${this.API_URL}/reports/generate-report?${params}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'text/csv'

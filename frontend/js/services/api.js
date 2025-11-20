@@ -1,7 +1,7 @@
 import { API_URL, PARAMETER_MAPPING, ALIAS_ADDRESS_MAPPING } from '../config/constants.js';
 import { getDeviceId, formatDateTime } from '../utils/helpers.js';
 import { logger } from './logger.js';
-
+import { fetchWithAuth, handleAuthError } from '../main.js';
 
 export function formatDateForAPI(date) {
     if (!date) return null;
@@ -30,7 +30,7 @@ export async function loadDeviceData() {
     try {
         logger.addEntry(`Pobieranie parametrów dla urządzenia ${deviceId}...`, 'request');
 
-        const response = await fetch(`${API_URL}/app/devices/${deviceId}/parameters`);
+        const response = await fetchWithAuth(`${API_URL}/app/devices/${deviceId}/parameters`);
         const data = await response.json();
 
         if (data.status === 'error') {
@@ -67,7 +67,7 @@ export async function loadAliasyData() {
     try {
         logger.addEntry(`Pobieranie aliasów dla urządzenia ${deviceId}...`, 'request');
 
-        const response = await fetch(`${API_URL}/aliases/${deviceId}`);
+        const response = await fetchWithAuth(`${API_URL}/aliases/${deviceId}`);
 
         if (!response.ok) {
             throw new Error(`Status: ${response.status}`);
@@ -110,7 +110,7 @@ export async function loadPomiaryData() {
     try {
         logger.addEntry(`Pobieranie danych pomiarowych dla urządzenia ${deviceId}...`, 'request');
 
-        const response = await fetch(`${API_URL}/measure-data/device/${deviceId}`);
+        const response = await fetchWithAuth(`${API_URL}/measure-data/device/${deviceId}`);
         const data = await response.json();
 
         logger.addEntry(`Pobrano dane pomiarowe dla urządzenia ${deviceId}`, 'response');
@@ -166,7 +166,7 @@ export async function updateParameter(address, value) {
         const paramInfo = PARAMETER_MAPPING[address];
         logger.addEntry(`Aktualizacja parametru ${paramInfo.label} (${address}) na wartość: ${value}`, 'request');
 
-        const response = await fetch(`${API_URL}/app/devices/${deviceId}/parameters/${address}`, {
+        const response = await fetchWithAuth(`${API_URL}/app/devices/${deviceId}/parameters/${address}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -211,7 +211,7 @@ export async function updateAlias(fieldName, value) {
     try {
         logger.addEntry(`Aktualizacja pola '${fieldName}' (adres ${fieldAddress}) na wartość: ${value}`, 'request');
 
-        const updateResponse = await fetch(`${API_URL}/aliases/${deviceId}/field/${fieldAddress}`, {
+        const updateResponse = await fetchWithAuth(`${API_URL}/aliases/${deviceId}/field/${fieldAddress}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -295,7 +295,7 @@ export async function loadMeasureData(periodControl = null) {
         const url = `${API_URL}/measure-data/filtered/list?${params.toString()}`;
         logger.addEntry(` Żądanie: ${url}`, 'debug');
 
-        const response = await fetch(url);
+        const response = await fetchWithAuth(url);
 
         if (!response.ok) {
             const errorData = await response.text();
@@ -359,7 +359,7 @@ export async function loadMeasureSummary(periodControl = null) {
         }
 
         const url = `${API_URL}/measure-data/filtered/summary?${params.toString()}`;
-        const response = await fetch(url);
+        const response = await fetchWithAuth(url);
 
         if (!response.ok) {
             const errorData = await response.text();

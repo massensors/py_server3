@@ -11,7 +11,7 @@ class DevicesService {
         try {
             logger.addEntry('Ładowanie listy urządzeń...', 'request');
 
-            const response = await fetch(`${this.API_URL}/devices/status`);
+            const response = await fetchWithAuth(`${this.API_URL}/devices/status`);
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
@@ -32,7 +32,7 @@ class DevicesService {
 
     async loadDevicesCount() {
         try {
-            const response = await fetch(`${this.API_URL}/devices/count`);
+            const response = await fetchWithAuth(`${this.API_URL}/devices/count`);
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
@@ -54,7 +54,7 @@ class DevicesService {
             if (searchParams.product_name) queryParams.append('product_name', searchParams.product_name);
             if (searchParams.scale_id) queryParams.append('scale_id', searchParams.scale_id);
 
-            const response = await fetch(`${this.API_URL}/devices/search/by-alias?${queryParams}`);
+            const response = await fetchWithAuth(`${this.API_URL}/devices/search/by-alias?${queryParams}`);
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
@@ -75,7 +75,7 @@ class DevicesService {
             logger.addEntry(`Automatyczne wczytywanie danych dla urządzenia: ${deviceId}`, 'info');
 
             // 1. Wywołaj endpoint /device-selection/select (BEZ /api prefix!)
-            const selectionResponse = await fetch(`${this.BASE_URL}/device-selection/select`, {
+            const selectionResponse = await fetchWithAuth(`${this.BASE_URL}/device-selection/select`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ class DevicesService {
             logger.addEntry(`Wybrano urządzenie: ${selectionData.message}`, 'success');
 
             // 2. Wywołaj endpoint /app/devices/{deviceId}/parameters (BEZ /api prefix!)
-            const parametersResponse = await fetch(`${this.BASE_URL}/app/devices/${deviceId}/parameters`);
+            const parametersResponse = await fetchWithAuth(`${this.BASE_URL}/app/devices/${deviceId}/parameters`);
 
             if (!parametersResponse.ok) {
                 throw new Error(`Błąd pobierania parametrów: ${parametersResponse.status}`);

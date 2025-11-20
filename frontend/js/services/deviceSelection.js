@@ -19,7 +19,7 @@ class DeviceSelection {
         const previousDeviceId = this.selectedDeviceId;
 
         try {
-            const response = await fetch(`${API_URL}/device-selection/select`, {
+            const response = await fetchWithAuth(`${API_URL}/device-selection/select`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ class DeviceSelection {
      */
     async getCurrentSelection() {
         try {
-            const response = await fetch(`${API_URL}/device-selection/current`);
+            const response = await fetchWithAuth(`${API_URL}/device-selection/current`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -91,7 +91,7 @@ class DeviceSelection {
      */
     async clearSelection() {
         try {
-            const response = await fetch(`${API_URL}/device-selection/clear`, {
+            const response = await fetchWithAuth(`${API_URL}/device-selection/clear`, {
                 method: 'DELETE'
             });
 
@@ -168,7 +168,7 @@ class DeviceSelection {
 
             if (isParametersActive) {
                 // Sprawdź status trybu serwisowego
-                const response = await fetch(`${API_URL}/service-mode/status`);
+                const response = await fetchWithAuth(`${API_URL}/service-mode/status`);
                 if (response.ok) {
                     const data = await response.json();
 
@@ -177,7 +177,7 @@ class DeviceSelection {
                         logger.addEntry(`🔄 Wyłączanie trybu serwisowego dla poprzedniego urządzenia...`, 'info');
 
                         // Użyj nowego endpointu do wyłączenia trybu serwisowego
-                        const disableResponse = await fetch(`${API_URL}/service-mode/toggle-for-device`, {
+                        const disableResponse = await fetchWithAuth(`${API_URL}/service-mode/toggle-for-device`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -202,7 +202,7 @@ class DeviceSelection {
      */
     async enableServiceMode() {
         try {
-            const response = await fetch(`${API_URL}/device-selection/service-mode/enable`, {
+            const response = await fetchWithAuth(`${API_URL}/device-selection/service-mode/enable`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -233,7 +233,7 @@ class DeviceSelection {
      */
     async disableServiceMode() {
         try {
-            const response = await fetch(`${API_URL}/device-selection/service-mode/disable`, {
+            const response = await fetchWithAuth(`${API_URL}/device-selection/service-mode/disable`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -264,7 +264,7 @@ class DeviceSelection {
      */
     async getServiceModeStatus() {
         try {
-            const response = await fetch(`${API_URL}/device-selection/service-mode/status`);
+            const response = await fetchWithAuth(`${API_URL}/device-selection/service-mode/status`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
