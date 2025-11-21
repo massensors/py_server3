@@ -15,7 +15,7 @@ from repositories.database import init_db
 
 from repositories.database import init_db
 from routers import measure_data, aliases, static_params, commands, app_interface, dynamic_readings, devices, \
-    network_observer
+    network_observer, admins
 from routers.service_mode import router as service_mode_router
 from routers import device_selection
 from routers import measure_data
@@ -76,6 +76,18 @@ USERS = {
         "role": "admin"
     }
 }
+
+
+# Nowe modele Pydantic
+#class UserCreateRequest(BaseModel):
+#    username: str
+#    role: str
+
+#class UserUpdateRequest(BaseModel):
+#    role: str
+
+#class PasswordResetRequest(BaseModel):
+#    username: str
 
 security = HTTPBearer()
 #templates = Jinja2Templates(directory="templates")
@@ -306,7 +318,7 @@ app.include_router(devices.router, dependencies=[Depends(verify_token)])
 app.include_router(device_selection.router, dependencies=[Depends(verify_token)])
 app.include_router(network_observer.router, dependencies=[Depends(verify_token)])
 app.include_router(reports.router, prefix="/reports", tags=["reports"], dependencies=[Depends(verify_token)])
-
+app.include_router(admins.router)
 # ... existing code ...
 # tu koniec nowego kodu
 
@@ -365,7 +377,7 @@ async def get_ui():
             }
             
             // Sprawdź czy token jest ważny i pobierz dane użytkownika
-            fetch('/api/info', {
+            fetch('/api/user-info', {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -380,9 +392,17 @@ async def get_ui():
                 return response.json();
             })
             .then(data => {
-                if (data && data.user) {
+                if (data && data.username) {
                     // Wyświetl informacje o użytkowniku
-                    displayUserInfo(data.user);
+                    displayUserInfo(data.username, data.role);
+                    
+                    // Zapisz globalne informacje o użytkowniku
+                    window.currentUser = data;
+                    
+                    // Dodaj przycisk zarządzania dla admina
+                    if (data.is_admin) {
+                        addAdminButton();
+                    }    
                 }
             })
             .catch(error => {
@@ -397,7 +417,7 @@ async def get_ui():
             }
         });
         
-        function displayUserInfo(username) {
+        function displayUserInfo(username, role) {
             // Znajdź lub stwórz element dla informacji o użytkowniku
             let userInfo = document.getElementById('current-user-info');
             if (!userInfo) {
@@ -426,10 +446,40 @@ async def get_ui():
                 }
             }
             
+            const roleColor = role === 'admin' ? '#dc3545' : '#28a745';
             userInfo.innerHTML = `
                 <span style="color: #28a745;">●</span> 
-                Zalogowano jako: <strong>${username}</strong>
+                Zalogowano jako: <strong>${username}</strong>  (${role})
             `;
+        }
+        function addAdminButton() {
+            // Dodaj przycisk zarządzania użytkownikami dla admina
+            const header = document.querySelector('header');
+            if (!header || document.getElementById('admin-btn')) return;
+            
+            const adminBtn = document.createElement('button');
+            adminBtn.id = 'admin-btn';
+            adminBtn.textContent = ' Użytkownicy';
+            adminBtn.style.cssText = `
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+                z-index: 1000;
+            `;
+            adminBtn.onmouseover = function() { this.style.background = '#218838'; };
+            adminBtn.onmouseout = function() { this.style.background = '#28a745'; };
+            adminBtn.onclick = function() {
+                window.location.href = '/admin/users-management';
+            };
+            
+            header.appendChild(adminBtn);
         }
         
         function addLogoutButton() {
@@ -535,6 +585,23 @@ async def api_info(current_user: str = Depends(verify_token)):
         "version": "1.0",
         "status": "active",
         "user": current_user
+    }
+
+# Endpoint do pobierania informacji o aktualnym użytkowniku (rozszerzony)
+@app.get("/api/user-info")
+async def get_user_info(current_user: str = Depends(verify_token)):
+    """Pobierz szczegółowe informacje o aktualnym użytkowniku"""
+    user_data = USERS.get(current_user)
+    if not user_data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Użytkownik nie istnieje"
+        )
+
+    return {
+        "username": user_data["username"],
+        "role": user_data["role"],
+        "is_admin": user_data["role"] == "admin"
     }
 
 logger.info("Lista wszystkich zarejestrowanych endpointów:")
