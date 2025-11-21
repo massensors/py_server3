@@ -11,12 +11,17 @@
 <body>
 <div class="container">
     <header>
-        <h1>System Pomiarowy.</h1>
+        <div class="user-info-container" style="position: absolute; top: 10px; left: 10px; z-index: 1000;">
+            <div id="current-user-info" style="background: #f8f9fa; padding: 8px 12px; border-radius: 4px; border: 1px solid #dee2e6; font-size: 14px; color: #495057;">
+                <span style="color: #6c757d; font-style: italic;">Sprawdzanie autoryzacji...</span>
+            </div>
+        </div>
+        <h1>System Pomiarowy...</h1>
         <p>Panel kontrolny parametrów urządzenia</p>
-        <!-- Dodanie przycisku wylogowania -->
+        <!-- Dodanie przycisku wylogowania
         <div class="auth-controls" style="position: absolute; top: 20px; right: 20px;">
             <button id="logoutBtn" class="secondary-btn" style="background: #dc3545; color: white;">Wyloguj</button>
-        </div>
+        </div> -->
     </header>
 
     <div class="device-section">
@@ -234,12 +239,43 @@ function logout() {
     window.location.href = '/logout';
 }
 
+// Funkcja do wyświetlania informacji o użytkowniku
+function displayUserInfo(username) {
+    const userInfoElement = document.getElementById('current-user-info');
+    if (userInfoElement) {
+        userInfoElement.innerHTML = `
+            <span style="color: #28a745;">●</span>
+            Zalogowano jako: <strong>${username}</strong>
+        `;
+    }
+}
+
 // Sprawdź uwierzytelnianie przy ładowaniu strony
 document.addEventListener('DOMContentLoaded', function() {
     // Sprawdź uwierzytelnianie
     if (!checkAuth()) {
         return; // Jeśli nie uwierzytelniony, nie wykonuj reszty kodu
     }
+ // Pobierz informacje o użytkowniku
+    fetch('/api/info', {
+        headers: getAuthHeaders()
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Token invalid');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data && data.user) {
+            displayUserInfo(data.user);
+        }
+    })
+    .catch(error => {
+        console.error('Błąd pobierania danych użytkownika:', error);
+        localStorage.removeItem('access_token');
+        window.location.href = '/login';
+    });
 
     // Dodaj obsługę przycisku wylogowania
     const logoutBtn = document.getElementById('logoutBtn');

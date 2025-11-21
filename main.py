@@ -328,6 +328,7 @@ app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")  # DO
 
 # Endpoint zwracający główny plik HTML interfejsu
 @app.get("/ui")
+#async def get_ui(current_user: str = Depends(verify_token)):
 async def get_ui():
     """Interfejs użytkownika - sprawdza token i zwraca frontend/index.html"""
     # Sprawdź czy plik frontend/index.html istnieje
@@ -363,7 +364,7 @@ async def get_ui():
                 return;
             }
             
-            // Sprawdź czy token jest ważny
+            // Sprawdź czy token jest ważny i pobierz dane użytkownika
             fetch('/api/info', {
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -374,6 +375,14 @@ async def get_ui():
                     // Token nieważny - wyczyść i przekieruj
                     localStorage.removeItem('access_token');
                     window.location.href = '/login';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.user) {
+                    // Wyświetl informacje o użytkowniku
+                    displayUserInfo(data.user);
                 }
             })
             .catch(error => {
@@ -387,6 +396,41 @@ async def get_ui():
                 addLogoutButton();
             }
         });
+        
+        function displayUserInfo(username) {
+            // Znajdź lub stwórz element dla informacji o użytkowniku
+            let userInfo = document.getElementById('current-user-info');
+            if (!userInfo) {
+                // Stwórz element jeśli nie istnieje
+                userInfo = document.createElement('div');
+                userInfo.id = 'current-user-info';
+                userInfo.style.cssText = `
+                    position: absolute;
+                    top: 20px;
+                    left: 20px;
+                    background: #f8f9fa;
+                    padding: 8px 12px;
+                    border-radius: 4px;
+                    border: 1px solid #dee2e6;
+                    font-size: 14px;
+                    color: #495057;
+                    z-index: 1000;
+                `;
+                
+                // Dodaj do header
+                const header = document.querySelector('header');
+                if (header) {
+                    header.appendChild(userInfo);
+                } else {
+                    document.body.appendChild(userInfo);
+                }
+            }
+            
+            userInfo.innerHTML = `
+                <span style="color: #28a745;">●</span> 
+                Zalogowano jako: <strong>${username}</strong>
+            `;
+        }
         
         function addLogoutButton() {
             // Znajdź miejsce do wstawienia przycisku (np. w body lub konkretnym kontenerze)
@@ -432,7 +476,7 @@ async def get_ui():
         }
         
         // Funkcja pomocnicza do API calls z automatyczną autoryzacją
-        window.authFetch = function(url, options = {}) {
+        window.authFetch = function(url, options = {}) {  // bylo window.authFetch =
             const token = localStorage.getItem('access_token');
             if (!token) {
                 window.location.href = '/login';
@@ -455,8 +499,9 @@ async def get_ui():
                 return response;
             });
         };
+        
+        window.fetchWithAuth = window.authFetch;
     </script>
-    </body>
     """
 
     # Wstaw skrypt przed zamknięciem </body>

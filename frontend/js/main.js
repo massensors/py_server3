@@ -29,27 +29,36 @@ function handleAuthError(error, context = '') {
     return false;
 }
 
-// Funkcja do wykonywania requestów z obsługą uwierzytelniania
+// Używaj funkcji globalnej zamiast lokalnej definicji
 async function fetchWithAuth(url, options = {}) {
-    try {
-        const response = await fetch(url, options);
+    // Sprawdź czy funkcja globalna jest dostępna
+    if (typeof window.fetchWithAuth === 'function') {
+        return window.fetchWithAuth(url, options);
+    }
 
-        // Sprawdź czy nie ma błędu uwierzytelniania
+    // Fallback jeśli funkcja globalna nie jest dostępna
+    console.warn('window.fetchWithAuth nie jest dostępna, używam fallback');
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+        window.location.href = '/login';
+        return Promise.reject('No token');
+    }
+
+    const authOptions = {
+        ...options,
+        headers: {
+            ...options.headers,
+            'Authorization': 'Bearer ' + token
+        }
+    };
+
+    return fetch(url, authOptions).then(response => {
         if (response.status === 401 || response.status === 403) {
-            console.error('Błąd uwierzytelniania - przekierowywanie do logowania');
             localStorage.removeItem('access_token');
             window.location.href = '/login';
-            throw new Error('Unauthorized');
         }
-
         return response;
-    } catch (error) {
-        // Jeśli to błąd sieci lub inny, przekaż dalej
-        if (error.message !== 'Unauthorized') {
-            console.error('Błąd fetch:', error);
-        }
-        throw error;
-    }
+    });
 }
 
 

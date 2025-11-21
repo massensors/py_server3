@@ -1,5 +1,7 @@
 import { API_URL } from '../config/constants.js';
 import { logger } from './logger.js';
+import { fetchWithAuth } from '../main.js';
+
 
 class DeviceSelection {
     constructor() {
