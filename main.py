@@ -407,10 +407,61 @@ async def get_ui():
                     // Zapisz globalne informacje o użytkowniku
                     window.currentUser = data;
                     
-                    // Dodaj przycisk zarządzania dla admina
-                    if (data.is_admin) {
+                        // LOGIKA UPRAWNIEŃ
+                        // Przycisk zarządzania użytkownikami widoczny TYLKO dla roli 'admin'.
+                        // Rola 'Serwisant' (i inne) widzi zakładki, ale nie widzi tego przycisku.
+                    if (data.role === 'admin') {
                         addAdminButton();
-                    }    
+                    }  
+                    // LOGIKA DLA ROLI TECHNIK
+                        if (data.role === 'Technik') {
+                            // 1. Ukryj zakładki Monitor i Odczyty
+                            const tabsToHide = ['monitor', 'odczyty'];
+                            tabsToHide.forEach(tabName => {
+                                // Ukryj przycisk zakładki
+                                const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+                                if (btn) btn.style.display = 'none';
+                            });
+
+                            // 2. Ukryj przełącznik trybu serwisowego w zakładce Parametry
+                            // Szukamy kontenera z klasą service-mode-control
+                            const serviceModeControl = document.querySelector('.service-mode-control');
+                            if (serviceModeControl) {
+                                serviceModeControl.style.display = 'none';
+                            }
+                        }
+                    
+                     // LOGIKA DLA ROLI OPERATOR
+                        if (data.role === 'Operator') {
+                            // 1. Ukryj zakładki: Parametry, Aliasy, Odczyty, Monitor
+                            const tabsToHide = ['parameters', 'aliasy', 'odczyty', 'monitor'];
+                            tabsToHide.forEach(tabName => {
+                                const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+                                if (btn) btn.style.display = 'none';
+                            });
+
+                            // 2. Przełącz widok startowy na 'urzadzenia' (ponieważ domyślne 'parameters' są ukryte)
+                            
+                            // Usuń aktywność z domyślnej zakładki
+                            const defaultTabBtn = document.querySelector('.tab-btn[data-tab="parameters"]');
+                            const defaultTabContent = document.getElementById('parameters');
+                            if (defaultTabBtn) defaultTabBtn.classList.remove('active');
+                            if (defaultTabContent) defaultTabContent.classList.remove('active');
+
+                            // Aktywuj zakładkę 'urzadzenia' wizualnie
+                            const targetTabBtn = document.querySelector('.tab-btn[data-tab="urzadzenia"]');
+                            const targetTabContent = document.getElementById('urzadzenia');
+                            if (targetTabBtn) targetTabBtn.classList.add('active');
+                            if (targetTabContent) targetTabContent.classList.add('active');
+                            
+                            // Symuluj kliknięcie po krótkim opóźnieniu, aby uruchomić logikę ładowania danych (jeśli skrypty się załadowały)
+                             setTimeout(() => {
+                                if (targetTabBtn) targetTabBtn.click();
+                            }, 200);
+                        }    
+                    
+                    
+                      
                 }
             })
             .catch(error => {
