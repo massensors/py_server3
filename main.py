@@ -12,14 +12,16 @@ from repositories.database import init_db
 
 
 
-
-from repositories.database import init_db
+from datetime import datetime, timedelta
+from sqlalchemy.orm import Session  # Dodano
+from repositories.database import init_db, get_db, SessionLocal
 from routers import measure_data, aliases, static_params, commands, app_interface, dynamic_readings, devices, \
     network_observer, admins
 from routers.service_mode import router as service_mode_router
 from routers import device_selection
 from routers import measure_data
 from routers import reports
+from models.models import Users  # Dodano model Users
 
 
 import uvicorn
@@ -68,14 +70,7 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
-# Dane użytkownika (w produkcji używaj bazy danych)
-USERS = {
-    "admin": {
-        "username": "admin",
-        "password": "admin123",  # W produkcji używaj hashowanych haseł!
-        "role": "admin"
-    }
-}
+
 
 
 # Nowe modele Pydantic
@@ -123,9 +118,9 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
         )
 
 
-def authenticate_user(username: str, password: str):
-    user = USERS.get(username)
-    if not user or user["password"] != password:
+def authenticate_user(username: str, password: str, db: Session):
+    user = db.query(Users).filter(Users.username == username).first()
+    if not user or user.password != password:
         return False
     return user
 
@@ -181,7 +176,20 @@ async def log_requests(request: Request, call_next):
 
 # Inicjalizacja bazy danych
 init_db()
-# tu nowy kod
+
+# Automatyczne tworzenie użytkownika admin
+try:
+    db = SessionLocal()
+    try:
+        if not db.query(Users).filter(Users.username == "admin").first():
+            logger.info("Tworzenie domyślnego administratora (admin/admin123)")
+            # Hasło admin123 zgodne z podpowiedzią na stronie logowania
+            db.add(Users(username="admin", password="admin123", role="admin"))
+            db.commit()
+    finally:
+         db.close()
+except Exception as e:
+        logger.error(f"Błąd podczas inicjalizacji admina: {e}")
 
 
 # Endpointy logowania
@@ -215,7 +223,7 @@ async def login_page(request: Request):
                 <button type="submit">Zaloguj się</button>
             </form>
             <p style="margin-top: 20px; font-size: 12px; color: #666;">
-                Domyślne dane: admin / admin123
+                <!--Domyślne dane: admin / admin123-->
             </p>
         </div>
         
@@ -260,9 +268,9 @@ async def login_page(request: Request):
     return HTMLResponse(content=html_content)
 
 @app.post("/login")
-async def login(login_data: LoginRequest):
+async def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     """Logowanie użytkownika"""
-    user = authenticate_user(login_data.username, login_data.password)
+    user = authenticate_user(login_data.username, login_data.password, db)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -271,7 +279,7 @@ async def login(login_data: LoginRequest):
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user["username"]}, expires_delta=access_token_expires
+        data={"sub": user.username}, expires_delta=access_token_expires
     )
 
     return {
@@ -589,9 +597,9 @@ async def api_info(current_user: str = Depends(verify_token)):
 
 # Endpoint do pobierania informacji o aktualnym użytkowniku (rozszerzony)
 @app.get("/api/user-info")
-async def get_user_info(current_user: str = Depends(verify_token)):
+async def get_user_info(current_user: str = Depends(verify_token), db: Session = Depends(get_db)):
     """Pobierz szczegółowe informacje o aktualnym użytkowniku"""
-    user_data = USERS.get(current_user)
+    user_data = db.query(Users).filter(Users.username == current_user).first()
     if not user_data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -599,9 +607,9 @@ async def get_user_info(current_user: str = Depends(verify_token)):
         )
 
     return {
-        "username": user_data["username"],
-        "role": user_data["role"],
-        "is_admin": user_data["role"] == "admin"
+        "username": user_data.username,
+        "role": user_data.role,
+        "is_admin": user_data.role == "admin"
     }
 
 logger.info("Lista wszystkich zarejestrowanych endpointów:")

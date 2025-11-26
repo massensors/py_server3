@@ -8,7 +8,7 @@ from starlette.responses import HTMLResponse
 from pydantic import BaseModel
 
 from repositories.database import get_db
-from models.models import Aliases
+from models.models import Aliases,Users
 from services.service_parameter_store import service_parameter_store
 
 # Importuj funkcję weryfikacji tokenu osobno - bez USERS
@@ -18,13 +18,6 @@ from datetime import datetime, timedelta
 
 # Kopiuj dane użytkowników lokalnie (tymczasowe rozwiązanie)
 # W przyszłości lepiej użyć bazy danych
-USERS = {
-    "admin": {
-        "username": "admin",
-        "password": "admin123",
-        "role": "admin"
-    }
-}
 
 
 # Dodaj modele Pydantic lokalnie
@@ -365,89 +358,96 @@ async def users_management_page():
     return HTMLResponse(content=html_content)
 
 @router.get("/users")
-async def get_users(current_user: str = Depends(verify_token)):
+async def get_users(current_user: str = Depends(verify_token), db: Session = Depends(get_db)):
     """Pobierz listę użytkowników - tylko dla adminów"""
-    user = USERS.get(current_user)
-    if not user or user.get("role") != "admin":
+    user =  db.query(Users).filter(Users.username == current_user).first()
+    if not user or user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Dostęp tylko dla administratorów"
         )
+    # Pobierz wszystkich użytkowników z bazy
+    db_users = db.query(Users).all()
 
-    # Usuń hasła z odpowiedzi
-    users_without_passwords = {}
-    for username, user_data in USERS.items():
-        users_without_passwords[username] = {
-            "username": user_data["username"],
-            "role": user_data["role"]
+    # Usuń hasła z odpowiedzi i zachowaj strukturę słownika dla frontendu
+    users_response = {}
+    for u in db_users:
+        users_response[u.username] = {
+            "username": u.username,
+            "role": u.role
         }
 
-    return users_without_passwords
+    return users_response
 
 @router.post("/users")
-async def create_user(request: UserCreateRequest, current_user: str = Depends(verify_token)):
+async def create_user(request: UserCreateRequest, current_user: str = Depends(verify_token), db: Session = Depends(get_db)):
     """Dodaj nowego użytkownika - tylko dla adminów"""
-    user = USERS.get(current_user)
-    if not user or user.get("role") != "admin":
+    user = db.query(Users).filter(Users.username == current_user).first()
+    if not user or user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Dostęp tylko dla administratorów"
         )
 
     # Sprawdź czy użytkownik już istnieje
-    if request.username in USERS:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Użytkownik już istnieje"
-        )
+    existing_user = db.query(Users).filter(Users.username == request.username).first()
+    if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Użytkownik już istnieje"
+            )
 
     # Sprawdź czy rola jest poprawna
     valid_roles = ["Operator", "Technik", "Serwisant"]
     if request.role not in valid_roles:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Niepoprawna rola. Dostępne: {', '.join(valid_roles)}"
-        )
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Niepoprawna rola. Dostępne: {', '.join(valid_roles)}"
+            )
 
-    # Dodaj użytkownika
-    USERS[request.username] = {
-        "username": request.username,
-        "password": "1234",  # Domyślne hasło
-        "role": request.role
-    }
+    # Dodaj użytkownika do bazy
+    new_user = Users(
+        username=request.username,
+        password="1234",  # Domyślne hasło
+        role=request.role
+    )
+    db.add(new_user)
+    db.commit()
 
     return {
-        "status": "success",
-        "message": f"Użytkownik {request.username} został dodany",
-        "default_password": "1234"
-    }
+            "status": "success",
+            "message": f"Użytkownik {request.username} został dodany",
+            "default_password": "1234"
+        }
 
 @router.post("/reset-password")
-async def reset_password(request: PasswordResetRequest, current_user: str = Depends(verify_token)):
+async def reset_password(request: PasswordResetRequest, current_user: str = Depends(verify_token), db: Session = Depends(get_db)):
     """Resetuj hasło użytkownika - tylko dla adminów"""
-    user = USERS.get(current_user)
-    if not user or user.get("role") != "admin":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Dostęp tylko dla administratorów"
-        )
+    user = db.query(Users).filter(Users.username == current_user).first()
+    if not user or user.role != "admin":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Dostęp tylko dla administratorów"
+            )
 
     # Sprawdź czy użytkownik istnieje
-    if request.username not in USERS:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Użytkownik nie istnieje"
-        )
+    target_user = db.query(Users).filter(Users.username == request.username).first()
+    if not target_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Użytkownik nie istnieje"
+            )
 
     # Nie pozwól na reset hasła admina
     if request.username == "admin":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Nie można zresetować hasła administratora głównego"
-        )
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Nie można zresetować hasła administratora głównego"
+            )
 
     # Resetuj hasło
-    USERS[request.username]["password"] = "1234"
+    target_user.password = "1234"
+    db.commit()
 
     return {
         "status": "success",
@@ -455,35 +455,37 @@ async def reset_password(request: PasswordResetRequest, current_user: str = Depe
         "new_password": "1234"
     }
 
+
 @router.delete("/users/{username}")
-async def delete_user(username: str, current_user: str = Depends(verify_token)):
-    """Usuń użytkownika - tylko dla adminów"""
-    user = USERS.get(current_user)
-    if not user or user.get("role") != "admin":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Dostęp tylko dla administratorów"
-        )
+async def delete_user(username: str, current_user: str = Depends(verify_token), db: Session = Depends(get_db)):
+        """Usuń użytkownika - tylko dla adminów"""
+        user = db.query(Users).filter(Users.username == current_user).first()
+        if not user or user.role != "admin":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Dostęp tylko dla administratorów"
+            )
 
-    # Nie pozwól na usunięcie admina
-    if username == "admin":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Nie można usunąć administratora głównego"
-        )
+        # Nie pozwól na usunięcie admina
+        if username == "admin":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Nie można usunąć administratora głównego"
+            )
 
-    # Sprawdź czy użytkownik istnieje
-    if username not in USERS:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Użytkownik nie istnieje"
-        )
+        # Sprawdź czy użytkownik istnieje
+        target_user = db.query(Users).filter(Users.username == username).first()
+        if not target_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Użytkownik nie istnieje"
+            )
 
-    # Usuń użytkownika
-    del USERS[username]
+        # Usuń użytkownika
+        db.delete(target_user)
+        db.commit()
 
-    return {
-        "status": "success",
-        "message": f"Użytkownik {username} został usunięty"
-    }
-
+        return {
+            "status": "success",
+            "message": f"Użytkownik {username} został usunięty"
+        }
