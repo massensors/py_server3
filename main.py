@@ -156,6 +156,9 @@ logger.error("Test loggera - ERROR")
 # Inicjalizacja aplikacji FastAPI
 app = FastAPI(title="System pomiarowy API")
 
+# WERSJA APLIKACJI
+APP_VERSION = "v1.0.2"
+
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     try:
@@ -182,9 +185,9 @@ try:
     db = SessionLocal()
     try:
         if not db.query(Users).filter(Users.username == "admin").first():
-            logger.info("Tworzenie domyślnego administratora (admin/admin123)")
+            logger.info("Tworzenie domyślnego administratora (admin/BeltMate!2025)")
             # Hasło admin123 zgodne z podpowiedzią na stronie logowania
-            db.add(Users(username="admin", password="admin123", role="admin"))
+            db.add(Users(username="admin", password="BeltMate!2025", role="admin"))
             db.commit()
     finally:
          db.close()
@@ -370,6 +373,11 @@ async def get_ui():
     # Wczytaj oryginalny plik index.html
     with open("frontend/index.html", "r", encoding="utf-8") as file:
         original_content = file.read()
+
+    # PODMIANA WERSJI W HTML
+    # Zamieniamy placeholder {{VERSION}} na faktyczną wersję
+    modified_content = original_content.replace("{{VERSION}}", APP_VERSION)
+
 
     # Dodaj skrypt autoryzacji i przycisk logout przed zamknięciem </body>
     auth_script = """
@@ -614,11 +622,11 @@ async def get_ui():
     """
 
     # Wstaw skrypt przed zamknięciem </body>
-    if "</body>" in original_content:
-        modified_content = original_content.replace("</body>", auth_script)
+    if "</body>" in modified_content:
+        modified_content = modified_content.replace("</body>", auth_script)
     else:
         # Jeśli nie ma </body>, dodaj na koniec
-        modified_content = original_content + auth_script + "</body>"
+        modified_content = modified_content + auth_script + "</body>"
 
     return HTMLResponse(content=modified_content)
 
@@ -641,7 +649,7 @@ async def root():
 async def api_info(current_user: str = Depends(verify_token)):
     return {
         "message": "System pomiarowy API",
-        "version": "1.0",
+        "version": APP_VERSION,
         "status": "active",
         "user": current_user
     }

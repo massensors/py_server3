@@ -408,7 +408,7 @@ async def create_user(request: UserCreateRequest, current_user: str = Depends(ve
     # Dodaj użytkownika do bazy
     new_user = Users(
         username=request.username,
-        password="1234",  # Domyślne hasło
+        password="User!BeltMate2025",  # Domyślne hasło
         role=request.role
     )
     db.add(new_user)
@@ -417,7 +417,7 @@ async def create_user(request: UserCreateRequest, current_user: str = Depends(ve
     return {
             "status": "success",
             "message": f"Użytkownik {request.username} został dodany",
-            "default_password": "1234"
+            "default_password": "User!BeltMate2025"
         }
 
 @router.post("/reset-password")
@@ -446,13 +446,13 @@ async def reset_password(request: PasswordResetRequest, current_user: str = Depe
             )
 
     # Resetuj hasło
-    target_user.password = "1234"
+    target_user.password = "User!BeltMate2025"
     db.commit()
 
     return {
         "status": "success",
         "message": f"Hasło użytkownika {request.username} zostało zresetowane",
-        "new_password": "1234"
+        "new_password": "User!BeltMate2025"
     }
 
 
