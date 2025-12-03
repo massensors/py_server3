@@ -202,7 +202,22 @@ async def get_current_selection(db: Session = Depends(get_db)):
     """
     device_id = selected_device_store.get_device_id()
 
+    # Jeśli brak wyboru, spróbuj znaleźć pierwsze urządzenie w bazie
     if not device_id:
+        # Sprawdzamy kolejno tabele, sortując po ID, aby wynik był deterministyczny
+        first_entry = (
+                db.query(Aliases).order_by(Aliases.deviceId).first() or
+                db.query(StaticParams).order_by(StaticParams.deviceId).first() or
+                db.query(MeasureData).order_by(MeasureData.deviceId).first()
+        )
+
+        if first_entry:
+            device_id = first_entry.deviceId
+            selected_device_store.set_device_id(device_id)
+            logger.info(f"Automatycznie wybrano pierwsze dostępne urządzenie z bazy: {device_id}")
+
+    if not device_id:
+
         return DeviceSelectionResponse(
             status="success",
             message="Brak wybranego urządzenia",
