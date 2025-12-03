@@ -1,3 +1,5 @@
+#3 grudnia 2025, ostatnia wersja z debugiem
+
 import logging
 import  sys
 from fastapi import FastAPI, Request, Depends, HTTPException, status, Form
