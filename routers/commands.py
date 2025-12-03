@@ -40,7 +40,7 @@ async def analyze_data(data: bytes = Body(...), db: Session = Depends(get_db)):
     """
     Endpoint do analizy przychodzącego strumienia danych i zapisu do bazy
     """
-    await simulate_network_delay()  # SYMULACJA
+   # await simulate_network_delay()  # SYMULACJA
 
     try:
         

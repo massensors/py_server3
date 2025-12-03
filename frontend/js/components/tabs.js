@@ -4,6 +4,7 @@ import { activateReadingsMode, deactivateReadingsMode, isDynamicReadingsActive }
 import { devicesService } from '../services/devicesService.js';
 import { logger } from '../services/logger.js';
 
+
 // Inicjalizuje obsługę zakładek
 export function initTabHandlers() {
     const tabButtons = document.querySelectorAll('.tab-btn');

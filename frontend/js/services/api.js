@@ -38,7 +38,7 @@ export async function loadDeviceData() {
             return;
         }
 
-        logger.addEntry(`Pobrano parametry dla urządzenia ${deviceId}`, 'response');
+        logger.addEntry(`Pobrano parametry dla urządzenia * ${deviceId}`, 'response');
 
         // Wypełniamy pola wartościami z serwera
         for (const [address, param] of Object.entries(data.parameters)) {

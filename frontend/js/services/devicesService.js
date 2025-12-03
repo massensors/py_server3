@@ -106,7 +106,7 @@ class DevicesService {
                 return { success: false, error: parametersData.message };
             }
 
-            logger.addEntry(`Pobrano parametry dla urządzenia ${deviceId}`, 'success');
+            logger.addEntry(`Pobrano parametry dla urządzenia ** ${deviceId}`, 'success');
 
             // 3. Wypełnij pola parametrów
             this.fillParametersData(parametersData.parameters);
@@ -114,6 +114,7 @@ class DevicesService {
             // 4. Przełącz na zakładkę "Parametry"
             //this.switchToParametersTab();
             this.switchToPomiaryTab();
+             logger.addEntry('wykonano switchToPamiaryTab' );
             return {
                 success: true,
                 selectionData,
@@ -178,7 +179,13 @@ class DevicesService {
             pomiaryTab.classList.add('active');
             pomiaryContent.classList.add('active');
 
-            console.log('✅ Przełączono na zakładkę Pomiary');
+             // Emituj event o zmianie zakładki (ważne dla reszty aplikacji!)
+            const event = new CustomEvent('tabChanged', {
+                detail: { tab: 'pomiary' }
+            });
+             document.dispatchEvent(event);
+
+            console.log('✅ Przełączono na zakładkę Pomiary***');
 
             // Opcjonalnie: wczytaj dane pomiarowe
             // Możesz tutaj dodać logikę wczytywania danych jeśli potrzebujesz
@@ -186,6 +193,16 @@ class DevicesService {
             if (this.currentDeviceData) {
                 this.updatePomiaryDeviceInfo(this.currentDeviceData);
             }
+
+            // --- DODANO: Automatyczne odświeżenie danych ---
+                setTimeout(() => {
+                    const refreshBtn = document.getElementById('refreshPomiary');
+                    if (refreshBtn) {
+                        console.log('🔄 Automatyczne odświeżanie po przełączeniu...');
+                        refreshBtn.click();
+                    }
+                }, 100);
+                // -----------------------------------------------
 
         } else {
             console.error('❌ Nie znaleziono elementów zakładki Pomiary');
