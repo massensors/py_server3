@@ -87,7 +87,7 @@ def verify_tables() -> Dict[str, Any]:
     """
     inspector = inspect(engine)
     existing_tables = inspector.get_table_names()
-    required_tables = ['todos', 'MeasureData', 'Aliases', 'StaticParams']
+    required_tables = [ 'MeasureData', 'Aliases', 'StaticParams', 'Users']
 
     missing_tables = [table for table in required_tables if table not in existing_tables]
     extra_tables = [table for table in existing_tables if table not in required_tables]

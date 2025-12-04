@@ -1,4 +1,5 @@
 import logging
+import os
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
@@ -29,7 +30,8 @@ class PasswordResetRequest(BaseModel):
     username: str
 
 # Dodaj funkcję weryfikacji tokenu lokalnie
-SECRET_KEY = "your-secret-key-change-in-production"
+SECRET_KEY = os.getenv("SECRET_KEY", "Massensors2025!")
+DEFAULT_PASSWORD = os.getenv("DEFAULT_USER_PASSWORD", "Massensors2025!")
 ALGORITHM = "HS256"
 security = HTTPBearer()
 
@@ -408,7 +410,7 @@ async def create_user(request: UserCreateRequest, current_user: str = Depends(ve
     # Dodaj użytkownika do bazy
     new_user = Users(
         username=request.username,
-        password="User!BeltMate2025",  # Domyślne hasło
+        password=DEFAULT_PASSWORD,  # Domyślne hasło
         role=request.role
     )
     db.add(new_user)
@@ -417,7 +419,7 @@ async def create_user(request: UserCreateRequest, current_user: str = Depends(ve
     return {
             "status": "success",
             "message": f"Użytkownik {request.username} został dodany",
-            "default_password": "User!BeltMate2025"
+            "default_password": DEFAULT_PASSWORD
         }
 
 @router.post("/reset-password")
@@ -446,13 +448,13 @@ async def reset_password(request: PasswordResetRequest, current_user: str = Depe
             )
 
     # Resetuj hasło
-    target_user.password = "User!BeltMate2025"
+    target_user.password = DEFAULT_PASSWORD
     db.commit()
 
     return {
         "status": "success",
         "message": f"Hasło użytkownika {request.username} zostało zresetowane",
-        "new_password": "User!BeltMate2025"
+        "new_password": DEFAULT_PASSWORD
     }
 
 
