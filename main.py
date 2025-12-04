@@ -2,6 +2,7 @@
 
 import logging
 import  sys
+import os
 from fastapi import FastAPI, Request, Depends, HTTPException, status, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse, HTMLResponse
@@ -37,8 +38,8 @@ config = uvicorn.Config(
     "main:app",
     host="0.0.0.0",
     port=8080,
-    log_level="debug",
-    reload=True,
+    log_level="info",
+    reload=False,
     log_config={
         "version": 1,
         "disable_existing_loggers": False,
@@ -57,13 +58,18 @@ config = uvicorn.Config(
             },
         },
         "loggers": {
-            "": {"handlers": ["default"], "level": "DEBUG"},
+            "": {"handlers": ["default"], "level": "INFO"},
         },
     },
 )
 
 # Konfiguracja uwierzytelniania
-SECRET_KEY = "your-secret-key-change-in-production"  # ZMIEŃ TO W PRODUKCJI!
+# POBIERZ KLUCZ Z ENV lub użyj bezpiecznego fallbacka tylko lokalnie
+SECRET_KEY = os.getenv("SECRET_KEY", "Massensors2025!")
+if SECRET_KEY == "Massensors2025!":
+    logging.warning("UWAGA: Używasz domyślnego klucza SECRET_KEY! Ustaw zmienną środowiskową.")
+
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -74,17 +80,6 @@ class LoginRequest(BaseModel):
 
 
 
-
-# Nowe modele Pydantic
-#class UserCreateRequest(BaseModel):
-#    username: str
-#    role: str
-
-#class UserUpdateRequest(BaseModel):
-#    role: str
-
-#class PasswordResetRequest(BaseModel):
-#    username: str
 
 security = HTTPBearer()
 #templates = Jinja2Templates(directory="templates")
@@ -126,7 +121,7 @@ def authenticate_user(username: str, password: str, db: Session):
         return False
     return user
 
-# Usuń wszystkie handlery
+
 
 # Usuń wszystkie handlery
 for handler in logging.root.handlers[:]:
@@ -134,29 +129,22 @@ for handler in logging.root.handlers[:]:
 
 # Nowa konfiguracja logowania
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s',
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler('debug.log', mode='w')
+      #  logging.FileHandler('debug.log', mode='w') # Opcjonalnie wyłącz plik debug.log w produkcji lub zmień na rotating file handler
     ]
 )
 
 # Ustaw poziom logowania dla głównego loggera
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-# Na początku main.py, zaraz po konfiguracji loggera
-logger.debug("Test loggera - DEBUG")
-logger.info("Test loggera - INFO")
-logger.warning("Test loggera - WARNING")
-logger.error("Test loggera - ERROR")
-
-
+logger.setLevel(logging.INFO)
 
 
 # Inicjalizacja aplikacji FastAPI
-app = FastAPI(title="System pomiarowy API")
+app = FastAPI(title="Monitor Belt-Mate", docs_url=None,
+              redoc_url=None)  # Wyłącz Swagger UI na produkcji (opcjonalnie)
 
 # WERSJA APLIKACJI
 APP_VERSION = "v1.0.2"
@@ -164,13 +152,9 @@ APP_VERSION = "v1.0.2"
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     try:
-        logger.debug("="*50)
-        logger.debug(f"[REQUEST] Method: {request.method} Path: {request.url.path}")
-        logger.debug(f"Headers: {dict(request.headers)}")
-        body = await request.body()
-        logger.debug(f"Request body: {body.hex(' ')}")
+
         response = await call_next(request)
-        logger.debug(f"[RESPONSE] Status: {response.status_code}")
+
         return response
     except Exception as e:
         logger.error(f"Błąd w middleware: {str(e)}")
@@ -187,9 +171,10 @@ try:
     db = SessionLocal()
     try:
         if not db.query(Users).filter(Users.username == "admin").first():
-            logger.info("Tworzenie domyślnego administratora (admin/BeltMate!2025)")
-            # Hasło admin123 zgodne z podpowiedzią na stronie logowania
-            db.add(Users(username="admin", password="BeltMate!2025", role="admin"))
+            logger.info("Tworzenie domyślnego administratora")
+            # Pobierz hasło z ENV lub użyj domyślnego (ale ostrzeż)
+            admin_pass = os.getenv("ADMIN_DEFAULT_PASSWORD", "BeltMate!2025")
+            db.add(Users(username="admin", password=admin_pass, role="admin"))
             db.commit()
     finally:
          db.close()
@@ -198,8 +183,7 @@ except Exception as e:
 
 
 # Endpointy logowania
-#-------------poczatek
-# ... existing code ...
+
 @app.get("/login")
 async def login_page(request: Request):
     """Strona logowania"""

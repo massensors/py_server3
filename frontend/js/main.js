@@ -70,15 +70,15 @@ let devicesAutoRefresh = null;
 
 // Główna inicjalizacja aplikacji
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('🚀 Inicjalizacja aplikacji...');
+
 
     // Inicjalizacja wszystkich komponentów
     initializeComponents();
     initializeEventListeners();
     initializeDeviceSelection();
-    initializeDevicesAutoRefresh(); // DODAJ TUTAJ
+    initializeDevicesAutoRefresh();
 
-    console.log('✅ Aplikacja zainicjalizowana pomyślnie');
+
 });
 
 // Inicjalizuje wszystkie komponenty
@@ -98,7 +98,7 @@ function initializeComponents() {
 
     // Kontrola okresu dla zakładki pomiary
     periodControl = new PeriodControl();
-    console.log('📅 Kontrola okresu zainicjalizowana');
+
 
 }
 
@@ -114,7 +114,7 @@ function initializeEventListeners() {
     const refreshPomiaryBtn = document.getElementById('refreshPomiary');
     if (refreshPomiaryBtn) {
         refreshPomiaryBtn.addEventListener('click', async () => {
-            console.log('Odświeżanie danych pomiarowych...');
+
             await loadMeasureData(periodControl); // ← NOWA FUNKCJA
             await loadRateChart(periodControl); // ✅ DODAJ wykres wydajności
             // await loadIncrementalChart(periodControl); // Opcjonalnie suma przyrostowa
@@ -135,7 +135,7 @@ function initializeEventListeners() {
       if (generateReportBtn) {
       generateReportBtn.addEventListener('click', async () => {
         try {
-            console.log('🔄 Generowanie raportu CSV...');
+            //console.log('🔄 Generowanie raportu CSV...');
             await reportService.generateReport(periodControl);
         } catch (error) {
             console.error('Błąd generowania raportu:', error);
@@ -170,14 +170,14 @@ function initializeDeviceSelection() {
     // Event listenery dla wyboru urządzenia
     document.addEventListener('deviceSelected', (event) => {
         const { deviceId, data } = event.detail;
-        console.log('📱 Wybrano urządzenie:', deviceId, data);
+        //console.log('📱 Wybrano urządzenie:', deviceId, data);
 
         // Aktualizuj UI - pokaż informacje o urządzeniu
         updateDeviceInfoUI(deviceId, data);
     });
 
     document.addEventListener('deviceDeselected', () => {
-        console.log('📱 Usunięto wybór urządzenia');
+       // console.log('📱 Usunięto wybór urządzenia');
         clearDeviceInfoUI();
     });
 
@@ -257,7 +257,7 @@ function clearDeviceInfoUI() {
 //------------111
 // DODAJ NOWĄ FUNKCJĘ - Inicjalizacja auto-refresh dla zakładki urządzeń
 function initializeDevicesAutoRefresh() {
-    console.log('🔄 Inicjalizacja auto-refresh listy urządzeń...');
+    //console.log('🔄 Inicjalizacja auto-refresh listy urządzeń...');
 
     // Startuj auto-refresh
     startDevicesAutoRefresh();
@@ -265,7 +265,7 @@ function initializeDevicesAutoRefresh() {
     // Nasłuchuj zmiany zakładek - odśwież natychmiast po przejściu do zakładki urządzeń
     document.addEventListener('tabChanged', (event) => {
         if (event.detail && event.detail.tab === 'urzadzenia') {
-            console.log('📱 Przełączono na zakładkę Urządzenia - odświeżanie listy...');
+            //console.log('📱 Przełączono na zakładkę Urządzenia - odświeżanie listy...');
             refreshDevicesList();
         }
     });
@@ -288,7 +288,7 @@ function startDevicesAutoRefresh() {
         }
     }, 10000); // 10 sekund
 
-    console.log('✅ Auto-refresh urządzeń uruchomiony (co 10s)');
+    //console.log('✅ Auto-refresh urządzeń uruchomiony (co 10s)');
 }
 
 // DODAJ NOWĄ FUNKCJĘ - Stop auto-refresh
@@ -296,7 +296,7 @@ function stopDevicesAutoRefresh() {
     if (devicesAutoRefresh) {
         clearInterval(devicesAutoRefresh);
         devicesAutoRefresh = null;
-        console.log('⏹️ Auto-refresh urządzeń zatrzymany');
+       // console.log('⏹️ Auto-refresh urządzeń zatrzymany');
     }
 }
 
@@ -309,12 +309,12 @@ async function refreshDevicesList() {
 
         if (listContainer && devices) {
             devicesService.displayDevicesList(devices, listContainer, countElement);
-            console.log(`🔄 Lista urządzeń odświeżona: ${devices.length} urządzeń`);
+           // console.log(`🔄 Lista urządzeń odświeżona: ${devices.length} urządzeń`);
         }
     } catch (error) {
 
         if (!handleAuthError(error, 'odświeżania listy urządzeń')) {
-            console.error(' Błąd auto-refresh urządzeń:', error);
+            //console.error(' Błąd auto-refresh urządzeń:', error);
         }
     }
 }
